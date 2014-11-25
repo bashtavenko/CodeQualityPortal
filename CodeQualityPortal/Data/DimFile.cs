@@ -12,10 +12,14 @@ namespace CodeQualityPortal.Data
         public virtual DimCommit Commit { get; set; }
         public List<FactCodeChurn> Churn { get; set; }
 
-        public DimFile(string fileName)
-        {
-            this.FileExtension = System.IO.Path.GetExtension(fileName);
+        public DimFile()
+        {        
             this.Churn = new List<FactCodeChurn>();
+        }
+
+        public DimFile(string fileName) : this()
+        {
+            this.FileExtension = System.IO.Path.GetExtension(fileName);         
         }
     }
 }
