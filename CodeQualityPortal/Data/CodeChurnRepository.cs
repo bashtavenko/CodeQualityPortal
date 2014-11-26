@@ -19,13 +19,21 @@ namespace CodeQualityPortal.Data
         {
             using (var context = new CodeQualityContext())
             {
-                var query = context
-                    .Churn
-                    .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.File.Commit.RepoId == repoId);
-
+                IQueryable<FactCodeChurn> query;
+                
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    query = query.Where ( w => w.File.FileExtension == fileExtension);
+                    // FactCodeChurn join File join Commit
+                    query = context
+                        .Churn
+                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.File.Commit.RepoId == repoId && f.File.FileExtension == fileExtension);   
+                }
+                else
+                {                    
+                    // FactCodeChurn join Commit
+                    query = context
+                        .Churn
+                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.Commit.RepoId == repoId);
                 }
 
                 var itemsQuery = query
@@ -37,7 +45,7 @@ namespace CodeQualityPortal.Data
                         LinesAdded = s.Sum(a => a.LinesAdded),
                         LinesModified = s.Sum(m => m.LinesModified),
                         LinesDeleted = s.Sum(d => d.LinesDeleted),
-                        TotalChurn = s.Sum(t => t.LinesAdded + t.LinesModified + t.LinesDeleted)
+                        TotalChurn = s.Sum(t => t.TotalChurn)
                     });
 
                 var items = itemsQuery.ToList();
@@ -48,30 +56,45 @@ namespace CodeQualityPortal.Data
                     dates.Add(date);                
                 }
 
-                return dates.Join(items.DefaultIfEmpty(),
+                // Essentially "dates left outer join items"
+                return dates.GroupJoin(items.DefaultIfEmpty(),
                     d => d.Date,
-                    i => i.Date,
-                    (d, i) => new ViewModels.CodeChurnByDate { Date = d.Date, DateId = i.DateId, LinesAdded = i.LinesAdded, LinesModified = i.LinesModified, LinesDeleted = i.LinesDeleted, TotalChurn = i.TotalChurn })                    
-                    .ToList();
-            }                        
+                    i => i.Date.Date,
+                    (d, i) => new ViewModels.CodeChurnByDate
+                    { 
+                        Date = d.Date,
+                        DateId =  i.Any() ? i.First().DateId : null, // there's always 1 or 0 items in the group
+                        LinesAdded = i.Any() ? i.First().LinesAdded : null,
+                        LinesModified = i.Any() ? i.First().LinesModified : null,
+                        LinesDeleted = i.Any() ? i.First().LinesDeleted : null,
+                        TotalChurn = i.Any() ? i.First().TotalChurn : null
+                    }).ToList();
+            }               
         }
 
         public IList<ViewModels.FileCodeChurn> GetCodeChurnDetails(int repoId, int dateId, string fileExtension)
         {
             using (var context = new CodeQualityContext())
             {
-                return context.Churn
-                    .Where(f => f.DateId == dateId && f.File.Commit.RepoId == repoId && f.File.FileExtension == fileExtension)
-                    .Select(s => new ViewModels.FileCodeChurn
-                    {
-                        FileName = s.File.FileName,
-                        Url = s.File.Url,
-                        LinesAdded = s.LinesAdded,
-                        LinesModified = s.LinesModified,
-                        LinesDeleted = s.LinesDeleted,
-                        TotalChurn = s.LinesAdded + s.LinesModified + s.LinesDeleted
-                    }).ToList();
+                var query = context.Churn
+                    .Where(f => f.DateId == dateId && f.File.Commit.RepoId == repoId);
+
+                if (!string.IsNullOrEmpty(fileExtension))
+                {
+                    query = query.Where (w => w.File.FileExtension == fileExtension);
+                }
+
+                return query.Select(s => new ViewModels.FileCodeChurn
+                {
+                    FileName = s.File.FileName,
+                    Url = s.File.Url,
+                    LinesAdded = s.LinesAdded,
+                    LinesModified = s.LinesModified,
+                    LinesDeleted = s.LinesDeleted,
+                    TotalChurn = s.TotalChurn
+                }).ToList();
             }            
         }
+        
     }
 }

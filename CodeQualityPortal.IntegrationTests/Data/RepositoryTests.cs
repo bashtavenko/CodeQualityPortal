@@ -1,10 +1,9 @@
-﻿using CodeQualityPortal.Data;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using CodeQualityPortal.Data;
+using NUnit.Framework;
 
 namespace CodeQualityPortal.IntegrationTests.Data
 {
@@ -69,7 +68,60 @@ namespace CodeQualityPortal.IntegrationTests.Data
 
             // Act
             var result = _repository.GetCodeChurnTrend(repoId, dateTo.AddMonths(-1), dateTo, null);
+
+            // Assert
             Assert.IsTrue(result.Count() > 0);
+        }
+
+        [Test]
+        public void Repository_GetCodeChurnDetails_WithoutExtension()
+        {
+            // Arrange
+            int repoId;
+            int dateId;
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                repoId = lastChurn.File.Commit.RepoId;                
+                dateId = lastChurn.Date.DateId;
+            }
+
+            // Act
+            var result = _repository.GetCodeChurnDetails(repoId, dateId, null);
+
+            // Assert
+            Assert.IsTrue(result.Count > 0);
+        }
+
+        [Test]
+        public void Repository_GetCodeChurnDetails_WithExtension()
+        {
+            // Arrange
+            int repoId;
+            int dateId;
+            string fileExtension;
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                repoId = lastChurn.File.Commit.RepoId;
+                dateId = lastChurn.Date.DateId;
+                fileExtension = lastChurn.File.FileExtension;
+            }
+
+            // Act
+            var result = _repository.GetCodeChurnDetails(repoId, dateId, fileExtension);
+
+            // Assert
+            Assert.IsTrue(result.Count > 0);
+            Assert.AreEqual(fileExtension, Path.GetExtension(result.First().FileName));
         }
     }
 }
