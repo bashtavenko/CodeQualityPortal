@@ -26,7 +26,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetCodeChurn_WithExtension()
+        public void Repository_GetTrend_WithExtension()
         {
             // Arrange
             int repoId;
@@ -45,12 +45,12 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetCodeChurnTrend(repoId, dateTo.AddMonths(-1), dateTo, fileExtension);            
+            var result = _repository.GetTrend(repoId, dateTo.AddMonths(-1), dateTo, fileExtension);            
             Assert.IsTrue(result.Count() > 0);
         }
 
         [Test]
-        public void Repository_GetCodeChurn_WithoutExtension()
+        public void Repository_GetTrend_WithoutExtension()
         {
             // Arrange
             int repoId;
@@ -67,14 +67,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetCodeChurnTrend(repoId, dateTo.AddMonths(-1), dateTo, null);
+            var result = _repository.GetTrend(repoId, dateTo.AddMonths(-1), dateTo, null);
 
             // Assert
             Assert.IsTrue(result.Count() > 0);
         }
 
         [Test]
-        public void Repository_GetCodeChurnDetails_WithoutExtension()
+        public void Repository_GetFilesByDate_WithoutExtension()
         {
             // Arrange
             int repoId;
@@ -91,14 +91,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetCodeChurnDetails(repoId, dateId, null);
+            var result = _repository.GetFilesByDate(repoId, dateId, null);
 
             // Assert
             Assert.IsTrue(result.Count > 0);
         }
 
         [Test]
-        public void Repository_GetCodeChurnDetails_WithExtension()
+        public void Repository_GetFilesByDate_WithExtension()
         {
             // Arrange
             int repoId;
@@ -117,11 +117,85 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetCodeChurnDetails(repoId, dateId, fileExtension);
+            var result = _repository.GetFilesByDate(repoId, dateId, fileExtension);
 
             // Assert
             Assert.IsTrue(result.Count > 0);
             Assert.AreEqual(fileExtension, Path.GetExtension(result.First().FileName));
+        }
+
+        [Test]
+        public void Repository_GetCommitsByDate_WithExtension()
+        {
+            // Arrange
+            int repoId;
+            int dateId;
+            string fileExtension;
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                repoId = lastChurn.File.Commit.RepoId;
+                dateId = lastChurn.Date.DateId;
+                fileExtension = lastChurn.File.FileExtension;
+            }
+
+            // Act
+            var result = _repository.GetCommitsByDate(repoId, dateId, fileExtension);
+
+            // Assert
+            CollectionAssert.IsNotEmpty(result);
+        }
+
+        [Test]
+        public void Repository_GetCommitsByDate_WithoutExtension()
+        {
+            // Arrange
+            int repoId;
+            int dateId;            
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                repoId = lastChurn.File.Commit.RepoId;
+                dateId = lastChurn.Date.DateId;                
+            }
+
+            // Act
+            var result = _repository.GetCommitsByDate(repoId, dateId, null);
+
+            // Assert
+            CollectionAssert.IsNotEmpty(result);
+        }
+
+        [Test]
+        public void Repository_GetFilesByCommit_WithExtension()
+        {
+            // Arrange            
+            int commitId;
+            string fileExtension;
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }                
+                commitId = lastChurn.CommitId;
+                fileExtension = lastChurn.File.FileExtension;
+            }
+
+            // Act
+            var result = _repository.GetFilesByCommit(commitId, fileExtension);
+
+            // Assert
+            CollectionAssert.IsNotEmpty(result);
         }
     }
 }

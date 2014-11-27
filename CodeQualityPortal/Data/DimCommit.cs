@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CodeQualityPortal.Data
 {
@@ -7,6 +8,10 @@ namespace CodeQualityPortal.Data
         public int CommitId { get; set; }
         public string Sha { get; set; }
         public string Url { get; set; }
+        public string Committer { get; set; }
+        public string CommitterAvatarUrl { get; set; }
+        public string Message { get; set; }
+        public DateTime Date { get; set; }
         public int RepoId { get; set; }
         public virtual DimRepo Repo { get; set; }
         public List<FactCodeChurn> Churn { get; set; }

@@ -8,7 +8,9 @@ namespace CodeQualityPortal.Data
     public interface ICodeChurnRepository
     {
         IList<Repo> GetRepos();
-        IList<CodeChurnByDate> GetCodeChurnTrend(int repoId, DateTime dateFrom, DateTime dateTo, string fileExtension);
-        IList<FileCodeChurn> GetCodeChurnDetails(int repoId, int dateId, string fileExtension);
+        IList<CodeChurnByDate> GetTrend(int repoId, DateTime dateFrom, DateTime dateTo, string fileExtension);
+        IList<CommitCodeChurn> GetCommitsByDate(int repoId, int dateId, string fileExtension);
+        IList<FileCodeChurn> GetFilesByCommit(int commitId, string fileExtension);
+        IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, string fileExtension);
     }
 }
