@@ -50,25 +50,33 @@ namespace CodeQualityPortal.Data
 
                 var items = itemsQuery.ToList();
 
-                var dates = new List<DateTime>();
-                for (var date = dateFrom; date <= dateTo; date = date.AddDays(1))
+                if (items.Any())
                 {
-                    dates.Add(date);                
-                }
 
-                // Essentially "dates left outer join items"
-                return dates.GroupJoin(items.DefaultIfEmpty(),
-                    d => d.Date,
-                    i => i.Date.Date,
-                    (d, i) => new CodeChurnByDate
-                    { 
-                        Date = d.Date,
-                        DateId =  i.Any() ? i.First().DateId : null, // there's always 1 or 0 items in the group
-                        LinesAdded = i.Any() ? i.First().LinesAdded : null,
-                        LinesModified = i.Any() ? i.First().LinesModified : null,
-                        LinesDeleted = i.Any() ? i.First().LinesDeleted : null,
-                        TotalChurn = i.Any() ? i.First().TotalChurn : null
-                    }).ToList();
+                    var dates = new List<DateTime>();
+                    for (var date = dateFrom; date <= dateTo; date = date.AddDays(1))
+                    {
+                        dates.Add(date);
+                    }
+
+                    // Essentially "dates left outer join items"
+                    return dates.GroupJoin(items.DefaultIfEmpty(),
+                        d => d.Date,
+                        i => i.Date.Date,
+                        (d, i) => new CodeChurnByDate
+                        {
+                            Date = d.Date,
+                            DateId = i.Any() ? i.First().DateId : null, // there's always 1 or 0 items in the group
+                            LinesAdded = i.Any() ? i.First().LinesAdded : null,
+                            LinesModified = i.Any() ? i.First().LinesModified : null,
+                            LinesDeleted = i.Any() ? i.First().LinesDeleted : null,
+                            TotalChurn = i.Any() ? i.First().TotalChurn : null
+                        }).ToList();
+                }
+                else
+                {
+                    return new List<CodeChurnByDate>();
+                }
             }               
         }
 

@@ -74,6 +74,30 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
+        public void Repository_GetTrend_WithBogusExtension()
+        {
+            // Arrange
+            int repoId;
+            DateTime dateTo;
+            using (var ctx = new CodeQualityContext())
+            {
+                var lastChurn = ctx.Churn.Where(w => w.File != null).OrderByDescending(o => o.Date.Date).FirstOrDefault();
+                if (lastChurn == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                repoId = lastChurn.File.Commit.RepoId;
+                dateTo = lastChurn.Date.Date;
+            }
+
+            // Act
+            var result = _repository.GetTrend(repoId, dateTo.AddMonths(-1), dateTo, "cs");
+
+            // Assert
+            CollectionAssert.IsEmpty(result);
+        }
+
+        [Test]
         public void Repository_GetFilesByDate_WithoutExtension()
         {
             // Arrange
