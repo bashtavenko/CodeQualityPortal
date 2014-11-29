@@ -1,0 +1,23 @@
+﻿@model string
+
+<div ng-app="churnModule">
+    @section JavascriptInHead
+    {
+        <script src="~/Scripts/App/churn-module.js"></script>
+        <script src="~/Scripts/App/churn/churn-controller.js"></script>
+        <script type="text/javascript">
+            churnModule.factory("bootstrappedData", function() {
+                return {
+                    repoOptions: @Html.Raw(Model)
+                };
+            });
+        </script>
+    }
+    <div class="container" ng-controller="ChurnController">
+        <div class="row">
+            <div class="col-md-1">Repo</div>
+            <div class="col-md-5"><select ng-model="repo" ng-options="r.repoId as r.name for r in repoOptions"></select></div>
+        </div>
+    </div>
+</div>
+
