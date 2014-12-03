@@ -1,3 +1,48 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
+@section JavascriptInHead
+{   
+    @*<script id="scriptInit" type="text/javascript">
+        $(document).ready(function () {
+
+            // generate some random data
+            var countries = 'US,Germany,UK,Japan,Italy,Greece'.split(','),
+                data = [];
+            for (var i = 0; i < countries.length; i++) {
+                data.push({
+                    country: countries[i],
+                    downloads: Math.round(Math.random() * 20000),
+                    sales: Math.random() * 10000,
+                    expenses: Math.random() * 5000
+                });
+            }
+
+            // create grid and show data
+            var grid = new wijmo.grid.FlexGrid('#theGrid');
+            grid.itemsSource = data;
+
+            // create a chart and show the same data    
+            var chart = new wijmo.chart.FlexChart('#theChart');
+            chart.initialize({
+                itemsSource: data,
+                bindingX: 'country',
+                series: [
+                    { name: 'Sales', binding: 'sales' },
+                    { name: 'Expenses', binding: 'expenses' },
+                    { name: 'Downloads', binding: 'downloads', chartType: wijmo.chart.ChartType.LineSymbols }]
+            });
+        });
+    </script>*@
+}
+
+@*<h1>Hello</h1>
+
+<p>This is a FlexGrid control:</p>
+<div id="theGrid" style="width:100%;height:auto;"></div>
+
+<p>And this is a FlexChart:</p>
+<div id="theChart" style="width:100%;height:350px;"></div>
+
+<p>That's it for now...</p>*@

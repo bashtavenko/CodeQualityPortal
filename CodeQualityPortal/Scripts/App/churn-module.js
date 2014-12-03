@@ -1,1 +1,1 @@
-﻿var churnModule = angular.module("churnModule", ['ngResource']);
+﻿var churnModule = angular.module("churnModule", ['ngResource', 'wj']);

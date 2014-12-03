@@ -1,20 +1,31 @@
 ﻿@model string
 
+<style>
+    span.lines-added {
+        color:#55a532;
+    }
+    span.lines-deleted {
+        color:#bd2c00;
+    }
+</style>
+
 <div ng-app="churnModule">
     @section JavascriptInHead
     {
         <script src="~/Scripts/App/churn-module.js"></script>
-        <script src="~/Scripts/App/churn/churn-controller.js"></script>        
+        <script src="~/Scripts/App/churn/churn-controller.js"></script>
         <script type="text/javascript">
             churnModule.factory("bootstrappedData", function() {
                 return {
                     repoOptions: @Html.Raw(Model)
-                };
+                    };
             });
         </script>
     }
-    <div class="container" style="margin-top:20px;">        
-        <form name="repoForm" class="form-inline" role="form" ng-controller="ChurnController">
+
+    <div style="margin-top:20px;" ng-controller="ChurnController" ng-init="init()">
+
+        <form name="repoForm" class="form-inline" role="form">
             <div class="form-group">
                 <div class="input-group">
                     <label for="repo" class="sr-only">Repo</label>
@@ -23,27 +34,89 @@
             </div>
             <div class="form-group">
                 <div class="input-group">
-                    <label for="dateFrom" class="sr-only">From</label>                        
-                    <input id="dateFrom" type="date" class="form-control" ng-model="criteria.dateFrom" placeholder="MM/dd/yy" required>
+                    <label for="dateFrom" class="sr-only">From</label>
+                    <input id="dateFrom" type="date" class="form-control" ng-model="criteria.dateFrom" ng-change="refresh(criteria)" placeholder="MM/dd/yy" required>
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     <label for="dateTo" class="sr-only">From</label>
-                    <input id="dateTo" type="date" class="form-control" ng-model="criteria.dateTo" placeholder="MM/dd/yy" required>
+                    <input id="dateTo" type="date" class="form-control" ng-model="criteria.dateTo" ng-change="refresh(criteria)" placeholder="MM/dd/yy" required>
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     <label for="extension" class="sr-only">Extension</label>
                     <div class="input-group-addon">Extension</div>
-                    <input id="extension" type="text" name="input" class="form-control" ng-model="criteria.extension">
+                    <input id="extension" type="text" name="input" ng-change="refresh(criteria)" class="form-control" ng-model="criteria.extension">
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" ng-click="refresh(criteria)" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Refresh
-                </button>
+                <button type="submit" ng-click="refresh(criteria)" class="btn btn-link">Refresh</button>
             </div>
         </form>
-</div>
+
+        <wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
+                       stacking="Stacked" selection-mode="Point" selection="trendSelection" ng-click="trendClick()">
+            <wj-flex-chart-axis wj-property="axisY"></wj-flex-chart-axis>
+            <wj-flex-chart-series binding="linesAdded" ng-attr-style="{fill:'#55a532'}" name="Lines Added"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="linesDeleted" ng-attr-style="{fill:'#bd2c00'}" name="Lines Deleted"></wj-flex-chart-series>
+            <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+        </wj-flex-chart>
+
+        <strong>{{selectedDate|date}}</strong>
+
+        <div ng-repeat="commit in commits">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-left">{{commit.message}}</div>
+                    <div class="pull-right"><a ng-click="commitClick(commit)">Files</a></div>                    
+                    <p class="clearfix" />
+                </div>
+                <div class="panel-body">                    
+                    <div class="pull-left">
+                        <img height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
+                        {{commit.committer}}
+                    </div>
+                    <div class="pull-right">
+                        <span class="lines-added">&plus;{{commit.linesAdded|number}}</span>                            
+                        &nbsp;
+                        <span class="lines-deleted">&minus;{{commit.linesDeleted|number}}</span>
+                        &nbsp;
+                        <em>Total:</em>{{commit.totalChurn|number}}
+                        <a style="margin-left:10px;" ng-href="{{commit.url}}">See commit on Github</a>
+                    </div>
+                    <p class="clearfix"></p>                                        
+                    <div ng-repeat="file in commit.files">
+                        <div class="pull-left"><a ng-href="{{file.url}}">{{file.fileName}}</a></div>
+                        <div class="pull-right">
+                            <span class="lines-added">&plus;{{file.linesAdded|number}}</span>
+                            &nbsp;
+                            <span class="lines-deleted">&minus;{{file.linesDeleted|number}}</span>
+                            &nbsp;
+                            <em>Total:</em>{{file.totalChurn|number}}</a>
+                        </div>
+                        <p class="clearfix"></p>
+                    </div>
+                        @*<table class="table table-striped table-hover dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th>File</th>
+                                    <th>Lines Added</th>
+                                    <th>Lines Deleted</th>
+                                    <th>Total Churn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="file in commit.files">
+                                    <td><a ng-href="{{file.url}}">{{file.fileName}}</a></td>
+                                    <td>{{file.linesAdded}}</td>
+                                    <td>{{file.linesDeleted}}</td>
+                                    <td>{{file.totalChurn}}</td>
+                                </tr>
+                            </tbody>
+                        </table>*@
+                    </div>
+                </div>
+        </div>
+    </div>

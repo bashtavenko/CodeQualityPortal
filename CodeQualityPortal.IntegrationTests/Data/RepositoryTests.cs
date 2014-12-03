@@ -130,14 +130,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
             string fileExtension;
             using (var ctx = new CodeQualityContext())
             {
-                var lastChurn = ctx.Churn.Where(w => w.File != null).FirstOrDefault();
-                if (lastChurn == null)
+                var someChurn = ctx.Churn.Where(w => w.File != null).OrderBy(o => o.TotalChurn).FirstOrDefault();
+                if (someChurn == null)
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;
-                dateId = lastChurn.Date.DateId;
-                fileExtension = lastChurn.File.FileExtension;
+                repoId = someChurn.File.Commit.RepoId;
+                dateId = someChurn.Date.DateId;
+                fileExtension = someChurn.File.FileExtension;
             }
 
             // Act

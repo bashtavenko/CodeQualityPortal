@@ -33,7 +33,7 @@ namespace CodeQualityPortal.Data
                     // FactCodeChurn join Commit
                     query = context
                         .Churn
-                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.Commit.RepoId == repoId);
+                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.Commit.RepoId == repoId && f.FileId == null);
                 }
 
                 var itemsQuery = query
@@ -42,8 +42,7 @@ namespace CodeQualityPortal.Data
                     {
                         Date = s.Key.DateTime,
                         DateId = s.Key.DateId,
-                        LinesAdded = s.Sum(a => a.LinesAdded),
-                        LinesModified = s.Sum(m => m.LinesModified),
+                        LinesAdded = s.Sum(a => a.LinesAdded),                        
                         LinesDeleted = s.Sum(d => d.LinesDeleted),
                         TotalChurn = s.Sum(t => t.TotalChurn)
                     });
@@ -67,8 +66,7 @@ namespace CodeQualityPortal.Data
                         {
                             Date = d.Date,
                             DateId = i.Any() ? i.First().DateId : null, // there's always 1 or 0 items in the group
-                            LinesAdded = i.Any() ? i.First().LinesAdded : null,
-                            LinesModified = i.Any() ? i.First().LinesModified : null,
+                            LinesAdded = i.Any() ? i.First().LinesAdded : null,                            
                             LinesDeleted = i.Any() ? i.First().LinesDeleted : null,
                             TotalChurn = i.Any() ? i.First().TotalChurn : null
                         }).ToList();
@@ -83,30 +81,50 @@ namespace CodeQualityPortal.Data
         public IList<CommitCodeChurn> GetCommitsByDate(int repoId, int dateId, string fileExtension)
         {
             using (var context = new CodeQualityContext())
-            {
-                var query = context.Churn.Where(f => f.Date.DateId == dateId);
-
+            {              
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    query = query.Where(f => f.Date.DateId == dateId && f.File.FileExtension == fileExtension);
+                    var commits = context.Churn.Where(f => f.Date.DateId == dateId && f.File.FileExtension == fileExtension)
+                    .GroupBy(f => f.CommitId)
+                    .Select(s => new CommitCodeChurn {
+                        CommitId = s.Key,
+                        LinesAdded = s.Sum(a => a.LinesAdded),                        
+                        LinesDeleted = s.Sum(a => a.LinesDeleted),
+                        TotalChurn = s.Sum(a => a.TotalChurn) })
+                    .ToList();
+
+                    commits = commits.Join(context.Commits.ToList(), s => s.CommitId, d => d.CommitId,
+                        (s, d) => new CommitCodeChurn
+                        {
+                            CommitId = d.CommitId,
+                            Sha = d.Sha,
+                            Message = d.Message,
+                            Url = d.Url,
+                            Committer = d.Committer,
+                            CommitterAvatarUrl = d.CommitterAvatarUrl,                            
+                            LinesAdded = s.LinesAdded,                            
+                            LinesDeleted = s.LinesDeleted,                            
+                            TotalChurn = s.TotalChurn
+                        }).ToList();
+
+                    return commits;
                 }
-
-                return query
-                    .Select(s => new CommitCodeChurn
-                    {
-                        CommitId = s.Commit.CommitId,
-                        Sha = s.Commit.Sha,
-                        Message = s.Commit.Message,
-                        Url = s.Commit.Url,
-                        Committer = s.Commit.Committer,
-                        CommitterAvatarUrl = s.Commit.CommitterAvatarUrl,
-                        Date = s.Commit.Date,
-                        LinesAdded = s.LinesAdded,
-                        LinesModified = s.LinesModified,
-                        LinesDeleted = s.LinesDeleted,
-                        TotalChurn = s.TotalChurn
-
-                    }).ToList();
+                else
+                {
+                    return context.Churn.Where(f => f.Date.DateId == dateId && f.FileId == null)
+                        .Select(s => new CommitCodeChurn
+                        {
+                            CommitId = s.Commit.CommitId,
+                            Sha = s.Commit.Sha,
+                            Message = s.Commit.Message,
+                            Url = s.Commit.Url,
+                            Committer = s.Commit.Committer,
+                            CommitterAvatarUrl = s.Commit.CommitterAvatarUrl,                            
+                            LinesAdded = s.LinesAdded,                            
+                            LinesDeleted = s.LinesDeleted,
+                            TotalChurn = s.TotalChurn
+                        }).ToList();
+                }                                               
             }
         }
 
@@ -126,8 +144,7 @@ namespace CodeQualityPortal.Data
                     {
                         FileName = s.File.FileName,
                         Url = s.File.Url,
-                        LinesAdded = s.LinesAdded,
-                        LinesModified = s.LinesModified,
+                        LinesAdded = s.LinesAdded,                        
                         LinesDeleted = s.LinesDeleted,
                         TotalChurn = s.TotalChurn
                     }).ToList();
@@ -150,8 +167,7 @@ namespace CodeQualityPortal.Data
                 {
                     FileName = s.File.FileName,
                     Url = s.File.Url,
-                    LinesAdded = s.LinesAdded,
-                    LinesModified = s.LinesModified,
+                    LinesAdded = s.LinesAdded,                    
                     LinesDeleted = s.LinesDeleted,
                     TotalChurn = s.TotalChurn
                 }).ToList();
