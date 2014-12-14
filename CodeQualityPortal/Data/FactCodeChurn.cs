@@ -15,8 +15,7 @@ namespace CodeQualityPortal.Data
         public virtual DimFile File { get; set; }
         public int DateId { get; set; }
         public virtual DimDate Date { get; set; }
-        public int LinesAdded { get; set; }
-        public int LinesModified { get; set; }
+        public int LinesAdded { get; set; }        
         public int LinesDeleted { get; set; }
         public int TotalChurn { get; set; }
     }

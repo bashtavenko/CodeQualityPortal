@@ -25,7 +25,7 @@ namespace CodeQualityPortal.Controllers
         [Route("{commitId:int}/{fileExtension?}")]
         public IList<FileCodeChurn> Get(int commitId, string fileExtension = null)
         {
-            return _repository.GetFilesByCommit(commitId, fileExtension);
+            return _repository.GetFilesByCommit(commitId, fileExtension != null ? "." + fileExtension : null);
         }
     }
 }

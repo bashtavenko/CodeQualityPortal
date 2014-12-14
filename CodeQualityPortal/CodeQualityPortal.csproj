@@ -184,6 +184,7 @@
     <Content Include="Content\bootstrap-spacelab.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\wijmo.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -193,8 +194,8 @@
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\App\churn\churn-controller.js" />
-    <Content Include="Scripts\App\churn-module.js" />
+    <Content Include="Scripts\app\churn\churn-controller.js" />
+    <Content Include="Scripts\app\churn-module.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -230,6 +231,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\wijmo\wijmo.angular.min.js" />
+    <Content Include="Scripts\wijmo\wijmo.chart.min.js" />
+    <Content Include="Scripts\wijmo\wijmo.grid.min.js" />
+    <Content Include="Scripts\wijmo\wijmo.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Views\Home\Churn.cshtml" />
     <Content Include="Web.config" />
