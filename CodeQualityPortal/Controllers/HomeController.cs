@@ -1,21 +1,19 @@
-﻿using CodeQualityPortal.Data;
+﻿using System.Web.Mvc;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+
+using CodeQualityPortal.Data;
 
 namespace CodeQualityPortal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly CodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _repository;
 
-        public HomeController()
+        public HomeController(ICodeChurnRepository repository)
         {
-            _repository = new CodeChurnRepository();
+            _repository = repository;
         }
 
         public ActionResult Index()

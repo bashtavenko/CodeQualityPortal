@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 using CodeQualityPortal.Data;
 using CodeQualityPortal.ViewModels;
-using System;
 
 namespace CodeQualityPortal.Controllers
 {
     public class TrendController : ApiController
     {
-        private readonly CodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _repository;
 
-        public TrendController()
+        public TrendController(ICodeChurnRepository repository)
         {
-            _repository = new CodeChurnRepository();
+            _repository = repository;
         }
                 
         [Route("api/trend/{repoId}/{dateFrom}/{dateTo}/{fileExtension?}")]

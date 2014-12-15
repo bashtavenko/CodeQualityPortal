@@ -1,8 +1,6 @@
 ﻿'use strict';
 
-/// <reference path="churn-controller.js" />
-
-churnModule.controller("ChurnController", function ($scope, bootstrappedData, $resource, $log, $http) {    
+churnModule.controller("ChurnController", function ($scope, bootstrappedData, $resource, $log) {    
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
     $scope.criteria = {
@@ -59,6 +57,10 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
 
         Commits.query(params,
             function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].expanded = false;
+                    data[i].files = [];
+                }
                 $scope.commits = data;
             },
             function (error) {
@@ -67,8 +69,9 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
     }
 
     $scope.commitClick = function (commit) {
-        if (commit.files != undefined && commit.files.length > 0) {
-            commit.files = [];
+        commit.expanded = !commit.expanded;        
+
+        if (commit.files.length > 0 && commit.expanded) {            
             return;
         }
         var params = {
@@ -88,3 +91,4 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
             });
     }
 });
+

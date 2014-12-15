@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using CodeQualityPortal.Common;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,10 +9,11 @@
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js")
-    @Scripts.Render("//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-resource.min.js")
+    @Scripts.Render("~/Scripts/angular.min.js")
+    @Scripts.Render("~/Scripts/angular-resource.min.js")    
+    @Scripts.Render("~/js/app/app.js")
 
-    <script src="~/Scripts/wijmo/wijmo.min.js"></script>    
+    <script src="~/Scripts/wijmo/wijmo.min.js"></script>
     <script src="~/Scripts/wijmo/wijmo.chart.min.js"></script>
     <script src="~/Scripts/wijmo/wijmo.grid.min.js"></script>
     <script src="~/Scripts/wijmo/wijmo.angular.min.js"></script>
@@ -32,8 +35,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Churn", "Churn", "Home")</li>                    
+                    @Html.MenuItem("Home", "Index", "Home")
+                    @Html.MenuItem("Churn", "Churn", "Home")
                 </ul>
             </div>
         </div>

@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 using CodeQualityPortal.ViewModels;
 
+
 namespace CodeQualityPortal.IntegrationTests.Controllers
 {
     [TestFixture]
@@ -17,8 +18,11 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
 
         [TestFixtureSetUp]
         protected void Setup()
-        {
+        {         
+            NinjectWebCommon.Start();
+
             var config = new HttpConfiguration();
+            config.DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver;            
             WebApiConfig.Register(config);
             _server = new HttpServer(config);            
             _client = new HttpClient(_server);    
@@ -27,6 +31,7 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
         protected void TearDown()
         {
             _server.Dispose();
+            NinjectWebCommon.Stop();
         }        
 
         protected string MakeUri(string uri)

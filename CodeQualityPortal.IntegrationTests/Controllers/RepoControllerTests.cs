@@ -18,6 +18,7 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
             string url = MakeUri("repos");
             var resultString = _client.GetStringAsync(url).Result;
             var response = JsonConvert.DeserializeObject<List<Repo>>(resultString);
+            Assert.IsTrue(response.Count > 0);
         }
     }
 }

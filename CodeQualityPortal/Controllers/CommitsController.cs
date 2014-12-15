@@ -8,11 +8,11 @@ namespace CodeQualityPortal.Controllers
 {
     public class CommitsController : ApiController
     {
-        private readonly CodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _repository;
 
-        public CommitsController()
+        public CommitsController(ICodeChurnRepository repository)
         {
-            _repository = new CodeChurnRepository();
+            _repository = repository;
         }
                 
         [Route("api/commits/{repoId}/{dateId}/{fileExtension?}")]

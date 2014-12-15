@@ -8,11 +8,11 @@ namespace CodeQualityPortal.Controllers
 {
     public class ReposController : ApiController
     {
-        private readonly CodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _repository;
 
-        public ReposController()
+        public ReposController(ICodeChurnRepository repository)
         {
-            _repository = new CodeChurnRepository();
+            _repository = repository;
         }
 
         [Route("api/repos")]

@@ -9,11 +9,11 @@ namespace CodeQualityPortal.Controllers
     [RoutePrefix("api/files")]
     public class FilesController : ApiController
     {
-        private readonly CodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _repository;
                 
-        public FilesController()
+        public FilesController(ICodeChurnRepository repository)
         {
-            _repository = new CodeChurnRepository();
+            _repository = repository;
         }
 
         [Route("{repoId:int}/{dateId:int}/{fileExtension?}")]
