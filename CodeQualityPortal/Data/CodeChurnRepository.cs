@@ -132,16 +132,16 @@ namespace CodeQualityPortal.Data
         {
             using (var context = new CodeQualityContext())
             {
-                var query = context.Churn.Where(f => f.CommitId == commitId);
+                var query = context.Churn.Where(f => f.CommitId == commitId && f.FileId != null);
 
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    query = query.Where(f => f.CommitId == commitId && f.File.FileExtension == fileExtension);
+                    query = query.Where(f => f.File.FileExtension == fileExtension);
                 }
 
                 return query
                     .Select(s => new FileCodeChurn
-        {
+                    {
                         FileName = s.File.FileName,
                         Url = s.File.Url,
                         LinesAdded = s.LinesAdded,                        

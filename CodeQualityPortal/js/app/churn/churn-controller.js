@@ -3,15 +3,19 @@
 churnModule.controller("ChurnController", function ($scope, bootstrappedData, $resource, $log) {    
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
+
+    var minDate = new Date();
+    minDate.setDate(minDate.getDate() - 365);
+    $scope.minDate = minDate;
+
+    $scope.maxDate = new Date();
+
     $scope.criteria = {
         repoOptions: bootstrappedData.repoOptions,
         dateFrom: dateFrom,
         dateTo: new Date(),
         extension: "cs"
     };
-
-    $scope.criteria.dateFrom = new Date("2014-11-04");
-    $scope.criteria.dateTo = new Date("2014-11-14");
 
     if ($scope.criteria.repoOptions.length > 0) {
         $scope.criteria.repo = $scope.criteria.repoOptions[0];
@@ -22,17 +26,31 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
     }    
 
     $scope.refresh = function (criteria) {
+        if ($scope.repoForm != undefined) {            
+            // Setting min and max dates don't stop from typing in dates that are out of range
+            $scope.repoForm.dateFrom.$setValidity('valid', criteria.dateFrom >= $scope.minDate && criteria.dateFrom <= $scope.maxDate);
+            $scope.repoForm.dateTo.$setValidity('valid', criteria.dateTo >= $scope.minDate && criteria.dateTo <= $scope.maxDate);            
+            if ($scope.repoForm.$invalid) {
+                return;
+            }
+        }
+                
         var params = {
             repoId: criteria.repo.repoId,
             dateFrom: criteria.dateFrom.toISOString().slice(0, 10).replace(/-/g, '-'),
             dateTo: criteria.dateTo.toISOString().slice(0, 10).replace(/-/g, '-'),
             fileExtension: criteria.extension
-        };        
+        };
+
+        // Wijmo x-axis labels
+        var timeDiff = Math.abs(criteria.dateFrom.getTime() - criteria.dateTo.getTime());
+        var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        $scope.labelsVisible = dayDiff < 25;
         
         var Trend = $resource("/api/trend/:repoId/:dateFrom/:dateTo/:fileExtension",
             { repoId: "@repoId", dateFrom: "@dateFrom", dateTo: "@dateTo", fileExtension: "@fileExtension" });
             
-        $scope.commitsData = [];
+        $scope.commits = [];
         $scope.selectedDate = null;
         Trend.query(params,
             function (data) {
@@ -89,6 +107,23 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
             function (error) {
                 $log.error(error);
             });
+    }
+
+    $scope.openDateFrom = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.dateFromOpened = true;
+    };
+
+    $scope.openDateTo = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.dateToOpened = true;
+    };
+
+    $scope.error = function (name) {
+        var s = $scope.repoForm[name];
+        return s.$invalid ? "has-error" : "";
     }
 });
 

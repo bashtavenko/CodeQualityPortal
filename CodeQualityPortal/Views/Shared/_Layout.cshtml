@@ -10,7 +10,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/Scripts/angular.min.js")
-    @Scripts.Render("~/Scripts/angular-resource.min.js")    
+    @Scripts.Render("~/Scripts/angular-resource.min.js")
+    @Scripts.Render("~/Scripts/angular-ui/ui-bootstrap.min.js")
+    @Scripts.Render("~/Scripts/angular-ui/ui-bootstrap-tpls-spacelab.js")
+    <script src="~/Scripts/datepicker-popup.js"></script>
     @Scripts.Render("~/js/app/app.js")
 
     <script src="~/Scripts/wijmo/wijmo.min.js"></script>
@@ -23,25 +26,23 @@
     @RenderSection("JavascriptInHead", required: false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Code Quality Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @Html.MenuItem("Home", "Index", "Home")
-                    @Html.MenuItem("Churn", "Churn", "Home")
-                </ul>
-            </div>
+    <div class="navbar navbar-inverse navbar-fixed-top">        
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                    
+            </button>
+            @Html.ActionLink("Code Quality Portal", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })                
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @Html.MenuItem("Home", "Index", "Home")
+                @Html.MenuItem("Churn", "Churn", "Home")
+            </ul>
+        </div>    
     </div>
-    <div class="container body-content">
+    <div class="body-content">
         @RenderBody()
         <hr />
         <footer>

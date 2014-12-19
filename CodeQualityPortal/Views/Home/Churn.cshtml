@@ -10,6 +10,18 @@
     a {
         cursor: pointer;
     }
+
+    /* It's broke in Bootrstrap 3.0.0 */
+    .glyphicon-calendar:before {
+        content: "\d83d\dcc5";
+    }
+
+    table.files{
+        margin-top:20px;
+        margin-bottom:0;
+    }
+
+
 </style>
 
 @section JavascriptInHead
@@ -26,23 +38,32 @@
 
 <div ng-app="churnModule">
     <div style="margin-top:20px;" ng-controller="ChurnController" ng-init="init()">
-        <form name="repoForm" class="form-inline" role="form">
+        <form name="repoForm" class="form-inline" role="form" ng-submit="refresh(criteria)">
             <div class="form-group">
                 <div class="input-group">
                     <label for="repo" class="sr-only">Repo</label>
+                    <div class="input-group-addon">Repo</div>
                     <select id="repo" class="form-control" ng-model="criteria.repo.repoId" ng-options="r.repoId as r.name for r in criteria.repoOptions"></select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-class="error('dateFrom')">
                 <div class="input-group">
                     <label for="dateFrom" class="sr-only">From</label>
-                    <input id="dateFrom" type="date" class="form-control" ng-model="criteria.dateFrom" ng-change="refresh(criteria)" placeholder="MM/dd/yy" required>
+                    <div class="input-group-addon">From</div>
+                    <input name="dateFrom" ng-model="criteria.dateFrom" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateFromOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" ng-click="openDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-class="error('dateTo')">
                 <div class="input-group">
-                    <label for="dateTo" class="sr-only">From</label>
-                    <input id="dateTo" type="date" class="form-control" ng-model="criteria.dateTo" ng-change="refresh(criteria)" placeholder="MM/dd/yy" required>
+                    <label for="dateTo" class="sr-only">To</label>
+                    <div class="input-group-addon">To</div>
+                    <input name="dateTo" ng-model="criteria.dateTo" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateToOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" ng-click="openDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </div>
             </div>
             <div class="form-group">
@@ -60,6 +81,7 @@
         <wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
                        stacking="Stacked" selection-mode="Point" selection="trendSelection" ng-click="trendClick()">
             <wj-flex-chart-axis wj-property="axisY"></wj-flex-chart-axis>
+            <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
             <wj-flex-chart-series binding="linesAdded" ng-attr-style="{fill:'#55a532'}" name="Lines Added"></wj-flex-chart-series>
             <wj-flex-chart-series binding="linesDeleted" ng-attr-style="{fill:'#bd2c00'}" name="Lines Deleted"></wj-flex-chart-series>
             <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
@@ -91,17 +113,15 @@
                             <span class="glyphicon" ng-class="{'glyphicon-chevron-up': commit.expanded, 'glyphicon-chevron-down': !commit.expanded}" aria-hidden="true"></span>
                         </a>
                     </div>
-                    <p class="clearfix" />
-                    <div ng-show="commit.expanded">
-                        <table class="table table-striped">
-                            <tr ng-repeat="file in commit.files">
-                                <td><a ng-href="{{file.url}}">{{file.fileName}}</a></td>
-                                <td><span class="lines-added">&plus;{{file.linesAdded|number}}</td>
-                                <td><span class="lines-deleted">&minus;{{file.linesDeleted|number}}</span></td>
-                                <td>{{file.totalChurn|number}}</td>
-                            </tr>
-                        </table>
-                    </div>
+                    <p class="clearfix" />                    
+                    <table class="table table-stiped table-condensed files" ng-show="commit.expanded">
+                        <tr ng-repeat="file in commit.files">
+                            <td><a ng-href="{{file.url}}">{{file.fileName}}</a></td>
+                            <td><span class="lines-added">&plus;{{file.linesAdded|number}}</td>
+                            <td><span class="lines-deleted">&minus;{{file.linesDeleted|number}}</span></td>
+                            <td>{{file.totalChurn|number}}</td>
+                        </tr>
+                    </table>                    
                 </div>
             </div>
         </div>
