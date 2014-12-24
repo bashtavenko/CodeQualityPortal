@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+/* It's broke in Bootrstrap 3.0.0 */
+.glyphicon-calendar:before {
+    content: "\d83d\dcc5";
+}

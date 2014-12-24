@@ -119,12 +119,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\FilesControllerTests.cs" />
-    <Compile Include="Controllers\CommitsControllerTests.cs" />
-    <Compile Include="Controllers\TrendControllerTests.cs" />
-    <Compile Include="Controllers\WebApiBaseTest.cs" />
-    <Compile Include="Controllers\RepoControllerTests.cs" />
-    <Compile Include="Data\RepositoryTests.cs" />
+    <Compile Include="Data\MetricsRepositoryTests.cs" />
+    <Compile Include="WebApiControllers\FilesControllerTests.cs" />
+    <Compile Include="WebApiControllers\CommitsControllerTests.cs" />
+    <Compile Include="WebApiControllers\MetricsControllerTests.cs" />
+    <Compile Include="WebApiControllers\TrendControllerTests.cs" />
+    <Compile Include="WebApiControllers\WebApiBaseTest.cs" />
+    <Compile Include="WebApiControllers\RepoControllerTests.cs" />
+    <Compile Include="Data\ChurnRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

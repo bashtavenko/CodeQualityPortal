@@ -64,7 +64,8 @@ namespace CodeQualityPortal
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<ICodeChurnRepository>().To<CodeChurnRepository>();            
+            kernel.Bind<ICodeChurnRepository>().To<CodeChurnRepository>();
+            kernel.Bind<IMetricsRepository>().To<MetricsRepository>();
         }        
     }
 }

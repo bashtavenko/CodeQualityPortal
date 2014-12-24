@@ -176,14 +176,23 @@
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommitsController.cs" />
+    <Compile Include="Controllers\MetricsController.cs" />
     <Compile Include="Controllers\TrendController.cs" />
     <Compile Include="Controllers\ReposController.cs" />
+    <Compile Include="Data\MetricsRepository.cs" />
     <Compile Include="Data\CodeChurnRepository.cs" />
     <Compile Include="Data\DimCommit.cs" />
     <Compile Include="Data\DimDate.cs" />
     <Compile Include="Data\DimFile.cs" />
+    <Compile Include="Data\DimMember.cs" />
+    <Compile Include="Data\DimModule.cs" />
+    <Compile Include="Data\DimNamespace.cs" />
     <Compile Include="Data\DimRepo.cs" />
+    <Compile Include="Data\DimTarget.cs" />
+    <Compile Include="Data\DimType.cs" />
     <Compile Include="Data\FactCodeChurn.cs" />
+    <Compile Include="Data\FactMetrics.cs" />
+    <Compile Include="Data\IMetricsRepository.cs" />
     <Compile Include="Data\ICodeChurnRepository.cs" />
     <Compile Include="Data\CodeQualityContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -194,6 +203,9 @@
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
     <Compile Include="ViewModels\Repo.cs" />
+    <Compile Include="ViewModels\MetricsItem.cs" />
+    <Compile Include="ViewModels\ModuleItem.cs" />
+    <Compile Include="ViewModels\TrendItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -209,6 +221,7 @@
     <Content Include="js\app\churn\directives\lines-added.js" />
     <Content Include="js\app\churn\directives\filetable.js" />
     <Content Include="js\app\churn\templates\filetable.html" />
+    <Content Include="js\app\metrics\metrics-controller.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
@@ -277,6 +290,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\Metrics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

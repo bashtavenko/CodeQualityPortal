@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace CodeQualityPortal.IntegrationTests.Data
 {
     [TestFixture]
-    public class RepositoryTests
+    public class ChurnRepositoryTests
     {
         ICodeChurnRepository _repository;
 

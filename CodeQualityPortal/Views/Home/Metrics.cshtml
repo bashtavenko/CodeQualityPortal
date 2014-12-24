@@ -1,0 +1,85 @@
+﻿@model string
+
+<style>
+    div.series > span {
+        margin-left: 5px;
+        margin-right: 50px;
+        font-weight: bold;
+    }
+</style>
+
+@section JavascriptInHead
+{
+    @Scripts.Render("~/js/app/metrics/metrics-controller.js")
+    <script type="text/javascript">
+        metricsModule.factory("bootstrappedData", function() {
+            return {
+                tagOptions: @Html.Raw(Model)
+                };
+        });
+    </script>
+}
+
+<div style="margin-top:20px;" ng-app="metricsModule" ng-controller="MetricsController" ng-init="init()">
+    <form name="criteriaForm" class="form-inline" role="form" ng-submit="refresh(criteria)">
+        <div class="form-group">
+            <div class="input-group">
+                <label for="repo" class="sr-only">Tag</label>
+                <div class="input-group-addon">Tag</div>
+                <select id="repo" class="form-control" ng-model="criteria.tag" ng-options="c for c in criteria.tagOptions" ng-change="refresh()"></select>
+            </div>
+        </div>
+        <div class="form-group" ng-class="error('dateFrom')">
+            <div class="input-group">
+                <label for="dateFrom" class="sr-only">From</label>
+                <div class="input-group-addon">From</div>
+                <input name="dateFrom" ng-model="criteria.dateFrom" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateFromOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="openDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group" ng-class="error('dateTo')">
+            <div class="input-group">
+                <label for="dateTo" class="sr-only">To</label>
+                <div class="input-group-addon">To</div>
+                <input name="dateTo" ng-model="criteria.dateTo" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateToOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="openDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <h3>Target trend for {{criteria.tag}}</h3>
+
+    <wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
+                   chart-type="LineSymbols" selection-mode="Point" selection="trendSelection" ng-click="trendClick()">
+        <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
+        <wj-flex-chart-axis wj-property="axisY" min="{{metricsType.min}}" max="{{metricsType.max}}" title="{{metricsType.value}}"></wj-flex-chart-axis>
+        <wj-flex-chart-series binding="{{metricsType.key}}" name="{{metricsType.value}}"
+                              ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#d47500', stroke:'#d47500' }"></wj-flex-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+    </wj-flex-chart>
+
+    <div class="series">
+        <input type="radio" name="metricsType" ng-value="seriesIndex" ng-model="metricsType" /><span>{{seriesIndex.value}}</span>
+        <input type="radio" name="metricsType" ng-value="seriesLoc" ng-model="metricsType" /><span>{{seriesLoc.value}}</span>
+        <input type="radio" name="metricsType" ng-value="seriesComplexity" ng-model="metricsType" /><span>{{seriesComplexity.value}}</span>
+        <input type="radio" name="metricsType" ng-value="seriesCoupling" ng-model="metricsType" /><span>{{seriesCoupling.value}}</span>
+        <input type="radio" name="metricsType" ng-value="seriesDepth" ng-model="metricsType" /><span>{{seriesDepth.value}}</span>
+    </div>
+
+    <h3 ng-show="selectedDate">Modules on {{selectedDate | date}}</h3>
+
+    <wj-flex-grid items-source="items" is-read-only="true" ng-show="items.length > 0">
+        <wj-flex-grid-column header="Module" binding="name" width="*"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Version" binding="assemblyVersion"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Index" binding="maintainabilityIndex"></wj-flex-grid-column>
+        <wj-flex-grid-column header="LOC" binding="linesOfCode"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Complexity" binding="cyclomaticComplexity"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Coupling" binding="classCoupling"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Inheritance" binding="depthOfInheritance"></wj-flex-grid-column>
+    </wj-flex-grid>
+
+</div>

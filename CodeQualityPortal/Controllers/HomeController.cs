@@ -9,11 +9,13 @@ namespace CodeQualityPortal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICodeChurnRepository _repository;
+        private readonly ICodeChurnRepository _codeChurnRepository;
+        private readonly IMetricsRepository _metricsRepository;
 
-        public HomeController(ICodeChurnRepository repository)
+        public HomeController(ICodeChurnRepository repository, IMetricsRepository metricsRepository)
         {
-            _repository = repository;
+            _codeChurnRepository = repository;
+            _metricsRepository = metricsRepository;
         }
 
         public ActionResult Index()
@@ -23,10 +25,18 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Churn()
         {
-            var repos = _repository.GetRepos();            
+            var repos = _codeChurnRepository.GetRepos();            
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(repos, Formatting.None, settings);
             return View("Churn", "", json);
+        }
+
+        public ActionResult Metrics()
+        {
+            var repos = _metricsRepository.GetTags();
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var json = JsonConvert.SerializeObject(repos, Formatting.None, settings);
+            return View("Metrics", "", json);
         }        
     }
 }
