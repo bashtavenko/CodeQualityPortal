@@ -4,9 +4,11 @@
     span.lines-added {
         color: #55a532;
     }
+
     span.lines-deleted {
         color: #bd2c00;
     }
+
     a {
         cursor: pointer;
     }
@@ -16,24 +18,24 @@
         content: "\d83d\dcc5";
     }
 
-    table.files{
-        margin-top:20px;
-        margin-bottom:0;
+    table.files {
+        margin-top: 20px;
+        margin-bottom: 0;
     }
-
-
 </style>
 
 @section JavascriptInHead
-{       
+{
     @Scripts.Render("~/js/app/churn/churn-controller.js")
-    <script type="text/javascript">        
+    @Scripts.Render("~/js/app/churn/directives/lines-added.js")
+    @Scripts.Render("~/js/app/churn/directives/filetable.js")
+    <script type="text/javascript">
         churnModule.factory("bootstrappedData", function() {
             return {
                 repoOptions: @Html.Raw(Model)
                 };
         });
-</script>
+    </script>
 }
 
 <div ng-app="churnModule">
@@ -89,6 +91,14 @@
 
         <strong>{{selectedDate|date}}</strong>
 
+        <div ng-show="topFiles.length > 0">
+            <p></p>
+            <strong>Top 5 files</strong>
+            <file-table files="topFiles" />
+        </div>
+
+        <p></p>
+
         <div ng-repeat="commit in commits">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -96,32 +106,24 @@
                         <img height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
                         {{commit.committer}}
                     </div>
-                    <div class="pull-right">
-                        <span class="lines-added">&plus;{{commit.linesAdded|number}}</span>
-                        &nbsp;
-                        <span class="lines-deleted">&minus;{{commit.linesDeleted|number}}</span>
-                        &nbsp;
-                        <em>Total:</em>{{commit.totalChurn|number}}
-                        <a style="margin-left:10px;" ng-href="{{commit.url}}">View commit details</a>
+                    <div class="pull-right">                        
+                        <em>Additions:</em><span class="lines-added">{{commit.linesAdded|number}}</span>&nbsp;
+                        <em>Deletions:</em><span class="lines-deleted">{{commit.linesDeleted|number}}</span>&nbsp;
+                        <em>Total changes:</em>{{commit.totalChurn|number}}
+                        <a style="margin-left:10px;" target="_blank" ng-href="{{commit.url}}">View commit details</a>
                     </div>
                     <p class="clearfix"></p>
                 </div>
                 <div class="panel-body">
                     <div class="pull-left">{{commit.message}}</div>
                     <div class="pull-right">
-                        <a ng-click="commitClick(commit)">Files
+                        <a ng-click="commitClick(commit)">
+                            Files
                             <span class="glyphicon" ng-class="{'glyphicon-chevron-up': commit.expanded, 'glyphicon-chevron-down': !commit.expanded}" aria-hidden="true"></span>
                         </a>
                     </div>
-                    <p class="clearfix" />                    
-                    <table class="table table-stiped table-condensed files" ng-show="commit.expanded">
-                        <tr ng-repeat="file in commit.files">
-                            <td><a ng-href="{{file.url}}">{{file.fileName}}</a></td>
-                            <td><span class="lines-added">&plus;{{file.linesAdded|number}}</td>
-                            <td><span class="lines-deleted">&minus;{{file.linesDeleted|number}}</span></td>
-                            <td>{{file.totalChurn|number}}</td>
-                        </tr>
-                    </table>                    
+                    <p class="clearfix" />
+                    <file-table files="commit.files" ng-show="commit.expanded" />
                 </div>
             </div>
         </div>

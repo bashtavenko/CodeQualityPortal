@@ -115,7 +115,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetFilesByDate(repoId, dateId, null);
+            var result = _repository.GetFilesByDate(repoId, dateId, null, null);
 
             // Assert
             Assert.IsTrue(result.Count > 0);
@@ -141,7 +141,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetFilesByDate(repoId, dateId, fileExtension);
+            var result = _repository.GetFilesByDate(repoId, dateId, fileExtension, null);
 
             // Assert
             Assert.IsTrue(result.Count > 0);

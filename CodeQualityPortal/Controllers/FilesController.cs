@@ -17,9 +17,9 @@ namespace CodeQualityPortal.Controllers
         }
 
         [Route("{repoId:int}/{dateId:int}/{fileExtension?}")]
-        public IList<FileCodeChurn> Get(int repoId, int dateId, string fileExtension = null)
+        public IList<FileCodeChurn> Get(int repoId, int dateId, string fileExtension = null, int? topX = null)
         {
-            return _repository.GetFilesByDate(repoId, dateId, fileExtension != null ? "." + fileExtension : null);
+            return _repository.GetFilesByDate(repoId, dateId, fileExtension != null ? "." + fileExtension : null, topX);
         }
 
         [Route("{commitId:int}/{fileExtension?}")]

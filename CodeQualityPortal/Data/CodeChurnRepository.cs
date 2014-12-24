@@ -150,8 +150,8 @@ namespace CodeQualityPortal.Data
                     }).ToList();
             }
         }
-        
-        public IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, string fileExtension)
+
+        public IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, string fileExtension, int? topX)
         {
             using (var context = new CodeQualityContext())
             {
@@ -159,12 +159,17 @@ namespace CodeQualityPortal.Data
                     .Where(f => f.DateId == dateId && f.File.Commit.RepoId == repoId);
 
                 if (!string.IsNullOrEmpty(fileExtension))
-        {
+                {
                     query = query.Where (w => w.File.FileExtension == fileExtension);
-        }
+                }
+
+                if (topX.HasValue)
+                {
+                    query = query.OrderByDescending(s => s.TotalChurn).Take(topX.Value);
+                }
 
                 return query.Select(s => new FileCodeChurn
-        {
+                {
                     FileName = s.File.FileName,
                     Url = s.File.Url,
                     LinesAdded = s.LinesAdded,                    
@@ -172,7 +177,6 @@ namespace CodeQualityPortal.Data
                     TotalChurn = s.TotalChurn
                 }).ToList();
             }            
-        }
-        
+        }        
     }
 }

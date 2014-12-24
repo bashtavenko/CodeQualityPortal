@@ -1,0 +1,8 @@
+﻿<table class="table table-stiped table-condensed files">
+    <tr ng-repeat="file in files">
+        <td><a target="_blank" ng-href="{{file.url}}">{{file.fileName}}</a></td>
+        <td><span class="lines-added">&plus;{{file.linesAdded|number}}</span></td>
+        <td><span class="lines-deleted">&minus;{{file.linesDeleted|number}}</span></td>
+        <td>{{file.totalChurn|number}}</td>
+    </tr>
+</table>

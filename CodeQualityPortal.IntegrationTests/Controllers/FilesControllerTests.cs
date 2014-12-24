@@ -16,9 +16,10 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
     public class FilesControllerTests : WebApiBaseTest
     {
         [Test]
-        [TestCase("cs")]
-        [TestCase("")]
-        public void FilesController_Get_ByDate(string fileExtension)
+        [TestCase("cs", null)]
+        [TestCase("", null)]
+        [TestCase("cs", 5)]
+        public void FilesController_Get_ByDate(string fileExtension, int? topX)
         {
             // Arrange
             var resultString = _client.GetStringAsync(MakeUri("repos")).Result;
@@ -40,11 +41,10 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
             {
                 Assert.Inconclusive("No commit data");
             }
-            int dateId = codeChurnEntry.DateId.Value;
-            
+            int dateId = codeChurnEntry.DateId.Value;            
 
             // Act
-            url = MakeUri(string.Format("Files/{0}/{1}/{2}", repoId, dateId, fileExtension));
+            url = MakeUri(string.Format("Files/{0}/{1}/{2}?topX={3}", repoId, dateId, fileExtension, topX));
             resultString = _client.GetStringAsync(url).Result;
             List<CommitCodeChurn> result = JsonConvert.DeserializeObject<List<CommitCodeChurn>>(resultString);
 
@@ -55,7 +55,7 @@ namespace CodeQualityPortal.IntegrationTests.Controllers
         [Test]
         [TestCase("cs")]
         [TestCase("")]
-        public void FilesController_Get_ByCommi(string fileExtension)
+        public void FilesController_Get_ByCommit(string fileExtension)
         {
             // Arrange
             var resultString = _client.GetStringAsync(MakeUri("repos")).Result;

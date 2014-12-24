@@ -206,6 +206,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\app\churn\directives\lines-added.js" />
+    <Content Include="js\app\churn\directives\filetable.js" />
+    <Content Include="js\app\churn\templates\filetable.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />

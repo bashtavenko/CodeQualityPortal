@@ -52,6 +52,7 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
             
         $scope.commits = [];
         $scope.selectedDate = null;
+        $scope.topFiles = [];
         Trend.query(params,
             function (data) {
                 $scope.trendData = data;
@@ -67,8 +68,18 @@ churnModule.controller("ChurnController", function ($scope, bootstrappedData, $r
         var params = {
             repoId: $scope.criteria.repo.repoId,
             dateId: $scope.trendSelection.collectionView.currentItem.dateId,
-            fileExtension: $scope.criteria.extension
+            fileExtension: $scope.criteria.extension            
         };
+
+        var Files = $resource("/api/files/:repoId/:dateId/:fileExtension",
+            { repoId: "@repoId", dateId: "@dateId", fileExtension: "@fileExtension", topX: 5 });
+        Files.query(params,
+            function (data) {
+                $scope.topFiles = data
+            },
+            function (error) {
+                $log.error(error);
+            });
 
         var Commits = $resource("/api/commits/:repoId/:dateId/:fileExtension",
             { repoId: "@repoId", dateId: "@dateId", fileExtension: "@fileExtension" });
