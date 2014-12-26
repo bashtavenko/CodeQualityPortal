@@ -35,6 +35,27 @@ namespace CodeQualityPortal.Controllers
         public IList<ModuleItem> Get(string tag, int dateId)
         {
             return _repository.GetModules(tag, dateId);
-        }     
+        }
+
+        [Route("modules/{tag}")]
+        [HttpGet]
+        public IList<Module> Get(string tag)
+        {
+            return _repository.GetModulesByTag(tag);
+        }
+
+        [Route("namespacetrend/{moduleId}/{dateFrom}/{dateTo}")]
+        [HttpGet]
+        public IList<TrendItem> Get(int moduleId, DateTime dateFrom, DateTime dateTo)
+        {
+            return _repository.GetNamespaceTrend(moduleId, dateFrom, dateTo);
+        }
+
+        [Route("namespaces/{moduleId}/{dateId:int}")]
+        [HttpGet]
+        public IList<NamespaceItem> Get(int moduleId, int dateId)
+        {
+            return _repository.GetNamespaces(moduleId, dateId);
+        }
     }
 }
