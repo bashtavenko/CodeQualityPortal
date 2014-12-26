@@ -221,6 +221,11 @@
     <Content Include="js\app\churn\directives\lines-added.js" />
     <Content Include="js\app\churn\directives\filetable.js" />
     <Content Include="js\app\churn\templates\filetable.html" />
+    <Content Include="js\app\metrics\chart.html" />
+    <Content Include="js\app\metrics\criteria-controller.js" />
+    <Content Include="js\app\metrics\criteria.html" />
+    <Content Include="js\app\metrics\chart-controller.js" />
+    <Content Include="js\app\metrics\grid.html" />
     <Content Include="js\app\metrics\metrics-controller.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
