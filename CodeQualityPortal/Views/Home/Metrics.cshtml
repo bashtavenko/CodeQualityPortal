@@ -26,9 +26,9 @@
 <div style="margin-top:20px;" ng-app="metricsModule" ng-controller="MetricsController">
     <div ng-include="'/js/app/metrics/partials/criteria.html'" ng-controller="CriteriaController" ng-init="init()"></div>
 
-    <h3>Target trend for {{criteria.tag}}</h3>
+    <h3>{{mode.trendLabel}}</h3>
     <div ng-include="'/js/app/metrics/partials/chart.html'" ng-controller="ChartController"></div>
     
-    <h3 ng-show="criteria.selectedDate">Modules on {{criteria.selectedDate.date | date}}</h3>
+    <h3 ng-show="criteria.selectedDate">{{mode.itemsLabel}}{{criteria.selectedDate.date | date}}</h3>
     <div ng-include="'/js/app/metrics/partials/grid.html'"></div>
 </div>
