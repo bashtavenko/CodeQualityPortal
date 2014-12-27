@@ -13,6 +13,7 @@
     @Scripts.Render("~/js/app/metrics/chart-controller.js")
     @Scripts.Render("~/js/app/metrics/criteria-controller.js")
     @Scripts.Render("~/js/app/metrics/metrics-controller.js")
+    @Scripts.Render("~/js/app/metrics/metrics-service.js")
     <script type="text/javascript">
         metricsModule.factory("bootstrappedData", function() {
             return {
@@ -23,11 +24,11 @@
 }
 
 <div style="margin-top:20px;" ng-app="metricsModule" ng-controller="MetricsController">
-    <div ng-include="'/js/app/metrics/criteria.html'" ng-controller="CriteriaController" ng-init="init()"></div>
+    <div ng-include="'/js/app/metrics/partials/criteria.html'" ng-controller="CriteriaController" ng-init="init()"></div>
 
     <h3>Target trend for {{criteria.tag}}</h3>
-    <div ng-include="'/js/app/metrics/chart.html'" ng-controller="ChartController"></div>
+    <div ng-include="'/js/app/metrics/partials/chart.html'" ng-controller="ChartController"></div>
     
     <h3 ng-show="criteria.selectedDate">Modules on {{criteria.selectedDate.date | date}}</h3>
-    <div ng-include="'/js/app/metrics/grid.html'"></div>
+    <div ng-include="'/js/app/metrics/partials/grid.html'"></div>
 </div>

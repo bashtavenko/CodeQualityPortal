@@ -1,9 +1,14 @@
 ﻿<form name="criteriaForm" class="form-inline" role="form" ng-submit="refresh(criteria)">
     <div class="form-group">
         <div class="input-group">
-            <label for="repo" class="sr-only">Tag</label>
+            <label for="tag" class="sr-only">Tag</label>
             <div class="input-group-addon">Tag</div>
-            <select id="repo" class="form-control" ng-model="criteria.tag" ng-options="c for c in criteria.tagOptions" ng-change="refresh()"></select>
+            <select id="tag" class="form-control" ng-model="criteria.tag" ng-options="c for c in criteria.tagOptions" ng-change="tagChanged()"></select>
+        </div>
+        <div class="input-group">
+            <label for="module" class="sr-only">Module</label>
+            <div class="input-group-addon">Module</div>
+            <select id="module" class="form-control" ng-model="criteria.module.id" ng-options="m.id as m.name for m in moduleOptions" ng-change="refresh()"></select>
         </div>
     </div>
     <div class="form-group" ng-class="error('dateFrom')">

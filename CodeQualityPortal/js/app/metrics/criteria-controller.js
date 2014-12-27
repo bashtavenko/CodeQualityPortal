@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 // Populates "criteria" in parent scope
-metricsModule.controller("CriteriaController", function ($scope, bootstrappedData) {
+metricsModule.controller("CriteriaController", function ($scope, bootstrappedData, metricsService) {
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
 
@@ -15,10 +15,16 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.criteria.dateFrom = dateFrom;
     $scope.criteria.dateTo = new Date();
     
-
     if ($scope.criteria.tagOptions.length > 0) {
         $scope.criteria.tag = $scope.criteria.tagOptions[0];
     }
+
+    $scope.moduleOptions = [{
+        id: -1,
+        name: "All"
+    }];
+    
+    $scope.criteria.module = $scope.moduleOptions[0];
     
     $scope.openDateFrom = function ($event) {
         $event.preventDefault();
@@ -40,6 +46,18 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         return s.$invalid ? "has-error" : "";        
     }
 
+    $scope.tagChanged = function () {
+        metricsService.getModules($scope.criteria.tag)
+            .$promise.then(function (data) {
+                $scope.moduleOptions = data;
+                $scope.moduleOptions[0] = $scope.allOption;
+            });
+        
+        $scope.refresh();
+    };
+
+    $scope.allOption = { id: -1, name: "(All)" };
+    
     $scope.refresh = function () {
         if ($scope.criteriaForm != undefined) {
             // Setting min and max dates don't stop from typing in dates that are out of range
