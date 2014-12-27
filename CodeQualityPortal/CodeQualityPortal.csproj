@@ -231,6 +231,7 @@
     <Content Include="js\app\churn\directives\lines-added.js" />
     <Content Include="js\app\churn\directives\filetable.js" />
     <Content Include="js\app\churn\templates\filetable.html" />
+    <Content Include="js\app\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />
     <Content Include="js\app\metrics\partials\chart.html" />
     <Content Include="js\app\metrics\criteria-controller.js" />
