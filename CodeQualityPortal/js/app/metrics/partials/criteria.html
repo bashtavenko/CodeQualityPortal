@@ -1,0 +1,34 @@
+﻿<form name="criteriaForm" class="form-inline" role="form" ng-submit="refresh(criteria)">
+    <div class="form-group">
+        <div class="input-group">
+            <label for="tag" class="sr-only">Tag</label>
+            <div class="input-group-addon">Tag</div>
+            <select id="tag" class="form-control" ng-model="criteria.tag" ng-options="c for c in criteria.tagOptions" ng-change="tagChanged()"></select>
+        </div>
+        <div class="input-group">
+            <label for="module" class="sr-only">Module</label>
+            <div class="input-group-addon">Module</div>
+            <select id="module" class="form-control" ng-model="criteria.module" ng-options="m as m.name for m in moduleOptions track by m.id" ng-change="moduleChanged()"></select>
+        </div>
+    </div>
+    <div class="form-group" ng-class="error('dateFrom')">
+        <div class="input-group">
+            <label for="dateFrom" class="sr-only">From</label>
+            <div class="input-group-addon">From</div>
+            <input name="dateFrom" ng-model="criteria.dateFrom" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateFromOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" ng-click="openDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-class="error('dateTo')">
+        <div class="input-group">
+            <label for="dateTo" class="sr-only">To</label>
+            <div class="input-group-addon">To</div>
+            <input name="dateTo" ng-model="criteria.dateTo" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateToOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true" />
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" ng-click="openDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+        </div>
+    </div>
+</form>

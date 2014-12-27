@@ -16,6 +16,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [TestFixtureSetUp]
         public void Setup()
         {
+            AutoMapperConfig.CreateMaps();
             _repository = new MetricsRepository();
         }
 
