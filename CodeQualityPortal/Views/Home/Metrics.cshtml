@@ -25,11 +25,13 @@
 }
 
 <div style="margin-top:20px;" ng-app="metricsModule" ng-controller="MetricsController">
-    <div ng-include="'/js/app/metrics/partials/criteria.html'" ng-controller="CriteriaController" ng-init="init()"></div>
+    <form name="criteriaForm" class="form-inline" role="form" ng-submit="refresh(criteria)" ng-controller="CriteriaController" ng-init="init()">
+        <div ng-include="'/js/app/metrics/partials/criteria.html'"></div>
+    </form>
 
     <h3>{{mode.trendLabel}}</h3>
     <div ng-include="'/js/app/metrics/partials/chart.html'" ng-controller="ChartController"></div>
-    
+
     <h3 ng-show="criteria.selectedDate">{{mode.itemsLabel}}{{criteria.selectedDate.date | date}}</h3>
     <div ng-include="'/js/app/metrics/partials/grid.html'"></div>
 </div>

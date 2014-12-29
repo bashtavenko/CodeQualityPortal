@@ -13,9 +13,17 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.criteria.dateTo = new Date();
 
     $scope.allOption = { id: -1, name: "(All)" };
+
+    $scope.initSelect = function (options, model) {
+        $scope[options] = [$scope.allOption];
+        $scope.criteria[model] = $scope[options][0];
+    }
+
+    $scope.initSelect('moduleOptions', 'module');
+    $scope.initSelect('namespaceOptions', 'namespace');
+
     $scope.loadModules = function () {
-        $scope.moduleOptions = [$scope.allOption];
-        $scope.criteria.module = $scope.moduleOptions[0];
+        $scope.initSelect('moduleOptions', 'module');        
         metricsService.getModules($scope.criteria.tag)
           .$promise.then(function (data) {              
               $scope.moduleOptions = $scope.moduleOptions.concat(data);              
@@ -23,8 +31,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     };
 
     $scope.loadNamespaces = function () {
-        $scope.namespaceOptions = [$scope.allOption];
-        $scope.criteria.namespace = $scope.namespaceOptions[0];
+        $scope.initSelect('namespaceOptions', 'namespace');
         metricsService.getNamespaces($scope.criteria.module.id)
           .$promise.then(function (data) {              
               $scope.namespaceOptions = $scope.namespaceOptions.concat(data);          
@@ -34,12 +41,14 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.criteria.tagOptions = bootstrappedData.tagOptions;
     if ($scope.criteria.tagOptions.length > 0) {
         $scope.criteria.tag = $scope.criteria.tagOptions[0];
-        $scope.loadModules();
-        $scope.loadNamespaces();
+        $scope.moduleOptions = [$scope.allOption];
+        $scope.loadModules();        
     }
         
-    $scope.tagChanged = function () {                
-        $scope.setMode(new $scope.tagMode);
+    $scope.tagChanged = function () {
+        $scope.loadModules();
+        $scope.initSelect('namespaceOptions', 'namespace');
+        $scope.setMode(new $scope.tagMode);        
         $scope.refresh();
     };    
 
@@ -54,8 +63,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope.refresh();
     };
 
-    $scope.namespaceChanged = function () {
-        //$scope.loadTypes();
+    $scope.namespaceChanged = function () {        
         if ($scope.criteria.namespace.id == -1) {
             $scope.setMode(new $scope.moduleMode);
         }
