@@ -39,6 +39,7 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         );
     }
 
+    // 1 - tag
     $scope.tagMode = function () {
         return {
             getTrend: function () {
@@ -52,6 +53,7 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         };
     };
 
+    // 2 - module
     $scope.moduleMode = function () {
         return {
             getTrend: function () {
@@ -61,7 +63,21 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
                 return metricsService.getNamespacesByDate($scope.criteria.module.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Module trend for " + $scope.criteria.module.name,
-            itemsLabel: "Namespaces on"
+            itemsLabel: "Namespaces on "
+        };
+    };
+
+    // 3 - namespace
+    $scope.namespaceMode = function () {
+        return {
+            getTrend: function () {
+                return metricsService.getTypeTrend($scope.criteria.namespace.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+            },
+            getItems: function () {
+                return metricsService.getTypesByDate($scope.criteria.namespace.id, $scope.criteria.selectedDate.dateId);
+            },
+            trendLabel: "Namespace trend for " + $scope.criteria.namespace.name,
+            itemsLabel: "Types on "
         };
     };
 });

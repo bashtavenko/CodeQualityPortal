@@ -210,6 +210,11 @@
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
+    <Compile Include="ViewModels\Member.cs" />
+    <Compile Include="ViewModels\Namespace.cs" />
+    <Compile Include="ViewModels\MemberItem.cs" />
+    <Compile Include="ViewModels\TypeItem.cs" />
+    <Compile Include="ViewModels\Type.cs" />
     <Compile Include="ViewModels\NamespaceItem.cs" />
     <Compile Include="ViewModels\Module.cs" />
     <Compile Include="ViewModels\Repo.cs" />

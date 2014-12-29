@@ -14,11 +14,20 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
 
     $scope.allOption = { id: -1, name: "(All)" };
     $scope.loadModules = function () {
+        $scope.moduleOptions = [$scope.allOption];
+        $scope.criteria.module = $scope.moduleOptions[0];
         metricsService.getModules($scope.criteria.tag)
-          .$promise.then(function (data) {
-              $scope.moduleOptions = [$scope.allOption];              
-              $scope.moduleOptions = $scope.moduleOptions.concat(data);
-              $scope.criteria.module = $scope.moduleOptions[0];
+          .$promise.then(function (data) {              
+              $scope.moduleOptions = $scope.moduleOptions.concat(data);              
+          });
+    };
+
+    $scope.loadNamespaces = function () {
+        $scope.namespaceOptions = [$scope.allOption];
+        $scope.criteria.namespace = $scope.namespaceOptions[0];
+        metricsService.getNamespaces($scope.criteria.module.id)
+          .$promise.then(function (data) {              
+              $scope.namespaceOptions = $scope.namespaceOptions.concat(data);          
           });
     };
 
@@ -26,23 +35,35 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     if ($scope.criteria.tagOptions.length > 0) {
         $scope.criteria.tag = $scope.criteria.tagOptions[0];
         $scope.loadModules();
+        $scope.loadNamespaces();
     }
         
-    $scope.tagChanged = function () {        
-        $scope.loadModules();
+    $scope.tagChanged = function () {                
         $scope.setMode(new $scope.tagMode);
         $scope.refresh();
     };    
 
     $scope.moduleChanged = function () {
+        $scope.loadNamespaces();
         if ($scope.criteria.module.id == -1) {
             $scope.setMode(new $scope.tagMode);            
         }
-        else {
+        else {            
             $scope.setMode(new $scope.moduleMode);
         }
         $scope.refresh();
-    };       
+    };
+
+    $scope.namespaceChanged = function () {
+        //$scope.loadTypes();
+        if ($scope.criteria.namespace.id == -1) {
+            $scope.setMode(new $scope.moduleMode);
+        }
+        else {
+            $scope.setMode(new $scope.namespaceMode);
+        }
+        $scope.refresh();
+    };
     
     $scope.refresh = function () {
         if ($scope.criteriaForm != undefined) {

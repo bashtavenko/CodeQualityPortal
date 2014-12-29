@@ -1,6 +1,6 @@
 ﻿namespace CodeQualityPortal.ViewModels
 {
-    public class NamespaceItem : MetricsItem
+    public class MemberItem : MetricsItem
     {   
     }
 }

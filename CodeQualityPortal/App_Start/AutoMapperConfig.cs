@@ -36,6 +36,19 @@ namespace CodeQualityPortal
             Mapper.CreateMap<FactMetrics, NamespaceItem>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Namespace.NamespaceId))
                 .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Namespace.Name));
+
+            Mapper.CreateMap<DimType, ViewModels.Type>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.TypeId));
+            
+            Mapper.CreateMap<DimNamespace, Namespace>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.NamespaceId));
+
+            Mapper.CreateMap<FactMetrics, TypeItem>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Type.TypeId))
+                .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Type.Name));
+
+            Mapper.CreateMap<DimMember, Member>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.MemberId));
         }       
     }
 }

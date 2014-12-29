@@ -2,6 +2,7 @@
 
 metricsModule.factory("metricsService", function($resource, commonService) {
     return {        
+        // 1 - tag
         getTagTrend: function (tag, dateFrom, dateTo) {
             var params = {
                 tag: tag,
@@ -22,7 +23,7 @@ metricsModule.factory("metricsService", function($resource, commonService) {
                 .query(params);
         },
 
-        // Module -> Namespace
+        // 2 - module
         getModules: function (tag) {
             var params = {
             tag: tag                
@@ -48,6 +49,34 @@ metricsModule.factory("metricsService", function($resource, commonService) {
             };
             return $resource("/api/namespaces/:moduleId/:dateId", { moduleId: "@moduleId", dateId: "@dateId" })
                 .query(params);
-        }
+        },
+
+        // 3 - namespace
+        getNamespaces: function (moduleId) {
+            var params = {
+                moduleId: moduleId                
+            };
+            return $resource("/api/namespaces/:moduleId", { moduleId: "@moduleId" })
+            .query(params);
+        },
+        getTypeTrend: function (namespaceId, dateFrom, dateTo) {
+            var params = {
+                namespaceId: namespaceId,
+                dateFrom: commonService.convertDateToIso(dateFrom),
+                dateTo: commonService.convertDateToIso(dateTo)
+            };
+
+            return $resource("/api/typetrend/:namespaceId/:dateFrom/:dateTo",
+                { namespaceId: "@namespaceId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+                .query(params);
+        },
+        getTypesByDate: function (namespaceId, dateId) {
+            var params = {
+                namespaceId: namespaceId,
+                dateId: dateId
+            };
+            return $resource("/api/types/:namespaceId/:dateId", { namespaceId: "@namespaceId", dateId: "@dateId" })
+                .query(params);
+        },
     };
 });
