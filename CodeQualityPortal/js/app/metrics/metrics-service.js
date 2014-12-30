@@ -78,5 +78,35 @@ metricsModule.factory("metricsService", function($resource, commonService) {
             return $resource("/api/types/:namespaceId/:dateId", { namespaceId: "@namespaceId", dateId: "@dateId" })
                 .query(params);
         },
+
+        // 4 - type
+        getTypes: function (namespaceId) {
+            var params = {
+                namespaceId: namespaceId                
+            };
+            return $resource("/api/types/:namespaceId", { moduleId: "@namespaceId" })
+            .query(params);
+        },
+
+        getMemberTrend: function (typeId, dateFrom, dateTo) {
+            var params = {
+                typeId: typeId,
+                dateFrom: commonService.convertDateToIso(dateFrom),
+                dateTo: commonService.convertDateToIso(dateTo)
+            };
+
+            return $resource("/api/membertrend/:typeId/:dateFrom/:dateTo",
+                { typeId: "@typeId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+                .query(params);
+        },
+
+        getMembersByDate: function (typeId, dateId) {
+            var params = {
+                typeId: typeId,
+                dateId: dateId
+            };
+            return $resource("/api/members/:typeId/:dateId", { typeId: "@typeId", dateId: "@dateId" })
+                .query(params);
+        },
     };
 });

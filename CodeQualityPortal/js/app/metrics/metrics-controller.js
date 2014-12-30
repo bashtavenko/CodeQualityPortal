@@ -80,5 +80,19 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
             itemsLabel: "Types on "
         };
     };
+
+    // 4 - type
+    $scope.typeMode = function () {
+        return {
+            getTrend: function () {
+                return metricsService.getMemberTrend($scope.criteria.type.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+            },
+            getItems: function () {
+                return metricsService.getMembersByDate($scope.criteria.type.id, $scope.criteria.selectedDate.dateId);
+            },
+            trendLabel: "Type trend for " + $scope.criteria.type.name,
+            itemsLabel: "Members on "
+        };
+    };
 });
 

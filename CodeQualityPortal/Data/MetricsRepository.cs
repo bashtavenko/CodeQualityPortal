@@ -162,7 +162,7 @@ namespace CodeQualityPortal.Data
             using (var context = new CodeQualityContext())
             {
                 var queryItems = context.Metrics
-                    .Where(w => w.TypeId == typeId && w.DateId == dateId)
+                    .Where(w => w.Member.TypeId == typeId && w.DateId == dateId)
                     .ToList();
 
                 var items = Mapper.Map<IList<MemberItem>>(queryItems);

@@ -19,36 +19,51 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope.criteria[model] = $scope[options][0];
     }
 
-    $scope.initSelect('moduleOptions', 'module');
-    $scope.initSelect('namespaceOptions', 'namespace');
+    //$scope.initSelect('moduleOptions', 'module');
+    //$scope.initSelect('namespaceOptions', 'namespace');
+    //$scope.initSelect('typeOptions', 'type');
 
-    $scope.loadModules = function () {
-        $scope.initSelect('moduleOptions', 'module');        
-        metricsService.getModules($scope.criteria.tag)
-          .$promise.then(function (data) {              
-              $scope.moduleOptions = $scope.moduleOptions.concat(data);              
-          });
-    };
+    $scope.loadTypes = function () {
+        $scope.initSelect('typeOptions', 'type');
+        if ($scope.criteria.namespace.id > 0) {
+            metricsService.getTypes($scope.criteria.namespace.id)
+              .$promise.then(function (data) {
+                  $scope.typeOptions = $scope.typeOptions.concat(data);
+              });
+        }
+    };    
 
     $scope.loadNamespaces = function () {
         $scope.initSelect('namespaceOptions', 'namespace');
-        metricsService.getNamespaces($scope.criteria.module.id)
-          .$promise.then(function (data) {              
-              $scope.namespaceOptions = $scope.namespaceOptions.concat(data);          
-          });
+        if ($scope.criteria.module.id != -1) {
+            metricsService.getNamespaces($scope.criteria.module.id)
+              .$promise.then(function (data) {
+                  $scope.namespaceOptions = $scope.namespaceOptions.concat(data);
+              });
+        }
+        $scope.loadTypes();
+    };
+
+    $scope.loadModules = function () {
+        $scope.initSelect('moduleOptions', 'module');
+        if ($scope.criteria.tag != -1) {
+            metricsService.getModules($scope.criteria.tag)
+              .$promise.then(function (data) {
+                  $scope.moduleOptions = $scope.moduleOptions.concat(data);
+              });
+        }
+        $scope.loadNamespaces();
     };
 
     $scope.criteria.tagOptions = bootstrappedData.tagOptions;
     if ($scope.criteria.tagOptions.length > 0) {
-        $scope.criteria.tag = $scope.criteria.tagOptions[0];
-        $scope.moduleOptions = [$scope.allOption];
+        $scope.criteria.tag = $scope.criteria.tagOptions[0];        
         $scope.loadModules();        
     }
         
     $scope.tagChanged = function () {
-        $scope.loadModules();
-        $scope.initSelect('namespaceOptions', 'namespace');
-        $scope.setMode(new $scope.tagMode);        
+        $scope.loadModules();        
+        $scope.setMode(new $scope.tagMode);
         $scope.refresh();
     };    
 
@@ -63,12 +78,23 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope.refresh();
     };
 
-    $scope.namespaceChanged = function () {        
+    $scope.namespaceChanged = function () {
+        $scope.loadTypes();
         if ($scope.criteria.namespace.id == -1) {
             $scope.setMode(new $scope.moduleMode);
         }
         else {
             $scope.setMode(new $scope.namespaceMode);
+        }
+        $scope.refresh();
+    };
+
+    $scope.typeChanged = function () {
+        if ($scope.criteria.type.id == -1) {
+            $scope.setMode(new $scope.namespaceMode);
+        }
+        else {
+            $scope.setMode(new $scope.typeMode);
         }
         $scope.refresh();
     };

@@ -49,6 +49,10 @@ namespace CodeQualityPortal
 
             Mapper.CreateMap<DimMember, Member>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.MemberId));
+
+            Mapper.CreateMap<FactMetrics, MemberItem>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Member.MemberId))
+                .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Member.Name));
         }       
     }
 }
