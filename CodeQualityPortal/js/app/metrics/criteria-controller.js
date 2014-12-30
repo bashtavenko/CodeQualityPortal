@@ -18,10 +18,17 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope[options] = [$scope.allOption];
         $scope.criteria[model] = $scope[options][0];
     }
-
-    //$scope.initSelect('moduleOptions', 'module');
-    //$scope.initSelect('namespaceOptions', 'namespace');
-    //$scope.initSelect('typeOptions', 'type');
+    
+    
+    $scope.loadMembers = function () {
+        $scope.initSelect('memberOptions', 'member');
+        if ($scope.criteria.type.id > 0) {
+            metricsService.getMembers($scope.criteria.type.id)
+              .$promise.then(function (data) {
+                  $scope.memberOptions = $scope.memberOptions.concat(data);
+              });
+        }
+    };
 
     $scope.loadTypes = function () {
         $scope.initSelect('typeOptions', 'type');
@@ -31,11 +38,12 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
                   $scope.typeOptions = $scope.typeOptions.concat(data);
               });
         }
+        $scope.loadMembers();
     };    
 
     $scope.loadNamespaces = function () {
         $scope.initSelect('namespaceOptions', 'namespace');
-        if ($scope.criteria.module.id != -1) {
+        if ($scope.criteria.module.id > 0) {
             metricsService.getNamespaces($scope.criteria.module.id)
               .$promise.then(function (data) {
                   $scope.namespaceOptions = $scope.namespaceOptions.concat(data);
@@ -45,13 +53,11 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     };
 
     $scope.loadModules = function () {
-        $scope.initSelect('moduleOptions', 'module');
-        if ($scope.criteria.tag != -1) {
-            metricsService.getModules($scope.criteria.tag)
+        $scope.initSelect('moduleOptions', 'module');        
+        metricsService.getModules($scope.criteria.tag)
               .$promise.then(function (data) {
                   $scope.moduleOptions = $scope.moduleOptions.concat(data);
-              });
-        }
+             });        
         $scope.loadNamespaces();
     };
 
@@ -90,11 +96,22 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     };
 
     $scope.typeChanged = function () {
+        $scope.loadMembers();
         if ($scope.criteria.type.id == -1) {
             $scope.setMode(new $scope.namespaceMode);
         }
         else {
             $scope.setMode(new $scope.typeMode);
+        }
+        $scope.refresh();
+    };
+
+    $scope.memberChanged = function () {        
+        if ($scope.criteria.member.id == -1) {
+            $scope.setMode(new $scope.typeMode);
+        }
+        else {
+            $scope.setMode(new $scope.memberMode);
         }
         $scope.refresh();
     };

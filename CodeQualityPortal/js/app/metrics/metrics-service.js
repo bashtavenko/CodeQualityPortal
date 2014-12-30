@@ -84,8 +84,8 @@ metricsModule.factory("metricsService", function($resource, commonService) {
             var params = {
                 namespaceId: namespaceId                
             };
-            return $resource("/api/types/:namespaceId", { moduleId: "@namespaceId" })
-            .query(params);
+            return $resource("/api/types/:namespaceId", { namespaceId: "@namespaceId" })
+                .query(params);
         },
 
         getMemberTrend: function (typeId, dateFrom, dateTo) {
@@ -97,7 +97,7 @@ metricsModule.factory("metricsService", function($resource, commonService) {
 
             return $resource("/api/membertrend/:typeId/:dateFrom/:dateTo",
                 { typeId: "@typeId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
-                .query(params);
+                    .query(params);
         },
 
         getMembersByDate: function (typeId, dateId) {
@@ -107,6 +107,27 @@ metricsModule.factory("metricsService", function($resource, commonService) {
             };
             return $resource("/api/members/:typeId/:dateId", { typeId: "@typeId", dateId: "@dateId" })
                 .query(params);
+        },
+
+        // 5 - member
+        getMembers: function (typeId) {
+            var params = {
+                typeId: typeId                
+            };
+            return $resource("/api/members/:typeId", { typeId: "@typeId" })
+                .query(params);
+        },
+
+        getSingleMemberTrend: function (memberId, dateFrom, dateTo) {
+            var params = {
+                memberId: memberId,
+                dateFrom: commonService.convertDateToIso(dateFrom),
+                dateTo: commonService.convertDateToIso(dateTo)
+            };
+
+            return $resource("/api/singlemembertrend/:memberId/:dateFrom/:dateTo",
+                { memberId: "@memberId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+                    .query(params);
         },
     };
 });

@@ -26,6 +26,13 @@
         <select id="type" class="form-control" ng-model="criteria.type" ng-options="t as t.name for t in typeOptions track by t.id" ng-change="typeChanged()"></select>
     </div>
 </div>
+<div class="form-group">
+    <div class="input-group">
+        <label for="member" class="sr-only">Member</label>
+        <div class="input-group-addon">Member</div>
+        <select id="member" class="form-control" ng-model="criteria.member" ng-options="m as m.name for m in memberOptions track by m.id" ng-change="memberChanged()"></select>
+    </div>
+</div>
 
 <p />
 

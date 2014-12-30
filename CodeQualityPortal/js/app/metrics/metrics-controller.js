@@ -94,5 +94,15 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
             itemsLabel: "Members on "
         };
     };
+
+    // 5 - member
+    $scope.memberMode = function () {
+        return {
+            getTrend: function () {
+                return metricsService.getSingleMemberTrend($scope.criteria.member.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+            },            
+            trendLabel: "Member trend for " + $scope.criteria.member.name,
+        };
+    };
 });
 
