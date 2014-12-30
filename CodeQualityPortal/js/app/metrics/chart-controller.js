@@ -34,8 +34,10 @@ metricsModule.controller("ChartController", function ($scope, bootstrappedData, 
     $scope.metricsType = $scope.seriesIndex;
 
     $scope.trendClick = function () {
-        $scope.criteria.selectedDate = $scope.chartProps.selection.collectionView.currentItem;
-        $scope.refreshGrid();
+        if ($scope.chartProps.selection != null) {
+            $scope.criteria.selectedDate = $scope.chartProps.selection.collectionView.currentItem;
+            $scope.refreshGrid();
+        }
     }
 
     $scope.$on("adjust_chart", function (event, message) {

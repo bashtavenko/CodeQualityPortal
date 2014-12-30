@@ -49,7 +49,8 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
                 return metricsService.getModulesByDate($scope.criteria.tag, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Tag trend for " + $scope.criteria.tag,
-            itemsLabel: "Modules on"
+            itemsLabel: "Modules on",
+            chartSelection: "Point"
         };
     };
 
@@ -63,7 +64,8 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
                 return metricsService.getNamespacesByDate($scope.criteria.module.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Module trend for " + $scope.criteria.module.name,
-            itemsLabel: "Namespaces on "
+            itemsLabel: "Namespaces on ",
+            chartSelection: "Point"
         };
     };
 
@@ -77,7 +79,8 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
                 return metricsService.getTypesByDate($scope.criteria.namespace.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Namespace trend for " + $scope.criteria.namespace.name,
-            itemsLabel: "Types on "
+            itemsLabel: "Types on ",
+            chartSelection: "Point"
         };
     };
 
@@ -91,7 +94,8 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
                 return metricsService.getMembersByDate($scope.criteria.type.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Type trend for " + $scope.criteria.type.name,
-            itemsLabel: "Members on "
+            itemsLabel: "Members on ",
+            chartSelection: "Point"
         };
     };
 
@@ -100,8 +104,10 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         return {
             getTrend: function () {
                 return metricsService.getSingleMemberTrend($scope.criteria.member.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
-            },            
+            },
+            getItems: function () {},
             trendLabel: "Member trend for " + $scope.criteria.member.name,
+            chartSelection: "None"
         };
     };
 });

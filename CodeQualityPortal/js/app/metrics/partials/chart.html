@@ -1,9 +1,9 @@
 ﻿<wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
-               chart-type="LineSymbols" selection-mode="Point" selection="chartProps.selection" ng-click="trendClick()">
+               chart-type="LineSymbols" selection-mode="{{mode.chartSelection}}" selection="chartProps.selection" ng-click="trendClick()">
     <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
     <wj-flex-chart-axis wj-property="axisY" min="{{metricsType.min}}" max="{{metricsType.max}}" title="{{metricsType.value}}"></wj-flex-chart-axis>
     <wj-flex-chart-series binding="{{metricsType.key}}" name="{{metricsType.value}}"
-                          ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#d47500', stroke:'#d47500' }"></wj-flex-chart-series>
+                          ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#d47500', stroke:'#d47500'}"></wj-flex-chart-series>
     <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
 </wj-flex-chart>
 
