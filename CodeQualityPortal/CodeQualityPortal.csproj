@@ -233,8 +233,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\app\churn\chart-controller.js" />
+    <Content Include="js\app\churn\criteria-controller.js" />
+    <Content Include="js\app\churn\directives\commit.js" />
     <Content Include="js\app\churn\directives\lines-added.js" />
     <Content Include="js\app\churn\directives\filetable.js" />
+    <Content Include="js\app\churn\churn-service.js" />
+    <Content Include="js\app\churn\partials\chart.html" />
+    <Content Include="js\app\churn\partials\criteria.html" />
+    <Content Include="js\app\churn\templates\commit.html" />
     <Content Include="js\app\churn\templates\filetable.html" />
     <Content Include="js\app\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />

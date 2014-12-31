@@ -1,0 +1,26 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="pull-left">
+            <img height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
+            {{commit.committer}}
+        </div>
+        <div class="pull-right">
+            <em>Additions:</em><span class="lines-added">{{commit.linesAdded|number}}</span>&nbsp;
+            <em>Deletions:</em><span class="lines-deleted">{{commit.linesDeleted|number}}</span>&nbsp;
+            <em>Total changes:</em>{{commit.totalChurn|number}}
+            <a style="margin-left:10px;" target="_blank" ng-href="{{commit.url}}">View commit details</a>
+        </div>
+        <p class="clearfix"></p>
+    </div>
+    <div class="panel-body">
+        <div class="pull-left">{{commit.message}}</div>
+        <div class="pull-right">
+            <a ng-click="commitClick(commit)">
+                Files
+                <span class="glyphicon" ng-class="{'glyphicon-chevron-up': commit.expanded, 'glyphicon-chevron-down': !commit.expanded}" aria-hidden="true"></span>
+            </a>
+        </div>
+        <p class="clearfix" />
+        <file-table files="commit.files" ng-show="commit.expanded" />
+    </div>
+</div>

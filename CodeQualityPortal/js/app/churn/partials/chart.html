@@ -1,0 +1,8 @@
+﻿<wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
+               stacking="Stacked" selection-mode="Point" selection="chartProps.selection" ng-click="trendClick()">
+    <wj-flex-chart-axis wj-property="axisY"></wj-flex-chart-axis>
+    <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
+    <wj-flex-chart-series binding="linesAdded" ng-attr-style="{fill:'#55a532'}" name="Lines Added"></wj-flex-chart-series>
+    <wj-flex-chart-series binding="linesDeleted" ng-attr-style="{fill:'#bd2c00'}" name="Lines Deleted"></wj-flex-chart-series>
+    <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+</wj-flex-chart>

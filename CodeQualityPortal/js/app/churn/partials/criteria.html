@@ -1,0 +1,44 @@
+﻿<style>
+    /* It's broke in Bootrstrap 3.0.0 */
+    .glyphicon-calendar:before {
+        content: "\d83d\dcc5";
+    }
+</style>
+
+<div class="form-group">
+    <div class="input-group">
+        <label for="repo" class="sr-only">Repo</label>
+        <div class="input-group-addon">Repo</div>
+        <select id="repo" class="form-control" ng-model="criteria.repo.repoId" ng-options="r.repoId as r.name for r in criteria.repoOptions"></select>
+    </div>
+</div>
+<div class="form-group" ng-class="error('dateFrom')">
+    <div class="input-group">
+        <label for="dateFrom" class="sr-only">From</label>
+        <div class="input-group-addon">From</div>
+        <input name="dateFrom" ng-model="criteria.dateFrom" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateFromOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" ng-click="openDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+    </div>
+</div>
+<div class="form-group" ng-class="error('dateTo')">
+    <div class="input-group">
+        <label for="dateTo" class="sr-only">To</label>
+        <div class="input-group-addon">To</div>
+        <input name="dateTo" ng-model="criteria.dateTo" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateToOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true" />
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" ng-click="openDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="input-group">
+        <label for="extension" class="sr-only">Extension</label>
+        <div class="input-group-addon">Extension</div>
+        <input id="extension" type="text" name="input" ng-change="refresh(criteria)" class="form-control" ng-model="criteria.extension">
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" ng-click="refresh(criteria)" class="btn btn-link">Refresh</button>
+</div>

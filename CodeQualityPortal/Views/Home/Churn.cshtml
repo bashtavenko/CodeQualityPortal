@@ -1,6 +1,15 @@
 ﻿@model string
 
 <style>
+    a {
+        cursor: pointer;
+    }
+
+    table.files {
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
     span.lines-added {
         color: #55a532;
     }
@@ -8,27 +17,17 @@
     span.lines-deleted {
         color: #bd2c00;
     }
-
-    a {
-        cursor: pointer;
-    }
-
-    /* It's broke in Bootrstrap 3.0.0 */
-    .glyphicon-calendar:before {
-        content: "\d83d\dcc5";
-    }
-
-    table.files {
-        margin-top: 20px;
-        margin-bottom: 0;
-    }
 </style>
 
 @section JavascriptInHead
 {
-    @Scripts.Render("~/js/app/churn/churn-controller.js")
+    @Scripts.Render("~/js/app/churn/criteria-controller.js")
+    @Scripts.Render("~/js/app/churn/churn-controller.js")    
+    @Scripts.Render("~/js/app/churn/chart-controller.js")
+    @Scripts.Render("~/js/app/churn/churn-service.js")
     @Scripts.Render("~/js/app/churn/directives/lines-added.js")
     @Scripts.Render("~/js/app/churn/directives/filetable.js")
+    @Scripts.Render("~/js/app/churn/directives/commit.js")
     <script type="text/javascript">
         churnModule.factory("bootstrappedData", function() {
             return {
@@ -39,57 +38,16 @@
 }
 
 <div ng-app="churnModule">
-    <div style="margin-top:20px;" ng-controller="ChurnController" ng-init="init()">
-        <form name="repoForm" class="form-inline" role="form" ng-submit="refresh(criteria)">
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="repo" class="sr-only">Repo</label>
-                    <div class="input-group-addon">Repo</div>
-                    <select id="repo" class="form-control" ng-model="criteria.repo.repoId" ng-options="r.repoId as r.name for r in criteria.repoOptions"></select>
-                </div>
-            </div>
-            <div class="form-group" ng-class="error('dateFrom')">
-                <div class="input-group">
-                    <label for="dateFrom" class="sr-only">From</label>
-                    <div class="input-group-addon">From</div>
-                    <input name="dateFrom" ng-model="criteria.dateFrom" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateFromOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary" ng-click="openDateFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group" ng-class="error('dateTo')">
-                <div class="input-group">
-                    <label for="dateTo" class="sr-only">To</label>
-                    <div class="input-group-addon">To</div>
-                    <input name="dateTo" ng-model="criteria.dateTo" type="text" class="form-control" min-date="minDate" max-date="maxDate" is-open="dateToOpened" datepicker-popup="MM/dd/yy" ng-change="refresh(criteria)" ng-required="true" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary" ng-click="openDateTo($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="extension" class="sr-only">Extension</label>
-                    <div class="input-group-addon">Extension</div>
-                    <input id="extension" type="text" name="input" ng-change="refresh(criteria)" class="form-control" ng-model="criteria.extension">
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" ng-click="refresh(criteria)" class="btn btn-link">Refresh</button>
-            </div>
+    <div style="margin-top:20px;" ng-controller="ChurnController">
+        <form name="repoForm" class="form-inline" role="form" ng-controller="CriteriaController" ng-submit="refresh(criteria)" ng-init="init()">
+            <div ng-include="'/js/app/churn/partials/criteria.html'"></div>
         </form>
+                
+        <div ng-include="'/js/app/churn/partials/chart.html'" ng-controller="ChartController"></div>
 
-        <wj-flex-chart style="height:300px; margin-top:20px;" items-source="trendData" binding-x="dateString"
-                       stacking="Stacked" selection-mode="Point" selection="trendSelection" ng-click="trendClick()">
-            <wj-flex-chart-axis wj-property="axisY"></wj-flex-chart-axis>
-            <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
-            <wj-flex-chart-series binding="linesAdded" ng-attr-style="{fill:'#55a532'}" name="Lines Added"></wj-flex-chart-series>
-            <wj-flex-chart-series binding="linesDeleted" ng-attr-style="{fill:'#bd2c00'}" name="Lines Deleted"></wj-flex-chart-series>
-            <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
-        </wj-flex-chart>
+        <strong>{{selectedDate.date|date}}</strong>
 
-        <strong>{{selectedDate|date}}</strong>
+        {{test}}
 
         <div ng-show="topFiles.length > 0">
             <p></p>
@@ -100,32 +58,7 @@
         <p></p>
 
         <div ng-repeat="commit in commits">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <img height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
-                        {{commit.committer}}
-                    </div>
-                    <div class="pull-right">                        
-                        <em>Additions:</em><span class="lines-added">{{commit.linesAdded|number}}</span>&nbsp;
-                        <em>Deletions:</em><span class="lines-deleted">{{commit.linesDeleted|number}}</span>&nbsp;
-                        <em>Total changes:</em>{{commit.totalChurn|number}}
-                        <a style="margin-left:10px;" target="_blank" ng-href="{{commit.url}}">View commit details</a>
-                    </div>
-                    <p class="clearfix"></p>
-                </div>
-                <div class="panel-body">
-                    <div class="pull-left">{{commit.message}}</div>
-                    <div class="pull-right">
-                        <a ng-click="commitClick(commit)">
-                            Files
-                            <span class="glyphicon" ng-class="{'glyphicon-chevron-up': commit.expanded, 'glyphicon-chevron-down': !commit.expanded}" aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <p class="clearfix" />
-                    <file-table files="commit.files" ng-show="commit.expanded" />
-                </div>
-            </div>
+            <commit commit="commit" />
         </div>
     </div>
 </div>
