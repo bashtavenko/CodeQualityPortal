@@ -3,15 +3,14 @@
 churnModule.controller("ChartController", function ($scope, churnService, $log) {
     $scope.chartProps = {
         selection: null
-    };
-        
+    };        
 
     $scope.trendClick = function () {
         if ($scope.chartProps.selection == null) {
             return;
         }
 
-        $scope.selectedDate = $scope.chartProps.selection.collectionView.currentItem;
+        $scope.$parent.selectedDate = $scope.chartProps.selection.collectionView.currentItem;
         $scope.$parent.topFiles = churnService.getFiles($scope.criteria.repo.repoId, $scope.selectedDate.dateId, $scope.criteria.extension, 5);
 
         churnService.getCommits($scope.criteria.repo.repoId, $scope.selectedDate.dateId, $scope.criteria.extension)
