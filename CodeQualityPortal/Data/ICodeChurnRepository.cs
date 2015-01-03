@@ -12,5 +12,6 @@ namespace CodeQualityPortal.Data
         IList<CommitCodeChurn> GetCommitsByDate(int repoId, int dateId, string fileExtension);
         IList<FileCodeChurn> GetFilesByCommit(int commitId, string fileExtension);
         IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, string fileExtension, int? topX);
+        IList<FileChurnSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX);
     }
 }

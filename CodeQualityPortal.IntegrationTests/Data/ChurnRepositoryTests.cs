@@ -15,18 +15,19 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [TestFixtureSetUp]
         public void Setup()
         {
+            AutoMapperConfig.CreateMaps();
             _repository = new CodeChurnRepository();
         }
 
         [Test]
-        public void Repository_GetRepos_CanGet()
+        public void ChurnRepository_GetRepos_CanGet()
         {
             var result = _repository.GetRepos();
             Assert.IsTrue(result.Count() > 0);            
         }
 
         [Test]
-        public void Repository_GetTrend_WithExtension()
+        public void ChurnRepository_GetTrend_WithExtension()
         {
             // Arrange
             int repoId;
@@ -50,7 +51,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetTrend_WithoutExtension()
+        public void ChurnRepository_GetTrend_WithoutExtension()
         {
             // Arrange
             int repoId;
@@ -74,7 +75,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetTrend_WithBogusExtension()
+        public void ChurnRepository_GetTrend_WithBogusExtension()
         {
             // Arrange
             int repoId;
@@ -98,7 +99,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetFilesByDate_WithoutExtension()
+        public void ChurnRepository_GetFilesByDate_WithoutExtension()
         {
             // Arrange
             int repoId;
@@ -122,7 +123,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetFilesByDate_WithExtension()
+        public void ChurnRepository_GetFilesByDate_WithExtension()
         {
             // Arrange
             int repoId;
@@ -149,7 +150,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetCommitsByDate_WithExtension()
+        public void ChurnRepository_GetCommitsByDate_WithExtension()
         {
             // Arrange
             int repoId;
@@ -175,7 +176,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetCommitsByDate_WithoutExtension()
+        public void ChurnRepository_GetCommitsByDate_WithoutExtension()
         {
             // Arrange
             int repoId;
@@ -199,7 +200,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void Repository_GetFilesByCommit_WithExtension()
+        public void ChurnRepository_GetFilesByCommit_WithExtension()
         {
             // Arrange            
             int commitId;
@@ -220,6 +221,13 @@ namespace CodeQualityPortal.IntegrationTests.Data
 
             // Assert
             CollectionAssert.IsNotEmpty(result);
+        }
+
+        [Test]
+        public void ChurnRepository_GetWorst()
+        {
+            var result = _repository.GetWorst(DateTime.Now.AddYears(-1), DateTime.Now, 5);
+            Assert.IsTrue(result.Count > 0);
         }
     }
 }

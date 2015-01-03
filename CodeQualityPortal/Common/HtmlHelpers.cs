@@ -49,6 +49,28 @@ namespace CodeQualityPortal.Common
             }
 
             return actionMatch && routeParamMatch && controllerMatch;
-        }        
+        }
+        
+        public static MvcHtmlString FormatDate (this HtmlHelper helper, DateTime date)
+        {
+            return new MvcHtmlString(date.ToShortDateString());
+        }
+
+        public static MvcHtmlString FormatNumber(this HtmlHelper helper, int number)
+        {
+            return new MvcHtmlString(number.ToString("N0"));
+        }
+
+        public static MvcHtmlString FormatNumber(this HtmlHelper helper, int? number)
+        {
+            if (number.HasValue)
+            {
+                return FormatNumber(helper, number.Value);
+            }
+            else
+            {
+                return new MvcHtmlString(string.Empty);
+            }
+        }
     }
 }

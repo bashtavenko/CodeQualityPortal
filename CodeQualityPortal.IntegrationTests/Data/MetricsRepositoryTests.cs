@@ -73,6 +73,13 @@ namespace CodeQualityPortal.IntegrationTests.Data
             // Act
             var result = _repository.GetModules(tag, dateId);
             Assert.IsTrue(result.Count() > 0);
-        }     
+        }
+
+        [Test]
+        public void MetricsRepository_GetWorst()
+        {
+            var result = _repository.GetWorst(DateTime.Now.AddYears(-1), DateTime.Now, 5);
+            Assert.IsNotNull(result);
+        }
     }
 }

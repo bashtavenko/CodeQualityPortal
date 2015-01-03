@@ -209,10 +209,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
+    <Compile Include="ViewModels\FileChurnSummary.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
     <Compile Include="ViewModels\Member.cs" />
+    <Compile Include="ViewModels\MemberSummary.cs" />
     <Compile Include="ViewModels\Namespace.cs" />
     <Compile Include="ViewModels\MemberItem.cs" />
+    <Compile Include="ViewModels\TopWorst.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
     <Compile Include="ViewModels\Type.cs" />
     <Compile Include="ViewModels\NamespaceItem.cs" />
