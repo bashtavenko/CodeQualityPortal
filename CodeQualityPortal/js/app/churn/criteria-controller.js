@@ -1,6 +1,7 @@
 ﻿'use strict';
 
-churnModule.controller("CriteriaController", function ($scope, bootstrappedData, $log) {    
+churnModule.controller("CriteriaController", function ($scope, bootstrappedData, $log) {
+    $scope.dateTimePicker = {};
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
 
@@ -22,13 +23,13 @@ churnModule.controller("CriteriaController", function ($scope, bootstrappedData,
     $scope.openDateFrom = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.dateFromOpened = true;
+        $scope.dateTimePicker.dateFromOpened = true;
     };
 
     $scope.openDateTo = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.dateToOpened = true;
+        $scope.dateTimePicker.dateToOpened = true;
     };
 
     $scope.error = function (name) {

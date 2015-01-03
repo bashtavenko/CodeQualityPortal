@@ -2,7 +2,8 @@
 
 // Populates "criteria" in parent scope (mostly)
 metricsModule.controller("CriteriaController", function ($scope, bootstrappedData, metricsService) {
-    
+    $scope.dateTimePicker = {};
+
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
     var minDate = new Date();
@@ -131,13 +132,13 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.openDateFrom = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.dateFromOpened = true;
+        $scope.dateTimePicker.dateFromOpened = true;
     };
 
     $scope.openDateTo = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.dateToOpened = true;
+        $scope.dateTimePicker.dateToOpened = true;
     };
 
     $scope.error = function (name) {
