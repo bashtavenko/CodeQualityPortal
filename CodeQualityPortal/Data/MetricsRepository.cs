@@ -199,5 +199,20 @@ namespace CodeQualityPortal.Data
                 return items;
             }            
         }
+
+        public IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
+        {
+            using (var context = new CodeQualityContext())
+            {
+                var metricsItems = context.Metrics
+                    .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .OrderBy(o => o.MaintainabilityIndex)
+                    .Take(topX)
+                    .ToList();
+
+                var items = Mapper.Map<IList<MemberSummary>>(metricsItems);
+                return items;
+            }            
+        }
     }
 }

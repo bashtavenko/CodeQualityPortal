@@ -30,6 +30,7 @@ namespace CodeQualityPortal.Data
         // 5 - members
         IList<Member> GetMembersByType(int typeId);
         IList<TrendItem> GetSingleMemberTrend(int memberId, DateTime dateFrom, DateTime dateTo);
-        
+
+        IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime to, int topX);
     }
 }

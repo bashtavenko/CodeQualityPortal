@@ -1,48 +1,64 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using CodeQualityPortal.ViewModels;
+@model TopWorst
+
+@if (Model.MemberItems.Any())
+{
+    <h3>Top 5 worst members for the past 7 days</h3>
+    <table class="table table-stiped table-condensed files">
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Module</th>
+                <th>Namespace</th>
+                <th>Type</th>
+                <th>Member</th>
+                <th>Maintainability Index</th>
+                <th>Cyclomatic Complexity</th>
+                <th>Lines of Code</th>
+                <th>Class Coupling</th>
+                <th>Depth of Inheritance</th>                
+            </tr>
+        </thead>
+        @foreach(MemberSummary item in Model.MemberItems)
+        { 
+            <tr>
+                <td>@item.Tag</td>
+                <td>@item.Module</td>
+                <td>@item.Namespace</td>
+                <td>@item.Type</td>
+                <td>@item.Name</td>
+                <td>@item.MaintainabilityIndex</td>
+                <td>@item.CyclomaticComplexity</td>
+                <td>@Html.FormatNumber(item.LinesOfCode)</td>
+                <td>@item.ClassCoupling</td>
+                <td>@item.DepthOfInheritance</td>                
+            </tr>
+        }
+    </table>
 }
 
-@section JavascriptInHead
-{   
-    @*<script id="scriptInit" type="text/javascript">
-        $(document).ready(function () {
-
-            // generate some random data
-            var countries = 'US,Germany,UK,Japan,Italy,Greece'.split(','),
-                data = [];
-            for (var i = 0; i < countries.length; i++) {
-                data.push({
-                    country: countries[i],
-                    downloads: Math.round(Math.random() * 20000),
-                    sales: Math.random() * 10000,
-                    expenses: Math.random() * 5000
-                });
-            }
-
-            // create grid and show data
-            var grid = new wijmo.grid.FlexGrid('#theGrid');
-            grid.itemsSource = data;
-
-            // create a chart and show the same data    
-            var chart = new wijmo.chart.FlexChart('#theChart');
-            chart.initialize({
-                itemsSource: data,
-                bindingX: 'country',
-                series: [
-                    { name: 'Sales', binding: 'sales' },
-                    { name: 'Expenses', binding: 'expenses' },
-                    { name: 'Downloads', binding: 'downloads', chartType: wijmo.chart.ChartType.LineSymbols }]
-            });
-        });
-    </script>*@
+@if (Model.ChurnItems.Any())
+{
+    <h3 style="margin-top:75px;">Files with highest code churn for the past 7 days</h3>
+    <table class="table table-stiped table-condensed files">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>File</th>
+                <th>Lines Added</th>
+                <th>Lines Deleted</th>
+                <th>Total Churn</th>                
+            </tr>
+        </thead>
+        @foreach (FileChurnSummary item in Model.ChurnItems)
+        {
+            <tr>
+                <td>@Html.FormatDate(item.Date)</td>
+                <td>@item.FileName</td>
+                <td>@Html.FormatNumber(item.LinesAdded)</td>
+                <td>@Html.FormatNumber(item.LinesDeleted)</td>
+                <td>@Html.FormatNumber(item.LinesDeleted)</td>                
+            </tr>
+        }
+    </table>
 }
-
-@*<h1>Hello</h1>
-
-<p>This is a FlexGrid control:</p>
-<div id="theGrid" style="width:100%;height:auto;"></div>
-
-<p>And this is a FlexChart:</p>
-<div id="theChart" style="width:100%;height:350px;"></div>
-
-<p>That's it for now...</p>*@

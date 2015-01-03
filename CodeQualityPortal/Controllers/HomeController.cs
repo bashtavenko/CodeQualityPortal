@@ -1,9 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 using CodeQualityPortal.Data;
+using CodeQualityPortal.ViewModels;
 
 namespace CodeQualityPortal.Controllers
 {
@@ -20,7 +22,13 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            const int topX = 5;
+            const int days = 25;
+            var dateFrom = DateTime.Now.AddDays(days * -1);
+            var dateTo = DateTime.Now;            
+            var churnTopWorst = _codeChurnRepository.GetWorst(dateFrom, dateTo, topX);
+            var fileTopWorst = _metricsRepository.GetWorst(dateFrom, dateTo, topX);
+            return View(new TopWorst { ChurnItems = churnTopWorst, MemberItems = fileTopWorst });
         }
 
         public ActionResult Churn()

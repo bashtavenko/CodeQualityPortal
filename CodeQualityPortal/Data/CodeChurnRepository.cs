@@ -1,7 +1,10 @@
-﻿using CodeQualityPortal.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using AutoMapper;
+
+using CodeQualityPortal.ViewModels;
 
 namespace CodeQualityPortal.Data
 {
@@ -177,6 +180,20 @@ namespace CodeQualityPortal.Data
                     TotalChurn = s.TotalChurn
                 }).ToList();
             }            
-        }        
+        }
+
+        public IList<FileChurnSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
+        {
+            using (var context = new CodeQualityContext())
+            {
+                var files = context.Churn
+                    .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo && w.File != null)
+                    .OrderByDescending(o => o.TotalChurn)
+                    .Take(topX);
+
+                var items = Mapper.Map<IList<FileChurnSummary>>(files);
+                return items;                
+            }
+        }
     }
 }
