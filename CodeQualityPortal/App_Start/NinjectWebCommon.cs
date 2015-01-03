@@ -16,10 +16,8 @@ namespace CodeQualityPortal
 
     public static class NinjectWebCommon 
     {
-        public static bool IsRunning { get { return bootstrapper.Kernel != null; } }
-
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
-        
+
         /// <summary>
         /// Starts the application
         /// </summary>
