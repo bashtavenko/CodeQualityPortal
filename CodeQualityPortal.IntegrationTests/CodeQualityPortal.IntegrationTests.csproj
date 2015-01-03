@@ -123,6 +123,7 @@
     <Compile Include="WebApiControllers\FilesControllerTests.cs" />
     <Compile Include="WebApiControllers\CommitsControllerTests.cs" />
     <Compile Include="WebApiControllers\MetricsControllerTests.cs" />
+    <Compile Include="WebApiControllers\NinjectSetupFixture.cs" />
     <Compile Include="WebApiControllers\TrendControllerTests.cs" />
     <Compile Include="WebApiControllers\WebApiBaseTest.cs" />
     <Compile Include="WebApiControllers\RepoControllerTests.cs" />

@@ -10,7 +10,7 @@ using NUnit.Framework;
 using CodeQualityPortal.ViewModels;
 
 
-namespace CodeQualityPortal.IntegrationTests.Controllers
+namespace CodeQualityPortal.IntegrationTests
 {
     [TestFixture]
     public class FilesControllerTests : WebApiBaseTest
