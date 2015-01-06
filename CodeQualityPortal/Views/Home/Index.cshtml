@@ -15,8 +15,7 @@
                 <th>Maintainability Index</th>
                 <th>Cyclomatic Complexity</th>
                 <th>Lines of Code</th>
-                <th>Class Coupling</th>
-                <th>Depth of Inheritance</th>                
+                <th>Class Coupling</th>                
             </tr>
         </thead>
         @foreach(MemberSummary item in Model.MemberItems)
@@ -30,8 +29,7 @@
                 <td>@item.MaintainabilityIndex</td>
                 <td>@item.CyclomaticComplexity</td>
                 <td>@Html.FormatNumber(item.LinesOfCode)</td>
-                <td>@item.ClassCoupling</td>
-                <td>@item.DepthOfInheritance</td>                
+                <td>@item.ClassCoupling</td>                
             </tr>
         }
     </table>

@@ -206,12 +206,38 @@ namespace CodeQualityPortal.Data
             {
                 var metricsItems = context.Metrics
                     .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .GroupBy(g => new { g.MemberId, g.Member.Name })
+                    .Select(s => new
+                    {
+                        MemberId = s.Key.MemberId,
+                        Name = s.Key.Name,
+                        MaintainabilityIndex = s.Min(d => d.MaintainabilityIndex),
+                        CyclomaticComplexity = s.Max(d => d.CyclomaticComplexity),
+                        LinesOfCode = s.Max(d => d.LinesOfCode),
+                        ClassCoupling = s.Max(d => d.ClassCoupling)                        
+                    })
                     .OrderBy(o => o.MaintainabilityIndex)
                     .Take(topX)
                     .ToList();
 
-                var items = Mapper.Map<IList<MemberSummary>>(metricsItems);
-                return items;
+                var result = metricsItems
+                    .Join(context.Members, s => s.MemberId, m => m.MemberId,
+                    (s, d) => new MemberSummary
+                    {
+                         Id = s.MemberId.Value,
+                         Name = s.Name,
+                         Type = d.Type.Name,
+                         Namespace = d.Type.Namespace.Name,
+                         Module = d.Type.Namespace.Module.Name,
+                         Tag = d.Type.Namespace.Module.Target.Tag,
+                         MaintainabilityIndex = s.MaintainabilityIndex,
+                         CyclomaticComplexity = s.CyclomaticComplexity,
+                         LinesOfCode = s.LinesOfCode,
+                         ClassCoupling = s.ClassCoupling                         
+                    })
+                    .ToList();
+                
+                return result;
             }            
         }
     }
