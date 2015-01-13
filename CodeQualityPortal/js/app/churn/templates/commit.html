@@ -15,7 +15,7 @@
     <div class="panel-body">
         <div class="pull-left">{{commit.message}}</div>
         <div class="pull-right">
-            <a ng-click="commitClick(commit)">
+            <a ng-click="method(commit)">
                 Files
                 <span class="glyphicon" ng-class="{'glyphicon-chevron-up': commit.expanded, 'glyphicon-chevron-down': !commit.expanded}" aria-hidden="true"></span>
             </a>

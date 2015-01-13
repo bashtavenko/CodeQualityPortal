@@ -14,8 +14,7 @@
                 <th>Member</th>
                 <th>Maintainability Index</th>
                 <th>Cyclomatic Complexity</th>
-                <th>Lines of Code</th>
-                <th>Class Coupling</th>                
+                <th>Lines of Code</th>                
             </tr>
         </thead>
         @foreach(MemberSummary item in Model.MemberItems)
@@ -28,8 +27,7 @@
                 <td>@item.Name</td>
                 <td>@item.MaintainabilityIndex</td>
                 <td>@item.CyclomaticComplexity</td>
-                <td>@Html.FormatNumber(item.LinesOfCode)</td>
-                <td>@item.ClassCoupling</td>                
+                <td>@Html.FormatNumber(item.LinesOfCode)</td>                
             </tr>
         }
     </table>
@@ -55,7 +53,7 @@
                 <td>@item.FileName</td>
                 <td>@Html.FormatNumber(item.LinesAdded)</td>
                 <td>@Html.FormatNumber(item.LinesDeleted)</td>
-                <td>@Html.FormatNumber(item.LinesDeleted)</td>                
+                <td>@Html.FormatNumber(item.TotalChurn)</td>                
             </tr>
         }
     </table>

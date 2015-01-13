@@ -6,7 +6,8 @@ churnModule.directive('commit', function () {
         replace: true,
         templateUrl: '/js/app/churn/templates/commit.html',
         scope: {
-            commit: '='
+            commit: '=',
+            method: '&'
         }
     }
 });
