@@ -62,8 +62,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <img height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
-                        {{commit.committer}}
+                        <img ng-if="commit.committerAvatarUrl.length != undefined" height="30px" width="20px" ng-src="{{commit.committerAvatarUrl}}" />
+                        <img ng-if="commit.committerAvatarUrl == undefined" height="30px" width="20px" src="~/Content/unmapped_author.png" title="Author not mapped to Bitbucket user." />
+                        {{commit.committer}}                                                
                     </div>
                     <div class="pull-right">
                         <em>Additions:</em><span class="lines-added">{{commit.linesAdded|number}}</span>&nbsp;

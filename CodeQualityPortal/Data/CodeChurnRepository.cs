@@ -87,7 +87,7 @@ namespace CodeQualityPortal.Data
             {              
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    var commits = context.Churn.Where(f => f.Date.DateId == dateId && f.File.FileExtension == fileExtension)
+                    var commits = context.Churn.Where(f => f.Commit.RepoId == repoId && f.Date.DateId == dateId && f.File.FileExtension == fileExtension)
                     .GroupBy(f => f.CommitId)
                     .Select(s => new CommitCodeChurn {
                         CommitId = s.Key,
@@ -114,7 +114,7 @@ namespace CodeQualityPortal.Data
                 }
                 else
                 {
-                    return context.Churn.Where(f => f.Date.DateId == dateId && f.FileId == null)
+                    return context.Churn.Where(f => f.Commit.RepoId == repoId && f.Date.DateId == dateId && f.FileId == null)
                         .Select(s => new CommitCodeChurn
                         {
                             CommitId = s.Commit.CommitId,

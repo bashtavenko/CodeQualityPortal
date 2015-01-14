@@ -11,14 +11,18 @@ churnModule.controller("CriteriaController", function ($scope, bootstrappedData,
 
     $scope.maxDate = new Date();
 
-    $scope.criteria.repoOptions = bootstrappedData.repoOptions;
+    $scope.repoOptions = bootstrappedData.repoOptions;
     $scope.criteria.dateFrom = dateFrom;
     $scope.criteria.dateTo = new Date();
     $scope.criteria.extension = "cs"
     
-    if ($scope.criteria.repoOptions.length > 0) {
-        $scope.criteria.repo = $scope.criteria.repoOptions[0];
-    }       
+    if ($scope.repoOptions.length > 0) {
+        $scope.criteria.repo = $scope.repoOptions[0];
+    }
+
+    $scope.repoChanged = function () {
+        $scope.refreshChart($scope.criteria);
+    };
         
     $scope.openDateFrom = function ($event) {
         $event.preventDefault();

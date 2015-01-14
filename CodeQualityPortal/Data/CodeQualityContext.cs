@@ -53,7 +53,7 @@ namespace CodeQualityPortal.Data
             modelBuilder.Entity<DimFile>().Property(k => k.FileName).IsRequired();
             modelBuilder.Entity<DimFile>().Property(k => k.FileExtension).HasColumnType("varchar").HasMaxLength(255);
             modelBuilder.Entity<DimFile>().Property(k => k.FileExtension).IsRequired();
-            modelBuilder.Entity<DimFile>().Property(k => k.Url).IsRequired();
+            modelBuilder.Entity<DimFile>().Property(k => k.Url).IsOptional(); // Bitbucket doesn't provide file urls
                         
             modelBuilder.Entity<DimDate>().HasKey(k => k.DateId);
             
