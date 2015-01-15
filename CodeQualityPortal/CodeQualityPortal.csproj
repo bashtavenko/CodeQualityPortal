@@ -209,7 +209,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
-    <Compile Include="ViewModels\FileChurnSummary.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
     <Compile Include="ViewModels\Member.cs" />
     <Compile Include="ViewModels\MemberSummary.cs" />

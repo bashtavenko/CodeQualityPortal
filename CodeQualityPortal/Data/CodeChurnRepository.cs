@@ -182,17 +182,25 @@ namespace CodeQualityPortal.Data
             }            
         }
 
-        public IList<FileChurnSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
+        public IList<FileCodeChurn> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
         {
             using (var context = new CodeQualityContext())
             {
                 var files = context.Churn
-                    .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo && w.File != null)
+                    .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo && w.FileId != null && !string.IsNullOrEmpty(w.File.FileName))
+                    .GroupBy(g => g.File.FileName)
+                    .Select(s => new FileCodeChurn
+                        {
+                            FileName = s.Key,
+                            LinesAdded = s.Max(k => k.LinesAdded),
+                            LinesDeleted = s.Max(k => k.LinesDeleted),
+                            TotalChurn = s.Max(k => k.TotalChurn)
+                        })
                     .OrderByDescending(o => o.TotalChurn)
-                    .Take(topX);
-
-                var items = Mapper.Map<IList<FileChurnSummary>>(files);
-                return items;                
+                    .Take(topX)
+                    .ToList();
+                
+                return files;                
             }
         }
     }

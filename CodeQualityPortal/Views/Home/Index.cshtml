@@ -38,18 +38,16 @@
     <h3 style="margin-top:75px;">Files with highest code churn for the past 7 days</h3>
     <table class="table table-stiped table-condensed files">
         <thead>
-            <tr>
-                <th>Date</th>
+            <tr>                
                 <th>File</th>
                 <th>Lines Added</th>
                 <th>Lines Deleted</th>
                 <th>Total Churn</th>                
             </tr>
         </thead>
-        @foreach (FileChurnSummary item in Model.ChurnItems)
+        @foreach (FileCodeChurn item in Model.ChurnItems)
         {
-            <tr>
-                <td>@Html.FormatDate(item.Date)</td>
+            <tr>                
                 <td>@item.FileName</td>
                 <td>@Html.FormatNumber(item.LinesAdded)</td>
                 <td>@Html.FormatNumber(item.LinesDeleted)</td>

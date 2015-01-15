@@ -53,11 +53,6 @@ namespace CodeQualityPortal
             Mapper.CreateMap<FactMetrics, MemberItem>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Member.MemberId))
                 .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Member.Name));
-            
-            Mapper.CreateMap<FactCodeChurn, FileChurnSummary>()
-                .ForMember(m => m.Date, opt => opt.MapFrom(src => src.Date.Date))
-                .ForMember(m => m.FileName, opt => opt.MapFrom(src => src.File.FileName))
-                .ForMember(m => m.Url, opt => opt.MapFrom(src => src.File.Url));
         }       
     }
 }
