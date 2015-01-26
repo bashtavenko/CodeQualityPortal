@@ -25,9 +25,14 @@ churnModule.controller("ChartController", function ($scope, churnService, $log) 
 
     $scope.$on("adjust_chart", function (event, message) {
         // Wijmo x-axis labels
-        var timeDiff = Math.abs($scope.criteria.dateFrom.getTime() - $scope.criteria.dateTo.getTime());
-        var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        $scope.labelsVisible = dayDiff < 25;
+        if ($scope.$parent.commits.length == 0) {
+            $scope.labelsVisible = false;
+        }
+        else {
+            var timeDiff = Math.abs($scope.criteria.dateFrom.getTime() - $scope.criteria.dateTo.getTime());
+            var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            $scope.labelsVisible = dayDiff < 25;
+        }
     });    
 });
 

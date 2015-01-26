@@ -26,10 +26,10 @@ namespace CodeQualityPortal.Data
                 
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    // FactCodeChurn join File join Commit
+                    // FactCodeChurn join File join DimCommit join Commit
                     query = context
                         .Churn
-                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.File.Commit.RepoId == repoId && f.File.FileExtension == fileExtension);   
+                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.File.Commits.Any(a => a.RepoId == repoId) && f.File.FileExtension == fileExtension);   
                 }
                 else
                 {                    
@@ -54,7 +54,6 @@ namespace CodeQualityPortal.Data
 
                 if (items.Any())
                 {
-
                     var dates = new List<DateTime>();
                     for (var date = dateFrom; date <= dateTo; date = date.AddDays(1))
                     {
@@ -159,7 +158,7 @@ namespace CodeQualityPortal.Data
             using (var context = new CodeQualityContext())
             {
                 var query = context.Churn
-                    .Where(f => f.DateId == dateId && f.File.Commit.RepoId == repoId);
+                    .Where(f => f.DateId == dateId && f.File.Commits.Any(a => a.RepoId == repoId));
 
                 if (!string.IsNullOrEmpty(fileExtension))
                 {

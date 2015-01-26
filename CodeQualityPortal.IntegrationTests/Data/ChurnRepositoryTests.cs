@@ -40,7 +40,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;
+                repoId = lastChurn.File.Commits.First().RepoId;
                 fileExtension = lastChurn.File.FileExtension;
                 dateTo = lastChurn.Date.Date;
             }
@@ -63,7 +63,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;                
+                repoId = lastChurn.File.Commits.First().RepoId;                
                 dateTo = lastChurn.Date.Date;
             }
 
@@ -87,7 +87,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;
+                repoId = lastChurn.File.Commits.First().RepoId;
                 dateTo = lastChurn.Date.Date;
             }
 
@@ -111,7 +111,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;                
+                repoId = lastChurn.File.Commits.First().RepoId;                
                 dateId = lastChurn.Date.DateId;
             }
 
@@ -136,7 +136,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = someChurn.File.Commit.RepoId;
+                repoId = someChurn.File.Commits.First().RepoId;
                 dateId = someChurn.Date.DateId;
                 fileExtension = someChurn.File.FileExtension;
             }
@@ -163,7 +163,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;
+                repoId = lastChurn.File.Commits.First().RepoId;
                 dateId = lastChurn.Date.DateId;
                 fileExtension = lastChurn.File.FileExtension;
             }
@@ -188,7 +188,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                repoId = lastChurn.File.Commit.RepoId;
+                repoId = lastChurn.File.Commits.First().RepoId;
                 dateId = lastChurn.Date.DateId;                
             }
 

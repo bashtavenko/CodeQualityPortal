@@ -14,9 +14,8 @@ namespace CodeQualityPortal.Data
         public DateTime Date { get; set; }
         public int RepoId { get; set; }
         public virtual DimRepo Repo { get; set; }
-        public List<FactCodeChurn> Churn { get; set; }
-
-        public List<DimFile> Files { get; set; }
+        public virtual List<FactCodeChurn> Churn { get; set; }
+        public virtual List<DimFile> Files { get; set; }
 
         public DimCommit()
         {

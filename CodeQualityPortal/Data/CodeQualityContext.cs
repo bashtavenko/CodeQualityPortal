@@ -47,6 +47,14 @@ namespace CodeQualityPortal.Data
             modelBuilder.Entity<DimCommit>().Property(k => k.Sha).HasColumnType("varchar").HasMaxLength(255);
             modelBuilder.Entity<DimCommit>().Property(k => k.Sha).IsRequired();
             modelBuilder.Entity<DimCommit>().Property(k => k.Url).IsRequired();
+            modelBuilder.Entity<DimCommit>().HasMany(c => c.Files)
+                .WithMany(f => f.Commits)
+                .Map(c =>
+                {
+                    c.ToTable("DimCommitFile");
+                    c.MapLeftKey("CommitId");
+                    c.MapRightKey("FileId");
+                });
             
             modelBuilder.Entity<DimFile>().HasKey(k => k.FileId);
             modelBuilder.Entity<DimFile>().Property(k => k.FileName).HasColumnType("varchar").HasMaxLength(255);
