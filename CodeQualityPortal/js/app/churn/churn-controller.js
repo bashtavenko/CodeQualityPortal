@@ -18,8 +18,8 @@ churnModule.controller("ChurnController", function ($scope, churnService, $log) 
         $scope.topFiles = [];
         churnService.getTrend(criteria.repo.repoId, criteria.dateFrom, criteria.dateTo, criteria.extension) // Can't bind directly to Wijmo
             .$promise.then(function (data) {
-                $scope.$broadcast("adjust_chart");
                 $scope.trendData = data;
+                $scope.$broadcast("adjust_chart");                
             });
     }
     

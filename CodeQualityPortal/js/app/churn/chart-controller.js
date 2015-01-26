@@ -25,7 +25,7 @@ churnModule.controller("ChartController", function ($scope, churnService, $log) 
 
     $scope.$on("adjust_chart", function (event, message) {
         // Wijmo x-axis labels
-        if ($scope.$parent.commits.length == 0) {
+        if ($scope.$parent.trendData.length == 0) {
             $scope.labelsVisible = false;
         }
         else {
