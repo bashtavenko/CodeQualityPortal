@@ -29,7 +29,9 @@ namespace CodeQualityPortal.Data
                     // FactCodeChurn join File join DimCommit join Commit
                     query = context
                         .Churn
-                        .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.File.Commits.Any(a => a.RepoId == repoId) && f.File.FileExtension == fileExtension);   
+                        .SelectMany(s => s.File.Commits, (s, d) => new  { Churn = s, File = s.File, Commit = d })
+                        .Where(w => w.Churn.Date.Date >= dateFrom.Date && w.Churn.Date.Date <= dateTo.Date && w.File.FileExtension == fileExtension && w.Commit.RepoId == repoId)
+                        .Select(s => s.Churn);                    
                 }
                 else
                 {                    
