@@ -187,6 +187,17 @@
     <Compile Include="Controllers\TrendController.cs" />
     <Compile Include="Controllers\ReposController.cs" />
     <Compile Include="Data\DateTuple.cs" />
+    <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
+    <Compile Include="Data\Maps\DimMemberConfiguration.cs" />
+    <Compile Include="Data\Maps\DimTypeConfiguration.cs" />
+    <Compile Include="Data\Maps\DimNamespaceConfiguration.cs" />
+    <Compile Include="Data\Maps\DimModuleConfiguration.cs" />
+    <Compile Include="Data\Maps\DimTargetConfiguration.cs" />
+    <Compile Include="Data\Maps\FactCodeChurnConfiguration.cs" />
+    <Compile Include="Data\Maps\DimDateConfiguration.cs" />
+    <Compile Include="Data\Maps\DimFileConfiguration.cs" />
+    <Compile Include="Data\Maps\DimCommitConfiguration.cs" />
+    <Compile Include="Data\Maps\DimRepoConfiguration.cs" />
     <Compile Include="Data\MetricsRepository.cs" />
     <Compile Include="Data\CodeChurnRepository.cs" />
     <Compile Include="Data\DimCommit.cs" />

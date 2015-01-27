@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
+using CodeQualityPortal.Data.Maps;
+
 namespace CodeQualityPortal.Data
 {
     public class CodeQualityContext : DbContext
@@ -38,53 +40,18 @@ namespace CodeQualityPortal.Data
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-            modelBuilder.Entity<DimRepo>().HasKey(k => k.RepoId);
-            modelBuilder.Entity<DimRepo>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimRepo>().Property(k => k.Name).IsRequired();
-
-            modelBuilder.Entity<DimCommit>().HasKey(k => k.CommitId);
-            modelBuilder.Entity<DimCommit>().Property(k => k.Sha).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimCommit>().Property(k => k.Sha).IsRequired();
-            modelBuilder.Entity<DimCommit>().Property(k => k.Url).IsRequired();
-            modelBuilder.Entity<DimCommit>().HasMany(c => c.Files)
-                .WithMany(f => f.Commits)
-                .Map(c =>
-                {
-                    c.ToTable("DimCommitFile");
-                    c.MapLeftKey("CommitId");
-                    c.MapRightKey("FileId");
-                });
             
-            modelBuilder.Entity<DimFile>().HasKey(k => k.FileId);
-            modelBuilder.Entity<DimFile>().Property(k => k.FileName).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimFile>().Property(k => k.FileName).IsRequired();
-            modelBuilder.Entity<DimFile>().Property(k => k.FileExtension).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimFile>().Property(k => k.FileExtension).IsRequired();
-            modelBuilder.Entity<DimFile>().Property(k => k.Url).IsOptional(); // Bitbucket doesn't provide file urls
-                        
-            modelBuilder.Entity<DimDate>().HasKey(k => k.DateId);
-            
-            modelBuilder.Entity<FactCodeChurn>().HasKey(k => k.CodeChurnId);            
-
-            modelBuilder.Entity<DimTarget>().HasKey(k => k.TargetId);
-            modelBuilder.Entity<DimTarget>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimTarget>().Property(k => k.Tag).HasColumnType("varchar").HasMaxLength(255);
-            modelBuilder.Entity<DimTarget>().Property(k => k.FileName).HasColumnType("varchar").HasMaxLength(255);
-
-            modelBuilder.Entity<DimModule>().HasKey(k => k.ModuleId);
-            modelBuilder.Entity<DimModule>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);
-            
-            modelBuilder.Entity<DimNamespace>().HasKey(k => k.NamespaceId);
-            modelBuilder.Entity<DimNamespace>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);
-
-            modelBuilder.Entity<DimType>().HasKey(k => k.TypeId);
-            modelBuilder.Entity<DimType>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);
-
-            modelBuilder.Entity<DimMember>().HasKey(k => k.MemberId);
-            modelBuilder.Entity<DimMember>().Property(k => k.Name).HasColumnType("varchar").HasMaxLength(255);            
-
-            modelBuilder.Entity<FactMetrics>().HasKey(k => k.MetricsId);
+            modelBuilder.Configurations.Add(new DimRepoConfiguration());
+            modelBuilder.Configurations.Add(new DimCommitConfiguration());
+            modelBuilder.Configurations.Add(new DimFileConfiguration());
+            modelBuilder.Configurations.Add(new DimDateConfiguration());
+            modelBuilder.Configurations.Add(new FactCodeChurnConfiguration());
+            modelBuilder.Configurations.Add(new DimTargetConfiguration());
+            modelBuilder.Configurations.Add(new DimModuleConfiguration());
+            modelBuilder.Configurations.Add(new DimNamespaceConfiguration());
+            modelBuilder.Configurations.Add(new DimTypeConfiguration());
+            modelBuilder.Configurations.Add(new DimMemberConfiguration());
+            modelBuilder.Configurations.Add(new FactMetricsConfiguration());
         }
     }
 }
