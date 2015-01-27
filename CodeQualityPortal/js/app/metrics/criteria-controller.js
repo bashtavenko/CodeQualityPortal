@@ -120,9 +120,11 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.refresh = function () {
         if ($scope.criteriaForm != undefined) {
             // Setting min and max dates don't stop from typing in dates that are out of range
-            $scope.criteriaForm.dateFrom.$setValidity('valid', $scope.criteria.dateFrom >= $scope.minDate && $scope.criteria.dateFrom <= $scope.maxDate);
-            $scope.criteriaForm.dateTo.$setValidity('valid', $scope.criteria.dateTo >= $scope.minDate && $scope.criteria.dateTo <= $scope.maxDate);
-            if ($scope.criteriaForm.$invalid) {
+            var dateFromValid = $scope.criteria.dateFrom >= $scope.minDate && $scope.criteria.dateFrom <= $scope.maxDate;
+            var dateToValid = $scope.criteria.dateTo >= $scope.minDate && $scope.criteria.dateTo <= $scope.maxDate;
+            $scope.criteriaForm.dateFrom.$setValidity('valid', dateFromValid);
+            $scope.criteriaForm.dateTo.$setValidity('valid', dateToValid);
+            if (!dateFromValid || !dateToValid) {
                 return;
             }
         }

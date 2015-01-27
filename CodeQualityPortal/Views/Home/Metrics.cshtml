@@ -32,6 +32,6 @@
     <h3>{{mode.trendLabel}}</h3>
     <div ng-include="'/js/app/metrics/partials/chart.html'" ng-controller="ChartController"></div>
 
-    <h3 ng-show="criteria.selectedDate">{{mode.itemsLabel}}{{criteria.selectedDate.date | date}}</h3>
+    <h3 ng-show="criteria.selectedDate">{{mode.itemsLabel}} {{criteria.selectedDate.date | date}}</h3>
     <div ng-include="'/js/app/metrics/partials/grid.html'"></div>
 </div>

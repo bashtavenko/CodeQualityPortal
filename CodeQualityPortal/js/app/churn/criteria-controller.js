@@ -44,9 +44,11 @@ churnModule.controller("CriteriaController", function ($scope, bootstrappedData,
     $scope.refresh = function (criteria) {
         if ($scope.repoForm != undefined) {
             // Setting min and max dates don't stop from typing in dates that are out of range
-            $scope.repoForm.dateFrom.$setValidity('valid', criteria.dateFrom >= $scope.minDate && criteria.dateFrom <= $scope.maxDate);
-            $scope.repoForm.dateTo.$setValidity('valid', criteria.dateTo >= $scope.minDate && criteria.dateTo <= $scope.maxDate);
-            if ($scope.repoForm.$invalid) {
+            var dateFromValid = criteria.dateFrom >= $scope.minDate && criteria.dateFrom <= $scope.maxDate;
+            var dateToValid = criteria.dateTo >= $scope.minDate && criteria.dateTo <= $scope.maxDate;
+            $scope.repoForm.dateFrom.$setValidity('valid', dateFromValid);
+            $scope.repoForm.dateTo.$setValidity('valid', dateToValid);
+            if (!dateFromValid || !dateToValid) {
                 return;
             }
         }
