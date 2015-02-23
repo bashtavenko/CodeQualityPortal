@@ -37,7 +37,6 @@ metricsModule.factory("metricsService", function($resource, commonService) {
                 dateFrom: commonService.convertDateToIso(dateFrom),
                 dateTo: commonService.convertDateToIso(dateTo)
             };
-
             return $resource("/api/namespacetrend/:moduleId/:dateFrom/:dateTo",
                 { moduleId: "@moduleId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
                 .query(params);
@@ -47,7 +46,7 @@ metricsModule.factory("metricsService", function($resource, commonService) {
                 moduleId: moduleId,
                 dateId: dateId
             };
-            return $resource("/api/namespaces/:moduleId/:dateId", { moduleId: "@moduleId", dateId: "@dateId" })
+            return $resource("/api/namespaces/:moduleId/:dateId", {moduleId: "@moduleId", dateId: "@dateId" })
                 .query(params);
         },
 
@@ -56,77 +55,89 @@ metricsModule.factory("metricsService", function($resource, commonService) {
             var params = {
                 moduleId: moduleId                
             };
-            return $resource("/api/namespaces/:moduleId", { moduleId: "@moduleId" })
+            return $resource("/api/namespaces/:moduleId", {moduleId: "@moduleId" })
             .query(params);
         },
-        getTypeTrend: function (namespaceId, dateFrom, dateTo) {
+        getTypeTrend: function (moduleId, namespaceId, dateFrom, dateTo) {
             var params = {
+                moduleId: moduleId,                
                 namespaceId: namespaceId,
                 dateFrom: commonService.convertDateToIso(dateFrom),
                 dateTo: commonService.convertDateToIso(dateTo)
             };
 
-            return $resource("/api/typetrend/:namespaceId/:dateFrom/:dateTo",
-                { namespaceId: "@namespaceId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+            return $resource("/api/typetrend/:moduleId/:namespaceId/:dateFrom/:dateTo",
+                { moduleId: "@moduleId", namespaceId: "@namespaceId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
                 .query(params);
         },
-        getTypesByDate: function (namespaceId, dateId) {
+        getTypesByDate: function (moduleId, namespaceId, dateId) {
             var params = {
+                moduleId: moduleId,
                 namespaceId: namespaceId,
                 dateId: dateId
             };
-            return $resource("/api/types/:namespaceId/:dateId", { namespaceId: "@namespaceId", dateId: "@dateId" })
+            return $resource("/api/types/:moduleId/:namespaceId/:dateId", {moduleId: "@moduleId", namespaceId: "@namespaceId", dateId: "@dateId" })
                 .query(params);
         },
 
         // 4 - type
-        getTypes: function (namespaceId) {
+        getTypes: function (moduleId, namespaceId) {
             var params = {
+                moduleId: moduleId,
                 namespaceId: namespaceId                
             };
-            return $resource("/api/types/:namespaceId", { namespaceId: "@namespaceId" })
+            return $resource("/api/types/:moduleId/:namespaceId", {moduleId: "@moduleId", namespaceId: "@namespaceId" })
                 .query(params);
         },
 
-        getMemberTrend: function (typeId, dateFrom, dateTo) {
+        getMemberTrend: function (moduleId, namespaceId, typeId, dateFrom, dateTo) {
             var params = {
+                moduleId: moduleId,
+                namespaceId: namespaceId,                
                 typeId: typeId,
                 dateFrom: commonService.convertDateToIso(dateFrom),
                 dateTo: commonService.convertDateToIso(dateTo)
             };
 
-            return $resource("/api/membertrend/:typeId/:dateFrom/:dateTo",
-                { typeId: "@typeId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+            return $resource("/api/membertrend/:moduleId/:namespaceId/:typeId/:dateFrom/:dateTo",
+                { moduleId: "@moduleId", namespaceId: "@namespaceId", typeId: "@typeId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
                     .query(params);
         },
 
-        getMembersByDate: function (typeId, dateId) {
+        getMembersByDate: function (moduleId, namespaceId, typeId, dateId) {
             var params = {
+                moduleId: moduleId,
+                namespaceId: namespaceId,
                 typeId: typeId,
                 dateId: dateId
             };
-            return $resource("/api/members/:typeId/:dateId", { typeId: "@typeId", dateId: "@dateId" })
+            return $resource("/api/members/:moduleId/:namespaceId/:typeId/:dateId", { moduleId: "@moduleId", namespaceId: "@namespaceId", typeId: "@typeId", dateId: "@dateId" })
                 .query(params);
         },
 
         // 5 - member
-        getMembers: function (typeId) {
+        getMembers: function (moduleId, namespaceId, typeId) {
             var params = {
+                moduleId: moduleId,
+                namespaceId: namespaceId,
                 typeId: typeId                
             };
-            return $resource("/api/members/:typeId", { typeId: "@typeId" })
+            return $resource("/api/members/:moduleId/:namespaceId/:typeId", { moduleId: "@moduleId", namespaceId: "@namespaceId", typeId: "@typeId" })
                 .query(params);
         },
 
-        getSingleMemberTrend: function (memberId, dateFrom, dateTo) {
+        getSingleMemberTrend: function (moduleId, namespaceId, typeId, memberId, dateFrom, dateTo) {
             var params = {
+                moduleId: moduleId,
+                namespaceId: namespaceId,
+                typeId: typeId,                
                 memberId: memberId,
                 dateFrom: commonService.convertDateToIso(dateFrom),
                 dateTo: commonService.convertDateToIso(dateTo)
             };
 
-            return $resource("/api/singlemembertrend/:memberId/:dateFrom/:dateTo",
-                { memberId: "@memberId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+            return $resource("/api/singlemembertrend/:moduleId/:namespaceId/:typeId/:memberId/:dateFrom/:dateTo",
+                { moduleId: "@moduleId", namespaceId: "@namespaceId", typeId: "@typeId", memberId: "@memberId", dateFrom: "@dateFrom", dateTo: "@dateTo" })
                     .query(params);
         },
     };

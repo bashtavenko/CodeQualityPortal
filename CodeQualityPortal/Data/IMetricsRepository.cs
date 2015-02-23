@@ -19,17 +19,17 @@ namespace CodeQualityPortal.Data
 
         // 3 - namespaces
         IList<Namespace> GetNamespacesByModule(int moduleId);
-        IList<TrendItem> GetTypeTrend(int namespaceId, DateTime dateFrom, DateTime dateTo);
-        IList<TypeItem> GetTypes(int namespaceId, int dateId);
+        IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo);
+        IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId);
         
         // 4 - types
-        IList<ViewModels.Type> GetTypesByNamespace(int namespaceid);
-        IList<TrendItem> GetMemberTrend(int typeId, DateTime dateFrom, DateTime dateTo);
-        IList<MemberItem> GetMembers(int typeId, int dateId);
+        IList<ViewModels.Type> GetTypesByNamespace(int moduleId, int namespaceid);
+        IList<TrendItem> GetMemberTrend(int moduleId, int namespaceid, int typeId, DateTime dateFrom, DateTime dateTo);
+        IList<MemberItem> GetMembers(int moduleId, int namespaceid, int typeId, int dateId);
 
         // 5 - members
-        IList<Member> GetMembersByType(int typeId);
-        IList<TrendItem> GetSingleMemberTrend(int memberId, DateTime dateFrom, DateTime dateTo);
+        IList<Member> GetMembersByType(int moduleId, int namespaceid, int typeId);
+        IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo);
 
         IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime to, int topX);
     }

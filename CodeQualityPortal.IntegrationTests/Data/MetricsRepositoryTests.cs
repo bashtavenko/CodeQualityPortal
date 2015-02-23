@@ -42,12 +42,60 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                tag = item.Member.Type.Namespace.Module.Target.Tag;
+                tag = item.Module.Targets.First().Tag;
                 dateTo = item.Date.DateTime;
             }
 
             // Act
             var result = _repository.GetModuleTrend(tag, dateTo.AddDays(-7), dateTo);
+            Assert.IsTrue(result.Count() > 0);
+        }
+
+
+        [Test]
+        public void MetricsRepository_GetNamespacesByModule()
+        {
+            // Arrange
+            int moduleId;
+            using (var ctx = new CodeQualityContext())
+            {
+                var item = ctx.Metrics
+                    .Where(w => w.Module != null)
+                    .OrderByDescending(d => d.Date.DateTime).FirstOrDefault();
+                if (item == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                moduleId = item.ModuleId.Value;
+            }
+
+            // Act
+            var result = _repository.GetNamespacesByModule(moduleId);
+            Assert.IsTrue(result.Count() > 0);
+        }
+
+
+        [Test]
+        public void MetricsRepository_GetTypesByNamespace()
+        {
+            // Arrange
+            int moduleId;
+            int namespaceId;
+            using (var ctx = new CodeQualityContext())
+            {
+                var item = ctx.Metrics
+                    .Where(w => w.Module != null && w.NamespaceId != null)
+                    .OrderByDescending(d => d.Date.DateTime).FirstOrDefault();
+                if (item == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
+                moduleId = item.ModuleId.Value;
+                namespaceId = item.NamespaceId.Value;
+            }
+
+            // Act
+            var result = _repository.GetTypesByNamespace(moduleId, namespaceId);
             Assert.IsTrue(result.Count() > 0);
         }
 
@@ -66,7 +114,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                tag = item.Member.Type.Namespace.Module.Target.Tag;
+                tag = item.Module.Targets.First().Tag;
                 dateId = item.DateId;
             }
 

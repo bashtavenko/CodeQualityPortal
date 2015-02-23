@@ -14,11 +14,15 @@ namespace CodeQualityPortal
             Mapper.CreateMap<IGrouping<DateTuple, FactMetrics>, TrendItem>()
                 .ForMember(m => m.DateId, opt => opt.MapFrom(src => src.Key.DateId))
                 .ForMember(m => m.Date, opt => opt.MapFrom(src => src.Key.DateTime))
-                .ForMember(m => m.MaintainabilityIndex, opt => opt.MapFrom(src => (int?)src.Average(a => a.MaintainabilityIndex)))
-                .ForMember(m => m.CyclomaticComplexity, opt => opt.MapFrom(src => (int?)src.Sum(a => a.CyclomaticComplexity)))
-                .ForMember(m => m.ClassCoupling, opt => opt.MapFrom(src => (int?)src.Sum(a => a.ClassCoupling)))
-                .ForMember(m => m.DepthOfInheritance, opt => opt.MapFrom(src => (int?)src.Max(a => a.DepthOfInheritance)))
-                .ForMember(m => m.LinesOfCode, opt => opt.MapFrom(src => (int?)src.Sum(a => a.LinesOfCode)));
+                .ForMember(m => m.MaintainabilityIndex,
+                    opt => opt.MapFrom(src => (int?) src.Average(a => a.MaintainabilityIndex)))
+                .ForMember(m => m.CyclomaticComplexity,
+                    opt => opt.MapFrom(src => (int?) src.Sum(a => a.CyclomaticComplexity)))
+                .ForMember(m => m.ClassCoupling, opt => opt.MapFrom(src => (int?) src.Sum(a => a.ClassCoupling)))
+                .ForMember(m => m.DepthOfInheritance,
+                    opt => opt.MapFrom(src => (int?) src.Max(a => a.DepthOfInheritance)))
+                .ForMember(m => m.LinesOfCode, opt => opt.MapFrom(src => (int?) src.Sum(a => a.LinesOfCode)))
+                .ForMember(m => m.CodeCoverage, opt => opt.MapFrom(src => (int?) src.Average(a => a.CodeCoverage)));
 
             Mapper.CreateMap<FactMetrics, ModuleItem>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Module.ModuleId))

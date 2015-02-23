@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Web.UI;
 using AutoMapper;
 
 using CodeQualityPortal.ViewModels;
+
 
 namespace CodeQualityPortal.Data
 {
@@ -24,7 +25,9 @@ namespace CodeQualityPortal.Data
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.Module.Target.Tag == tag && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .Where(w => w.Module.Targets.Any(a => a.Tag == tag) 
+                           && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                           && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();
 
@@ -38,7 +41,9 @@ namespace CodeQualityPortal.Data
             using (var context = new CodeQualityContext())
             {                
                 var queryItems = context.Metrics
-                    .Where(w => w.Module.Target.Tag == tag && w.DateId == dateId)
+                    .Where(w => w.Module.Targets.Any(a => a.Tag == tag)
+                        && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                        && w.DateId == dateId)
                     .ToList();
 
                 var items = Mapper.Map<IList<ModuleItem>>(queryItems);
@@ -52,20 +57,21 @@ namespace CodeQualityPortal.Data
             using (var context = new CodeQualityContext())
             {
                 var queryItems = context.Modules
-                    .Where(w => w.Target.Tag == tag)
+                    .Where(w => w.Targets.Any(a => a.Tag == tag))
                     .ToList();
 
                 var items = Mapper.Map<IList<Module>>(queryItems);
                 return items;
             }
         }
-
+        
         public IList<TrendItem> GetNamespaceTrend(int moduleId, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.ModuleId == moduleId && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .Where(w => w.ModuleId == moduleId && w.NamespaceId == null && w.TypeId == null && w.MemberId == null 
+                        && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();
 
@@ -73,16 +79,15 @@ namespace CodeQualityPortal.Data
                 return items;                
             }            
         }
-
+        
         public IList<NamespaceItem> GetNamespaces(int moduleId, int dateId)
         {
             using (var context = new CodeQualityContext())
             {
-                var queryItems = context.Metrics
-                    .Where(w => w.Namespace.ModuleId == moduleId && w.DateId == dateId)
-                    .ToList();
+                var query = context.Metrics
+                    .Where(w => w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId != null && w.TypeId == null && w.MemberId == null);
 
-                var items = Mapper.Map<IList<NamespaceItem>>(queryItems);
+                var items = Mapper.Map<IList<NamespaceItem>>(query.ToList());
                 return items;
             }
         }
@@ -92,22 +97,24 @@ namespace CodeQualityPortal.Data
         public IList<Namespace> GetNamespacesByModule(int moduleId)
         {
             using (var context = new CodeQualityContext())
-            {
-                var queryItems = context.Namespaces
+            {   
+                var queryItems = context.Modules
                     .Where(w => w.ModuleId == moduleId)
+                    .SelectMany(s => s.Namespaces)
                     .ToList();
 
                 var items = Mapper.Map<IList<Namespace>>(queryItems);
                 return items;
             }            
         }
-
-        public IList<TrendItem> GetTypeTrend(int namespaceId, DateTime dateFrom, DateTime dateTo)
+        
+        public IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.NamespaceId == namespaceId && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId == null && w.MemberId == null
+                            && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();
 
@@ -115,13 +122,13 @@ namespace CodeQualityPortal.Data
                 return items;
             }    
         }
-
-        public IList<TypeItem> GetTypes(int namespaceId, int dateId)
+        
+        public IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId)
         {
             using (var context = new CodeQualityContext())
             {
                 var queryItems = context.Metrics
-                    .Where(w => w.Type.NamespaceId == namespaceId && w.DateId == dateId)
+                    .Where(w => w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId != null && w.MemberId == null)
                     .ToList();
 
                 var items = Mapper.Map<IList<TypeItem>>(queryItems);
@@ -130,25 +137,28 @@ namespace CodeQualityPortal.Data
         }
 
         // 4 - types
-        public IList<ViewModels.Type> GetTypesByNamespace(int namespaceid)
+        public IList<ViewModels.Type> GetTypesByNamespace(int moduleId, int namespaceid)
         {
             using (var context = new CodeQualityContext())
             {
-                var queryItems = context.Types
-                    .Where(w => w.NamespaceId == namespaceid)
-                    .ToList();
+                var queryItems = context.Modules
+                    .Where(w => w.ModuleId == moduleId)
+                    .SelectMany(b => b.Namespaces)
+                    .Where(z => z.NamespaceId == namespaceid)
+                    .SelectMany(o => o.Types);
 
-                var items = Mapper.Map<IList<ViewModels.Type>>(queryItems);
+                var items = Mapper.Map<IList<ViewModels.Type>>(queryItems.ToList());
                 return items;
             }            
         }
 
-        public IList<TrendItem> GetMemberTrend(int typeId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetMemberTrend(int moduleId, int namespaceid, int typeId, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.TypeId == typeId && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == null &&
+                        w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();
 
@@ -157,13 +167,12 @@ namespace CodeQualityPortal.Data
             }
         }
 
-        public IList<MemberItem> GetMembers(int typeId, int dateId)
+        public IList<MemberItem> GetMembers(int moduleId, int namespaceid, int typeId, int dateId)
         {
             using (var context = new CodeQualityContext())
             {
                 var queryItems = context.Metrics
-                    .Where(w => w.Member.TypeId == typeId && w.DateId == dateId)
-                    .ToList();
+                    .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId != null && w.DateId == dateId);
 
                 var items = Mapper.Map<IList<MemberItem>>(queryItems);
                 return items;
@@ -172,26 +181,31 @@ namespace CodeQualityPortal.Data
 
         
         // 5 - Members
-        public IList<Member> GetMembersByType(int typeId)
+        public IList<Member> GetMembersByType(int moduleId, int namespaceid, int typeId)
         {
             using (var context = new CodeQualityContext())
             {
-                var queryItems = context.Members
+                var queryItems = context.Modules
+                    .Where(x => x.ModuleId == moduleId)
+                    .SelectMany(b => b.Namespaces)
+                    .Where(z => z.NamespaceId == namespaceid)
+                    .SelectMany(r => r.Types)
                     .Where(w => w.TypeId == typeId)
-                    .ToList();
+                    .SelectMany(o => o.Members);
 
-                var items = Mapper.Map<IList<Member>>(queryItems);
+                var items = Mapper.Map<IList<Member>>(queryItems.ToList());
                 return items;
             }                        
         }
-                      
 
-        public IList<TrendItem> GetSingleMemberTrend(int memberId, DateTime dateFrom, DateTime dateTo)
+
+        public IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.MemberId == memberId && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == memberId
+                        && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date }) // there's no point to group since it's the bottom
                     .ToList();
 
@@ -202,43 +216,30 @@ namespace CodeQualityPortal.Data
 
         public IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
         {
+            //return new List<MemberSummary>();
             using (var context = new CodeQualityContext())
             {
-                var metricsItems = context.Metrics
+                var result = context.Metrics
                     .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
-                    .GroupBy(g => new { g.MemberId, g.Member.Name })
-                    .Select(s => new
+                    .GroupBy(g => new { Module = g.Module.Name, Namespace = g.Namespace.Name, Type = g.Type.Name, g.MemberId, Member = g.Member.Name })
+                    .Select(s => new MemberSummary
                     {
-                        MemberId = s.Key.MemberId,
-                        Name = s.Key.Name,
+                        Module = s.Key.Module,
+                        Namespace = s.Key.Namespace,
+                        Type = s.Key.Type,
+                        Id = s.Key.MemberId.Value,
+                        Name = s.Key.Member,
                         MaintainabilityIndex = s.Min(d => d.MaintainabilityIndex),
                         CyclomaticComplexity = s.Max(d => d.CyclomaticComplexity),
                         LinesOfCode = s.Max(d => d.LinesOfCode),
-                        ClassCoupling = s.Max(d => d.ClassCoupling)                        
+                        ClassCoupling = s.Max(d => d.ClassCoupling)
                     })
                     .OrderBy(o => o.MaintainabilityIndex)
                     .Take(topX)
                     .ToList();
 
-                var result = metricsItems
-                    .Join(context.Members, s => s.MemberId, m => m.MemberId,
-                    (s, d) => new MemberSummary
-                    {
-                         Id = s.MemberId.Value,
-                         Name = s.Name,
-                         Type = d.Type.Name,
-                         Namespace = d.Type.Namespace.Name,
-                         Module = d.Type.Namespace.Module.Name,
-                         Tag = d.Type.Namespace.Module.Target.Tag,
-                         MaintainabilityIndex = s.MaintainabilityIndex,
-                         CyclomaticComplexity = s.CyclomaticComplexity,
-                         LinesOfCode = s.LinesOfCode,
-                         ClassCoupling = s.ClassCoupling                         
-                    })
-                    .ToList();
-                
                 return result;
-            }            
+            }
         }
     }
 }

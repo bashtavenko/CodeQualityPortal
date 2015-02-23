@@ -24,7 +24,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.loadMembers = function () {
         $scope.initSelect('memberOptions', 'member');
         if ($scope.criteria.type.id > 0) {
-            metricsService.getMembers($scope.criteria.type.id)
+            metricsService.getMembers($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id)
               .$promise.then(function (data) {
                   $scope.memberOptions = $scope.memberOptions.concat(data);
               });
@@ -34,7 +34,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.loadTypes = function () {
         $scope.initSelect('typeOptions', 'type');
         if ($scope.criteria.namespace.id > 0) {
-            metricsService.getTypes($scope.criteria.namespace.id)
+            metricsService.getTypes($scope.criteria.module.id, $scope.criteria.namespace.id)
               .$promise.then(function (data) {
                   $scope.typeOptions = $scope.typeOptions.concat(data);
               });

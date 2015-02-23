@@ -19,10 +19,11 @@
         public int? MemberId { get; set; }
         public virtual DimMember Member { get; set; }
 
-        public int MaintainabilityIndex { get; set; }
-        public int CyclomaticComplexity { get; set; }
-        public int ClassCoupling { get; set; }               
+        public int? MaintainabilityIndex { get; set; }
+        public int? CyclomaticComplexity { get; set; }
+        public int? ClassCoupling { get; set; }
         public int? DepthOfInheritance { get; set; } // members don't have it
-        public int LinesOfCode { get; set; }                
+        public int? LinesOfCode { get; set; }
+        public int? CodeCoverage { get; set; }               
     }
 }

@@ -68,55 +68,55 @@ namespace CodeQualityPortal.Controllers
             return _repository.GetNamespacesByModule(moduleId);
         }
 
-        [Route("typetrend/{namespaceId}/{dateFrom}/{dateTo}")]
+        [Route("typetrend/{moduleId}/{namespaceId}/{dateFrom}/{dateTo}")]
         [HttpGet]
-        public IList<TrendItem> GetTypeTrend(int namespaceId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo)
         {
-            return _repository.GetTypeTrend(namespaceId, dateFrom, dateTo);
+            return _repository.GetTypeTrend(moduleId, namespaceId, dateFrom, dateTo);
         }
 
-        [Route("types/{namespaceId}/{dateId:int}")]
+        [Route("types/{moduleId}/{namespaceId}/{dateId:int}")]
         [HttpGet]
-        public IList<TypeItem> GetTypes(int namespaceId, int dateId)
+        public IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId)
         {
-            return _repository.GetTypes(namespaceId, dateId);
+            return _repository.GetTypes(moduleId, namespaceId, dateId);
         }
 
         // 4 - types
-        [Route("types/{namespaceId}")]
+        [Route("types/{moduleId}/{namespaceId}")]
         [HttpGet]
-        public IList<ViewModels.Type> GetTypesByNamespace(int namespaceId)
+        public IList<ViewModels.Type> GetTypesByNamespace(int moduleId, int namespaceId)
         {
-            return _repository.GetTypesByNamespace(namespaceId);
+            return _repository.GetTypesByNamespace(moduleId, namespaceId);
         }
 
-        [Route("membertrend/{typeId}/{dateFrom}/{dateTo}")]
+        [Route("membertrend/{moduleId}/{namespaceId}/{typeId}/{dateFrom}/{dateTo}")]
         [HttpGet]
-        public IList<TrendItem> GetMemberTrend(int typeId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetMemberTrend(int moduleId, int namespaceId, int typeId, DateTime dateFrom, DateTime dateTo)
         {
-            return _repository.GetMemberTrend(typeId, dateFrom, dateTo);
+            return _repository.GetMemberTrend(moduleId, namespaceId, typeId, dateFrom, dateTo);
         }
 
-        [Route("members/{typeId}/{dateId:int}")]
+        [Route("members/{moduleId}/{namespaceId}/{typeId}/{dateId:int}")]
         [HttpGet]
-        public IList<MemberItem> GetMembers(int typeId, int dateId)
+        public IList<MemberItem> GetMembers(int moduleId, int namespaceId, int typeId, int dateId)
         {
-            return _repository.GetMembers(typeId, dateId);
+            return _repository.GetMembers(moduleId, namespaceId, typeId, dateId);
         }
 
         // 5 - members
-        [Route("members/{typeId}")]
+        [Route("members/{moduleId}/{namespaceId}/{typeId}")]
         [HttpGet]
-        public IList<Member> GetMembersByType(int typeId)
+        public IList<Member> GetMembersByType(int moduleId, int namespaceId, int typeId)
         {
-            return _repository.GetMembersByType(typeId);
+            return _repository.GetMembersByType(moduleId, namespaceId, typeId);
         }
 
-        [Route("singlemembertrend/{memberId}/{dateFrom}/{dateTo}")]
+        [Route("singlemembertrend/{moduleId}/{namespaceId}/{typeId}/{memberId}/{dateFrom}/{dateTo}")]
         [HttpGet]
-        public IList<TrendItem> GetSingleMemberTrend(int memberId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceId, int typeId,  int memberId, DateTime dateFrom, DateTime dateTo)
         {
-            return _repository.GetSingleMemberTrend(memberId, dateFrom, dateTo);
+            return _repository.GetSingleMemberTrend(moduleId, namespaceId, typeId, memberId, dateFrom, dateTo);
         }
     }
 }

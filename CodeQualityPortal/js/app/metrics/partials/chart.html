@@ -2,15 +2,16 @@
                chart-type="LineSymbols" selection-mode="{{mode.chartSelection}}" selection="chartProps.selection" ng-click="trendClick()">
     <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
     <wj-flex-chart-axis wj-property="axisY" min="{{metricsType.min}}" max="{{metricsType.max}}" title="{{metricsType.value}}"></wj-flex-chart-axis>
-    <wj-flex-chart-series binding="{{metricsType.key}}" name="{{metricsType.value}}"
-                          ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#d47500', stroke:'#d47500'}"></wj-flex-chart-series>
-    <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+    <wj-flex-chart-series binding="{{metricsType.series[0].key}}" name="{{metricsType.series[0].value}}"
+                          ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#ffffff', stroke:'#446e9b'}"></wj-flex-chart-series>
+    <wj-flex-chart-series binding="{{metricsType.series[1].key}}" name="{{metricsType.series[1].value}}"
+                          ng-attr-style="{stroke:'#3cb521', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#ffffff', stroke:'#3cb521'}"></wj-flex-chart-series>
+    <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
 </wj-flex-chart>
 
 <div class="series">
-    <input type="radio" name="metricsType" ng-value="seriesIndex" ng-model="metricsType" /><span>{{seriesIndex.value}}</span>
-    <input type="radio" name="metricsType" ng-value="seriesLoc" ng-model="metricsType" /><span>{{seriesLoc.value}}</span>
-    <input type="radio" name="metricsType" ng-value="seriesComplexity" ng-model="metricsType" /><span>{{seriesComplexity.value}}</span>
-    <input type="radio" name="metricsType" ng-value="seriesCoupling" ng-model="metricsType" /><span>{{seriesCoupling.value}}</span>
-    <input type="radio" name="metricsType" ng-value="seriesDepth" ng-model="metricsType" /><span>{{seriesDepth.value}}</span>
+    <input type="radio" name="metricsType" ng-value="indexAndCoverage" ng-model="metricsType" /><span>Maintainability Index + Code Coverage</span>
+    <input type="radio" name="metricsType" ng-value="locAndComplexity" ng-model="metricsType" /><span>Lines of Code + Cyclomatic Complexity</span>
+    <input type="radio" name="metricsType" ng-value="coupling" ng-model="metricsType" /><span>Class Coupling</span>
+    <input type="radio" name="metricsType" ng-value="depth" ng-model="metricsType" /><span>Depth of Inheritance</span>
 </div>

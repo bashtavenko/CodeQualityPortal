@@ -7,31 +7,31 @@ metricsModule.controller("ChartController", function ($scope, bootstrappedData, 
         selection: null
     };
 
-    $scope.seriesIndex = {
-        key: "maintainabilityIndex",
-        value: "Maintainability Index",
+
+    $scope.indexAndCoverage = {
         min: 0,
-        max: 100
-    };
-    $scope.seriesLoc = {
-        key: "linesOfCode",
-        value: "Lines of Code"
-    };
-    $scope.seriesComplexity = {
-        key: "cyclomaticComplexity",
-        value: "CyclomaticComplexity"
-    };
-    $scope.seriesCoupling = {
-        key: "classCoupling",
-        value: "Class Coupling"
-    };
-    $scope.seriesDepth = {
-        key: "depthOfInheritance",
-        value: "Depth of Inheritance",
-        min: 0
+        max: 100,
+        series: [{ key: "maintainabilityIndex", value: "Maintainability Index"},
+                 { key: "codeCoverage", value: "Code Coverage" }]
     };
 
-    $scope.metricsType = $scope.seriesIndex;
+    $scope.locAndComplexity = {
+        min: 0,
+        series: [{ key: "linesOfCode", value: "Lines of Code"},
+                 { key: "cyclomaticComplexity", value: "CyclomaticComplexity"}]
+    };
+    
+    $scope.coupling = {
+        min: 0,
+        series: [{ key: "classCoupling", value: "Class Coupling" }]
+    };
+
+    $scope.depth = {
+        min: 0,
+        series:[{ key: "depthOfInheritance", value: "Depth of Inheritance"}]
+    };
+
+    $scope.metricsType = $scope.indexAndCoverage;
 
     $scope.trendClick = function () {
         if ($scope.chartProps.selection != null) {
