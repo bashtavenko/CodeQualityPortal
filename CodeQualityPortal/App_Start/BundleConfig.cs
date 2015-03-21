@@ -25,6 +25,7 @@ namespace CodeQualityPortal
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-spacelab.css",
+                      "~/Content/font-awesome.min.css",
                       "~/Content/site.css"));
         }
     }

@@ -221,11 +221,12 @@
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
+    <Compile Include="ViewModels\KeyStats.cs" />
     <Compile Include="ViewModels\Member.cs" />
     <Compile Include="ViewModels\MemberSummary.cs" />
     <Compile Include="ViewModels\Namespace.cs" />
     <Compile Include="ViewModels\MemberItem.cs" />
-    <Compile Include="ViewModels\TopWorst.cs" />
+    <Compile Include="ViewModels\HomePage.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
     <Compile Include="ViewModels\Type.cs" />
     <Compile Include="ViewModels\NamespaceItem.cs" />
@@ -241,9 +242,11 @@
     <Content Include="Content\bootstrap-spacelab.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\unmapped_author.png" />
     <Content Include="Content\wijmo.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -301,6 +304,9 @@
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
     <None Include="Properties\PublishProfiles\WebDeployPackage.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\datepicker-popup.js" />

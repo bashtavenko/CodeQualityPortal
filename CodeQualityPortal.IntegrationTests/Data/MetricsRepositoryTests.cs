@@ -23,7 +23,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [Test]
         public void MetricsRepository_GetTags()
         {
-            var result = _repository.GetTags();
+            var result = _repository.GetSystems();
             Assert.IsTrue(result.Count() > 0);            
         }
 
@@ -31,7 +31,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void MetricsRepository_GetModuleTrend()
         {
             // Arrange
-            string tag;
+            string tag; // TODO: GET SYSTEMS
             DateTime dateTo;            
             using (var ctx = new CodeQualityContext())
             {
@@ -47,7 +47,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetModuleTrend(tag, dateTo.AddDays(-7), dateTo);
+            var result = _repository.GetModuleTrend(null, dateTo.AddDays(-7), dateTo);
             Assert.IsTrue(result.Count() > 0);
         }
 
@@ -103,7 +103,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void MetricsRepository_GetModules()
         {
             // Arrange
-            string tag;
+            string tag; // TODO: GET SYSTEMS
             int dateId;
             using (var ctx = new CodeQualityContext())
             {
@@ -119,7 +119,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetModules(tag, dateId);
+            var result = _repository.GetModules(null, dateId);
             Assert.IsTrue(result.Count() > 0);
         }
 
@@ -127,6 +127,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void MetricsRepository_GetWorst()
         {
             var result = _repository.GetWorst(DateTime.Now.AddYears(-1), DateTime.Now, 5);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void MetricsRepository_GetKeyStats()
+        {
+            // Act
+            var result = _repository.GetLatestKeyStats();
             Assert.IsNotNull(result);
         }
     }

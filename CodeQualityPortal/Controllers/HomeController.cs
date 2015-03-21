@@ -25,10 +25,11 @@ namespace CodeQualityPortal.Controllers
             const int topX = 5;
             const int days = 7;
             var dateFrom = DateTime.Now.AddDays(days * -1);
-            var dateTo = DateTime.Now;            
+            var dateTo = DateTime.Now;
+            var keyStats = _metricsRepository.GetLatestKeyStats();
             var churnTopWorst = _codeChurnRepository.GetWorst(dateFrom, dateTo, topX);
-            var fileTopWorst = _metricsRepository.GetWorst(dateFrom, dateTo, topX);
-            return View(new TopWorst { ChurnItems = churnTopWorst, MemberItems = fileTopWorst });
+            var membersTopWorst = _metricsRepository.GetWorst(dateFrom, dateTo, topX);
+            return View(new HomePage(keyStats, churnTopWorst, membersTopWorst));
         }
 
         public ActionResult Churn()
@@ -41,7 +42,7 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Metrics()
         {
-            var repos = _metricsRepository.GetTags();
+            var repos = _metricsRepository.GetSystems();
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(repos, Formatting.None, settings);
             return View("Metrics", "", json);

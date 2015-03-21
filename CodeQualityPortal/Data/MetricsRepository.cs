@@ -11,8 +11,8 @@ namespace CodeQualityPortal.Data
 {
     public class MetricsRepository : IMetricsRepository
     {
-        // 1 - tags
-        public IList<string> GetTags()
+        // 1 - systems
+        public IList<string> GetSystems()
         {
             using (var context = new CodeQualityContext())
             {
@@ -20,13 +20,12 @@ namespace CodeQualityPortal.Data
             }
         }
 
-        public IList<TrendItem> GetModuleTrend(string tag, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetModuleTrend(int? systemId, DateTime dateFrom, DateTime dateTo)
         {
             using (var context = new CodeQualityContext())
             {
                 var groupedItems = context.Metrics
-                    .Where(w => w.Module.Targets.Any(a => a.Tag == tag) 
-                           && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
                            && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();
@@ -36,13 +35,12 @@ namespace CodeQualityPortal.Data
             }
         }
 
-        public IList<ModuleItem> GetModules(string tag, int dateId)
+        public IList<ModuleItem> GetModules(int? systemId, int dateId)
         {
             using (var context = new CodeQualityContext())
             {                
                 var queryItems = context.Metrics
-                    .Where(w => w.Module.Targets.Any(a => a.Tag == tag)
-                        && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
                         && w.DateId == dateId)
                     .ToList();
 
@@ -52,12 +50,11 @@ namespace CodeQualityPortal.Data
         }
 
         // 2 - modules
-        public IList<Module> GetModulesByTag(string tag)
+        public IList<Module> GetModulesBySystem(int? systemId)
         {
             using (var context = new CodeQualityContext())
             {
                 var queryItems = context.Modules
-                    .Where(w => w.Targets.Any(a => a.Tag == tag))
                     .ToList();
 
                 var items = Mapper.Map<IList<Module>>(queryItems);
@@ -216,7 +213,6 @@ namespace CodeQualityPortal.Data
 
         public IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
         {
-            //return new List<MemberSummary>();
             using (var context = new CodeQualityContext())
             {
                 var result = context.Metrics
@@ -232,13 +228,39 @@ namespace CodeQualityPortal.Data
                         MaintainabilityIndex = s.Min(d => d.MaintainabilityIndex),
                         CyclomaticComplexity = s.Max(d => d.CyclomaticComplexity),
                         LinesOfCode = s.Max(d => d.LinesOfCode),
-                        ClassCoupling = s.Max(d => d.ClassCoupling)
+                        ClassCoupling = s.Max(d => d.ClassCoupling),
+                        CodeCoverage = s.Max(d => d.CodeCoverage)
                     })
                     .OrderBy(o => o.MaintainabilityIndex)
                     .Take(topX)
                     .ToList();
 
                 return result;
+            }
+        }
+
+        public KeyStats GetLatestKeyStats()
+        {
+            using (var context = new CodeQualityContext())
+            {
+                var lastRunDate = context
+                    .Metrics
+                    .Select(s => s.Date)
+                    .OrderByDescending(s => s.Date)
+                    .FirstOrDefault();
+
+                if (lastRunDate == null)
+                {
+                    return null;
+                }
+                
+                var modules = context.Metrics
+                    .Where(w => w.DateId == lastRunDate.DateId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null)
+                    .Select(s => s)
+                    .ToList();
+
+                var stats = new KeyStats(lastRunDate.Date, modules);
+                return stats;
             }
         }
     }

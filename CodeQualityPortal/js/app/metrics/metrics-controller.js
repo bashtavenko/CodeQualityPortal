@@ -5,10 +5,9 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.mode = {}; // shared with child controllers       
                         
     $scope.init = function () {
-        $scope.mode = new $scope.tagMode;
+        $scope.mode = new $scope.systemMode;
         $scope.refreshChart();
     }
-
     
     // Can't set mode from child scope without this
     $scope.setMode = function (mode) {
@@ -39,16 +38,17 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         );
     }
 
-    // 1 - tag
-    $scope.tagMode = function () {
+    // 1 - system
+    $scope.systemMode = function () {
         return {
             getTrend: function () {
-                return metricsService.getTagTrend($scope.criteria.tag, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                // TODO: SYSTEM ID
+                return metricsService.getModuleTrend(null, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function () {
-                return metricsService.getModulesByDate($scope.criteria.tag, $scope.criteria.selectedDate.dateId);
+                return metricsService.getModulesByDate(null, $scope.criteria.selectedDate.dateId);
             },
-            trendLabel: "Tag trend for " + $scope.criteria.tag,
+            trendLabel: "System trend",
             itemsLabel: "Modules on",
             chartSelection: "Point"
         };

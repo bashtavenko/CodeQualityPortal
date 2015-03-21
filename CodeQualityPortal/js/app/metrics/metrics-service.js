@@ -2,33 +2,33 @@
 
 metricsModule.factory("metricsService", function($resource, commonService) {
     return {        
-        // 1 - tag
-        getTagTrend: function (tag, dateFrom, dateTo) {
+        // 1 - system
+        getModuleTrend: function (systemId, dateFrom, dateTo) {
             var params = {
-                tag: tag,
+                systemId: systemId,
                 dateFrom: commonService.convertDateToIso(dateFrom),
                 dateTo: commonService.convertDateToIso(dateTo)
             };
 
-            return $resource("/api/moduletrend/:tag/:dateFrom/:dateTo",
-                { tag: "@tag", dateFrom: "@dateFrom", dateTo: "@dateTo" })
+            return $resource("/api/moduletrend/:dateFrom/:dateTo/:systemId",
+                { dateFrom: "@dateFrom", dateTo: "@dateTo", systemId: "@systemId" })
                 .query(params);
         },
-        getModulesByDate: function (tag, dateId) {
+        getModulesByDate: function (systemId, dateId) {
             var params = {
-                tag: tag,
+                systemId: systemId,
                 dateId: dateId
             };
-            return $resource("/api/modules/:tag/:dateId", { tag: "@tag", dateId: "@dateId" })
+            return $resource("/api/modules/:dateId/:systemId", { dateId: "@dateId", systemId: "@systemId", })
                 .query(params);
         },
 
         // 2 - module
-        getModules: function (tag) {
+        getModules: function (systemId) {
             var params = {
-            tag: tag                
+            systemId: systemId, 
             };
-            return $resource("/api/modules/:tag", { tag: "@tag" })
+            return $resource("/api/modules/:systemId", { systemId: "@systemId" })
             .query(params);
         },
         getNamespaceTrend: function (moduleId, dateFrom, dateTo) {

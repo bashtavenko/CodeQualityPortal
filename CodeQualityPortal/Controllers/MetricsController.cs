@@ -17,33 +17,33 @@ namespace CodeQualityPortal.Controllers
             _repository = repository;
         }
 
-        // 1 - tags
-        [Route("tags")]
+        // 1 - systems
+        [Route("systems")]
         public IList<string> Get()
         {
-            return _repository.GetTags();
+            return _repository.GetSystems();
         }
 
-        [Route("moduletrend/{tag}/{dateFrom}/{dateTo}")]
+        [Route("moduletrend/{dateFrom}/{dateTo}/{systemId?}")]
         [HttpGet]
-        public IList<TrendItem> GetModuleTrend(string tag, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetModuleTrend(DateTime dateFrom, DateTime dateTo, int? systemId = null)
         {
-            return _repository.GetModuleTrend(tag, dateFrom, dateTo);
+            return _repository.GetModuleTrend(systemId, dateFrom, dateTo);
         }
 
-        [Route("modules/{tag}/{dateId:int}")]
+        [Route("modules/{dateId:int}/{systemId?}")]
         [HttpGet]
-        public IList<ModuleItem> GetModules(string tag, int dateId)
+        public IList<ModuleItem> GetModules(int dateId, int? systemId = null)
         {
-            return _repository.GetModules(tag, dateId);
+            return _repository.GetModules(systemId, dateId);
         }
 
         // 2 - modules
-        [Route("modules/{tag}")]
+        [Route("modules/{systemId?}")]
         [HttpGet]
-        public IList<Module> GetModulesByTag(string tag)
+        public IList<Module> GetModulesByTag(int? systemId = null)
         {
-            return _repository.GetModulesByTag(tag);
+            return _repository.GetModulesBySystem(systemId);
         }
 
         [Route("namespacetrend/{moduleId}/{dateFrom}/{dateTo}")]

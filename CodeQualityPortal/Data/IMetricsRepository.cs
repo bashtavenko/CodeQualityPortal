@@ -7,13 +7,13 @@ namespace CodeQualityPortal.Data
 {
     public interface IMetricsRepository
     {
-        // 1 - tags
-        IList<string> GetTags();
-        IList<TrendItem> GetModuleTrend(string tag, DateTime dateFrom, DateTime dateTo);
-        IList<ModuleItem> GetModules(string tag, int dateId);
+        // 1 - systems
+        IList<string> GetSystems();
+        IList<TrendItem> GetModuleTrend(int? systemId, DateTime dateFrom, DateTime dateTo);
+        IList<ModuleItem> GetModules(int? systemId, int dateId);
 
         // 2 - modules
-        IList<Module> GetModulesByTag(string tag);
+        IList<Module> GetModulesBySystem(int? systemId);
         IList<TrendItem> GetNamespaceTrend(int moduleId, DateTime dateFrom, DateTime dateTo);
         IList<NamespaceItem> GetNamespaces(int moduleId, int dateId);
 
@@ -32,5 +32,6 @@ namespace CodeQualityPortal.Data
         IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo);
 
         IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime to, int topX);
+        KeyStats GetLatestKeyStats();
     }
 }

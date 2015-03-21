@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Collections.Generic;
 
 using Newtonsoft.Json;
 using NUnit.Framework;
-
-using CodeQualityPortal.ViewModels;
-
 
 namespace CodeQualityPortal.IntegrationTests
 {

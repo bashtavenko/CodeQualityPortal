@@ -19,7 +19,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope[options] = [$scope.allOption];
         $scope.criteria[model] = $scope[options][0];
     }
-    
+
     
     $scope.loadMembers = function () {
         $scope.initSelect('memberOptions', 'member');
@@ -55,29 +55,18 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
 
     $scope.loadModules = function () {
         $scope.initSelect('moduleOptions', 'module');        
-        metricsService.getModules($scope.criteria.tag)
+        metricsService.getModules(null)
               .$promise.then(function (data) {
                   $scope.moduleOptions = $scope.moduleOptions.concat(data);
              });        
         $scope.loadNamespaces();
     };
-
-    $scope.criteria.tagOptions = bootstrappedData.tagOptions;
-    if ($scope.criteria.tagOptions.length > 0) {
-        $scope.criteria.tag = $scope.criteria.tagOptions[0];        
-        $scope.loadModules();        
-    }
-        
-    $scope.tagChanged = function () {
-        $scope.loadModules();        
-        $scope.setMode(new $scope.tagMode);
-        $scope.refresh();
-    };    
+    
 
     $scope.moduleChanged = function () {
         $scope.loadNamespaces();
         if ($scope.criteria.module.id == -1) {
-            $scope.setMode(new $scope.tagMode);            
+            $scope.setMode(new $scope.systemMode);            
         }
         else {            
             $scope.setMode(new $scope.moduleMode);
@@ -150,5 +139,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         var s = $scope.criteriaForm[name];
         return s.$invalid ? "has-error" : "";
     }
+
+    $scope.loadModules(null);
 });
 
