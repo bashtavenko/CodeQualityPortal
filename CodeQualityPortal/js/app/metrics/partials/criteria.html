@@ -2,7 +2,7 @@
     <div class="input-group">
         <label for="module" class="sr-only">Module</label>
         <div class="input-group-addon">Module</div>
-        <select id="module" class="form-control" ng-model="criteria.module" ng-options="m as m.name for m in moduleOptions track by m.id" ng-change="moduleChanged()"></select>
+        <select id="module" class="form-control" ng-model="criteria.module" ng-options="m as m.name for m in moduleOptions | orderBy:'name' track by m.id" ng-change="moduleChanged()"></select>
     </div>
 </div>
 <div class="form-group">
@@ -26,8 +26,6 @@
         <select id="member" class="form-control" ng-model="criteria.member" ng-options="m as m.name for m in memberOptions | orderBy:'name' track by m.id" ng-change="memberChanged()"></select>
     </div>
 </div>
-
-<p />
 
 <div class="form-group" ng-class="error('dateFrom')">
     <div class="input-group">
