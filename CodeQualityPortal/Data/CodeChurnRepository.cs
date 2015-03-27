@@ -30,7 +30,10 @@ namespace CodeQualityPortal.Data
                     query = context
                         .Churn
                         .SelectMany(s => s.File.Commits, (s, d) => new  { Churn = s, File = s.File, Commit = d })
-                        .Where(w => w.Churn.Date.Date >= dateFrom.Date && w.Churn.Date.Date <= dateTo.Date && w.File.FileExtension == fileExtension && w.Commit.RepoId == repoId)
+                        .Where(w => w.Churn.Date.Date >= dateFrom.Date && w.Churn.Date.Date <= dateTo.Date 
+                            && w.File.FileExtension == fileExtension
+                            && w.Commit.RepoId == repoId
+                            && w.Churn.CommitId == w.Commit.CommitId) // files can be in multiple commits
                         .Select(s => s.Churn);                    
                 }
                 else
