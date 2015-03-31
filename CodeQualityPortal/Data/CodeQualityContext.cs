@@ -7,21 +7,21 @@ namespace CodeQualityPortal.Data
 {
     public class CodeQualityContext : DbContext
     {
-        public CodeQualityContext(string databaseName, IDatabaseInitializer<CodeQualityContext> initializer)
-            : base(databaseName)
+        private const string DefaultConnectionStringKey = "CodeQuality";
+
+        public CodeQualityContext()
+            : this(DefaultConnectionStringKey, null)
         {
-            Database.SetInitializer(initializer);
         }
 
-        public CodeQualityContext(string connectionString)
+        public CodeQualityContext(IDatabaseInitializer<CodeQualityContext> initializer) : this (DefaultConnectionStringKey, initializer)
+        {
+        }
+
+        private CodeQualityContext(string connectionString, IDatabaseInitializer<CodeQualityContext> initializer)
             : base(nameOrConnectionString: connectionString)
         {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<CodeQualityContext>());
-        }
-
-        public CodeQualityContext() : base("CodeQuality")
-        {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<CodeQualityContext>());                        
+            Database.SetInitializer(initializer ?? new CodeQualityCreateDatabaseIfNotExists());
         }
 
         public DbSet<DimRepo> Repos { get; set; }

@@ -14,6 +14,7 @@ namespace CodeQualityPortal.Data
         public DimMember()
         {
             Types = new List<DimType>();
+            Metrics = new List<FactMetrics>();
         }
     }
 }

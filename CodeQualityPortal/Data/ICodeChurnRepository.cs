@@ -5,7 +5,7 @@ using CodeQualityPortal.ViewModels;
 
 namespace CodeQualityPortal.Data
 {
-    public interface ICodeChurnRepository
+    public interface ICodeChurnRepository : IDisposable
     {
         IList<Repo> GetRepos();
         IList<CodeChurnByDate> GetTrend(int repoId, DateTime dateFrom, DateTime dateTo, string fileExtension);

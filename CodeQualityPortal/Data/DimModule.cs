@@ -15,6 +15,7 @@ namespace CodeQualityPortal.Data
         public DimModule ()
         {
             Namespaces = new List<DimNamespace>();
+            Metrics = new List<FactMetrics>();
         }
     }
 }

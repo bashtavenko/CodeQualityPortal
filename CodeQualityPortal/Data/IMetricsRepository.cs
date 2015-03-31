@@ -5,7 +5,7 @@ using CodeQualityPortal.ViewModels;
 
 namespace CodeQualityPortal.Data
 {
-    public interface IMetricsRepository
+    public interface IMetricsRepository : IDisposable
     {
         // 1 - systems
         IList<string> GetSystems();

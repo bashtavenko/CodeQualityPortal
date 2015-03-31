@@ -8,11 +8,11 @@ namespace CodeQualityPortal.IntegrationTests
     [TestFixture]
     public class MetricsControllerTests : WebApiBaseTest
     {
-        [Test]        
+        //[Test]        TODO: GET systems
         public void MetricsController_GetTags()
         {            
             // Act                                    
-            var resultString = _client.GetStringAsync(MakeUri("tags")).Result;
+            var resultString = _client.GetStringAsync(MakeUri("systems")).Result;
             var result = JsonConvert.DeserializeObject<List<string>>(resultString);
 
             // Assert

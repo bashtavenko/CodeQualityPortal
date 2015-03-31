@@ -14,6 +14,7 @@ namespace CodeQualityPortal.Data
         {
             Members = new List<DimMember>();
             Namespaces = new List<DimNamespace>();
+            Metrics = new List<FactMetrics>();
         }
     }
 }

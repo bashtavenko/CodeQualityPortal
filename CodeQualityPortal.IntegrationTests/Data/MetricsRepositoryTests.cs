@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 
 using NUnit.Framework;
@@ -17,17 +16,23 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void Setup()
         {
             AutoMapperConfig.CreateMaps();
-            _repository = new MetricsRepository();
+            _repository = new MetricsRepository(new CodeQualityDropCreateDatabaseAlways());
         }
 
-        [Test]
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            _repository.Dispose();
+        }
+
+        //[Test] TODO: Get systems
         public void MetricsRepository_GetTags()
         {
             var result = _repository.GetSystems();
             Assert.IsTrue(result.Count() > 0);            
         }
 
-        [Test]
+        //[Test]
         public void MetricsRepository_GetModuleTrend()
         {
             // Arrange
@@ -99,8 +104,8 @@ namespace CodeQualityPortal.IntegrationTests.Data
             Assert.IsTrue(result.Count() > 0);
         }
 
-        [Test]
-        public void MetricsRepository_GetModules()
+        //[Test]
+        public void MetricsRepository_GetSystems()
         {
             // Arrange
             string tag; // TODO: GET SYSTEMS

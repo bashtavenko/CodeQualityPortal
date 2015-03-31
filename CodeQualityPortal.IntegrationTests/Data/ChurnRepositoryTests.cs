@@ -16,7 +16,13 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void Setup()
         {
             AutoMapperConfig.CreateMaps();
-            _repository = new CodeChurnRepository();
+            _repository = new CodeChurnRepository(new CodeQualityDropCreateDatabaseAlways());
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            _repository.Dispose();
         }
 
         [Test]

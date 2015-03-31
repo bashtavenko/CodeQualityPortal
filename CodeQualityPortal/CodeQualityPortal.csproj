@@ -186,6 +186,8 @@
     <Compile Include="Controllers\MetricsController.cs" />
     <Compile Include="Controllers\TrendController.cs" />
     <Compile Include="Controllers\ReposController.cs" />
+    <Compile Include="Data\CodeQualityCreateDatabaseIfNotExists.cs" />
+    <Compile Include="Data\CodeQualityDropCreateDatabaseAlways.cs" />
     <Compile Include="Data\DateTuple.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
     <Compile Include="Data\Maps\DimMemberConfiguration.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Data\IMetricsRepository.cs" />
     <Compile Include="Data\ICodeChurnRepository.cs" />
     <Compile Include="Data\CodeQualityContext.cs" />
+    <Compile Include="Data\SampleDataSeeder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

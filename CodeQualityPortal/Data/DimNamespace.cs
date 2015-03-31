@@ -14,6 +14,7 @@ namespace CodeQualityPortal.Data
         {
             Types = new List<DimType>();
             Modules = new List<DimModule>();
+            Metrics = new List<FactMetrics>();
         }
     }
 }

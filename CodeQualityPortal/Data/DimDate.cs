@@ -18,6 +18,7 @@ namespace CodeQualityPortal.Data
         public int DayOfMonth { get; set; }
         public int DayOfWeek { get; set; }
         public virtual List<FactCodeChurn> Churn { get; set;}
+        public virtual List<FactMetrics> Metrics { get; set; }
 
         public DimDate() : this(DateTime.Now)
         {
