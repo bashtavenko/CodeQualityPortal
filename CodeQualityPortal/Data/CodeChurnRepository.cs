@@ -28,30 +28,12 @@ namespace CodeQualityPortal.Data
             return _context.Repos.Select(s => new Repo { Name = s.Name, RepoId = s.RepoId }).ToList();                    
         }
         
-        public IList<CodeChurnByDate> GetTrend(int repoId, DateTime dateFrom, DateTime dateTo, string fileExtension)
+        public IList<CodeChurnByDate> GetTrend(DateTime dateFrom, DateTime dateTo)
         {
-            IQueryable<FactCodeChurn> query;
-                
-            if (!string.IsNullOrEmpty(fileExtension))
-            {
-                // FactCodeChurn join File join DimCommit join Commit
-                query = _context
+            IQueryable<FactCodeChurn> query = _context
                     .Churn
-                    .SelectMany(s => s.File.Commits, (s, d) => new  { Churn = s, File = s.File, Commit = d })
-                    .Where(w => w.Churn.Date.Date >= dateFrom.Date && w.Churn.Date.Date <= dateTo.Date 
-                        && w.File.FileExtension == fileExtension
-                        && w.Commit.RepoId == repoId
-                        && w.Churn.CommitId == w.Commit.CommitId) // files can be in multiple commits
-                    .Select(s => s.Churn);                    
-            }
-            else
-            {                    
-                // FactCodeChurn join Commit
-                query = _context
-                    .Churn
-                    .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.Commit.RepoId == repoId && f.FileId == null);
-            }
-
+                    .Where(f => f.Date.Date >= dateFrom.Date && f.Date.Date <= dateTo.Date && f.FileId == null);
+            
             var itemsQuery = query
                 .GroupBy(s => new { s.DateId, s.Date.DateTime })                    
                 .Select(s => new CodeChurnByDate
@@ -92,63 +74,27 @@ namespace CodeQualityPortal.Data
             }
         }
 
-        public IList<CommitCodeChurn> GetCommitsByDate(int repoId, int dateId, string fileExtension)
+        public IList<CommitCodeChurn> GetCommitsByDate(int repoId, int dateId)
         {
-            if (!string.IsNullOrEmpty(fileExtension))
-            {
-                var commits = _context.Churn.Where(f => f.Commit.RepoId == repoId && f.Date.DateId == dateId && f.File.FileExtension == fileExtension)
-                .GroupBy(f => f.CommitId)
-                .Select(s => new CommitCodeChurn {
-                    CommitId = s.Key,
-                    LinesAdded = s.Sum(a => a.LinesAdded),                        
-                    LinesDeleted = s.Sum(a => a.LinesDeleted),
-                    TotalChurn = s.Sum(a => a.TotalChurn) })
-                .ToList();
-
-                commits = commits.Join(_context.Commits.ToList(), s => s.CommitId, d => d.CommitId,
-                    (s, d) => new CommitCodeChurn
-                    {
-                        CommitId = d.CommitId,
-                        Sha = d.Sha,
-                        Message = d.Message,
-                        Url = d.Url,
-                        Committer = d.Committer,
-                        CommitterAvatarUrl = d.CommitterAvatarUrl,                            
-                        LinesAdded = s.LinesAdded,                            
-                        LinesDeleted = s.LinesDeleted,                            
-                        TotalChurn = s.TotalChurn
-                    }).ToList();
-
-                return commits;
-            }
-            else
-            {
-                return _context.Churn.Where(f => f.Commit.RepoId == repoId && f.Date.DateId == dateId && f.FileId == null)
-                    .Select(s => new CommitCodeChurn
-                    {
-                        CommitId = s.Commit.CommitId,
-                        Sha = s.Commit.Sha,
-                        Message = s.Commit.Message,
-                        Url = s.Commit.Url,
-                        Committer = s.Commit.Committer,
-                        CommitterAvatarUrl = s.Commit.CommitterAvatarUrl,                            
-                        LinesAdded = s.LinesAdded,                            
-                        LinesDeleted = s.LinesDeleted,
-                        TotalChurn = s.TotalChurn
-                    }).ToList();
-            }                                               
+            return _context.Churn.Where(f => f.Commit.RepoId == repoId && f.Date.DateId == dateId && f.FileId == null)
+                .Select(s => new CommitCodeChurn
+                {
+                    CommitId = s.Commit.CommitId,
+                    Sha = s.Commit.Sha,
+                    Message = s.Commit.Message,
+                    Url = s.Commit.Url,
+                    Committer = s.Commit.Committer,
+                    CommitterAvatarUrl = s.Commit.CommitterAvatarUrl,                            
+                    LinesAdded = s.LinesAdded,                            
+                    LinesDeleted = s.LinesDeleted,
+                    TotalChurn = s.TotalChurn
+                }).ToList();
         }
 
-        public IList<FileCodeChurn> GetFilesByCommit(int commitId, string fileExtension)
+        public IList<FileCodeChurn> GetFilesByCommit(int commitId)
         {
-            var query = _context.Churn.Where(f => f.CommitId == commitId && f.FileId != null);
-
-            if (!string.IsNullOrEmpty(fileExtension))
-            {
-                query = query.Where(f => f.File.FileExtension == fileExtension);
-            }
-
-            return query
+            return _context.Churn
+                .Where(f => f.CommitId == commitId && f.FileId != null)
                 .Select(s => new FileCodeChurn
                 {
                     FileName = s.File.FileName,
@@ -159,16 +105,11 @@ namespace CodeQualityPortal.Data
                 }).ToList();
         }
 
-        public IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, string fileExtension, int? topX)
+        public IList<FileCodeChurn> GetFilesByDate(int repoId, int dateId, int? topX)
         {
             var query = _context.Churn
                 .Where(f => f.DateId == dateId && f.File.Commits.Any(a => a.RepoId == repoId));
-
-            if (!string.IsNullOrEmpty(fileExtension))
-            {
-                query = query.Where (w => w.File.FileExtension == fileExtension);
-            }
-
+            
             if (topX.HasValue)
             {
                 query = query.OrderByDescending(s => s.TotalChurn).Take(topX.Value);
@@ -201,6 +142,21 @@ namespace CodeQualityPortal.Data
                 .ToList();
                 
             return files;                
+        }
+
+        public IList<RepoCodeChurnSummary> GetRepoChurnSummaryByDate(int dateId)
+        {
+            return _context.Churn
+                .Where(w => w.DateId == dateId && w.FileId == null)
+                .GroupBy(g => new {g.Commit.Repo.RepoId, g.Commit.Repo.Name})
+                .Select(s => new RepoCodeChurnSummary
+                {
+                    RepoId = s.Key.RepoId,
+                    RepoName = s.Key.Name,
+                    LinesAdded = s.Sum(a => a.LinesAdded),
+                    LinesDeleted = s.Sum(a => a.LinesDeleted),
+                    CommitCount = s.Count()
+                }).ToList();
         }
 
         public void Dispose()

@@ -42,7 +42,12 @@ namespace CodeQualityPortal.Data
             }
         };
 
-        private readonly DimRepo _repo = new DimRepo { Name = "Github-master" };
+        private readonly List<DimRepo> _repo = new List<DimRepo>
+        {
+            new DimRepo { Name = "Github-master" },
+            new DimRepo { Name = "Bitbucket-master" }
+        };
+
 
         private readonly List<DimCommit> _commits = new List<DimCommit>
         {
@@ -76,6 +81,16 @@ namespace CodeQualityPortal.Data
                 Files = new List<DimFile>
                 {
                     new DimFile { FileName = "CodeMetricsLoader/Data/Mapper.cs", FileExtension = ".cs" },
+                }
+            },
+            new DimCommit
+            {
+                Sha = "0e9a2e544e360364556bcf2288566af271784fce",
+                Url = "https://bitbucket.org/api/2.0/repositories/stanbpublic/codequalityportal/diff/0e9a2e544e360364556bcf2288566af271784fce",
+                Committer = "StanBPublic", CommitterAvatarUrl = "https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2014/Oct/12/stanbpublic-avatar-1580570491-7_avatar.png", Message = "Added TopX stats\n",
+                Files = new List<DimFile>
+                {
+                    new DimFile { FileName = "CodeQualityPortal/MetricsRepository.cs", FileExtension = ".cs" },
                 }
             },
         };
@@ -141,22 +156,25 @@ namespace CodeQualityPortal.Data
         private void SeedChurn(DimDate date)
         {
             FactCodeChurn churn;
-            var commit = _commitsCircularBuffer.GetNext();
-            foreach (var file in commit.Files)
+            foreach (var repo in _repo)
             {
-                churn = MakeChurn(date.Date);
-                churn.File = file;
+                var commit = _commitsCircularBuffer.GetNext();
+                foreach (var file in commit.Files)
+                {
+                    churn = MakeChurn(date.Date);
+                    churn.File = file;
+                    churn.Commit = commit;
+                    churn.Date = date;
+                    file.Churn.Add(churn);
+                }
+                churn = Aggregate(commit.Files.SelectMany(s => s.Churn), date);
                 churn.Commit = commit;
                 churn.Date = date;
-                file.Churn.Add(churn);
+                commit.Date = date.Date;
+                commit.Churn.Add(churn);
+                repo.Commits.Add(commit);
+                _context.Repos.Add(repo);
             }
-            churn = Aggregate(commit.Files.SelectMany(s => s.Churn), date);
-            churn.Commit = commit;
-            churn.Date = date;
-            commit.Date = date.Date;
-            commit.Churn.Add(churn);
-            _repo.Commits.Add(commit);
-            _context.Repos.Add(_repo);
         }    
 
         /// <summary>

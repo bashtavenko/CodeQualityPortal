@@ -16,9 +16,9 @@ namespace CodeQualityPortal.Controllers
         }
                 
         [Route("api/commits/{repoId}/{dateId}/{fileExtension?}")]
-        public IList<CommitCodeChurn> Get(int repoId, int dateId, string fileExtension = null)
+        public IList<CommitCodeChurn> Get(int repoId, int dateId)
         {
-            return _repository.GetCommitsByDate(repoId, dateId, fileExtension != null ? "." + fileExtension : null);
+            return _repository.GetCommitsByDate(repoId, dateId);
         }     
     }
 }

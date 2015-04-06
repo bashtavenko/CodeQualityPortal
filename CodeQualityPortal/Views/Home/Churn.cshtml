@@ -21,33 +21,35 @@
 
 @section JavascriptInHead
 {
+    @Scripts.Render("~/js/app/churn/common-service.js")
     @Scripts.Render("~/js/app/churn/criteria-controller.js")
-    @Scripts.Render("~/js/app/churn/churn-controller.js")    
+    @Scripts.Render("~/js/app/churn/churn-controller.js")
     @Scripts.Render("~/js/app/churn/chart-controller.js")
+    @Scripts.Render("~/js/app/churn/grid-controller.js")
     @Scripts.Render("~/js/app/churn/churn-service.js")
     @Scripts.Render("~/js/app/churn/directives/lines-added.js")
     @Scripts.Render("~/js/app/churn/directives/filetable.js")
     @Scripts.Render("~/js/app/churn/directives/commit.js")
-    <script type="text/javascript">
-        churnModule.factory("bootstrappedData", function() {
-            return {
-                repoOptions: @Html.Raw(Model)
-                };
-        });
-    </script>
 }
 
 <div ng-app="churnModule">
+    
     <div style="margin-top:20px;" ng-controller="ChurnController">
         <form name="repoForm" class="form-inline" role="form" ng-controller="CriteriaController" ng-submit="refresh(criteria)" ng-init="init()">
             <div ng-include="'/js/app/churn/partials/criteria.html'"></div>
         </form>
-                
+        
+        <h3>Churn from all repositories</h3>
+
         <div ng-include="'/js/app/churn/partials/chart.html'" ng-controller="ChartController"></div>
 
-        <strong>{{selectedDate.date|date}}</strong>
+        <strong>Repositories on {{selectedDate.date|date}}</strong>
 
-        {{test}}
+        <div ng-include="'/js/app/churn/partials/grid.html'" ng-controller="GridController"></div>
+        
+        <p></p>
+
+        <strong>{{repo}}</strong>
 
         <div ng-show="topFiles.length > 0">
             <p></p>

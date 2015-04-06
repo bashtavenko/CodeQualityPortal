@@ -222,6 +222,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
+    <Compile Include="ViewModels\RepoCodeChurnSummary.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
     <Compile Include="ViewModels\KeyStats.cs" />
@@ -253,6 +254,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="js\app\churn\common-service.js" />
+    <Content Include="js\app\churn\grid-controller.js" />
     <Content Include="js\app\churn\chart-controller.js" />
     <Content Include="js\app\churn\criteria-controller.js" />
     <Content Include="js\app\churn\directives\commit.js" />
@@ -261,9 +264,10 @@
     <Content Include="js\app\churn\churn-service.js" />
     <Content Include="js\app\churn\partials\chart.html" />
     <Content Include="js\app\churn\partials\criteria.html" />
+    <Content Include="js\app\churn\partials\grid.html" />
     <Content Include="js\app\churn\templates\commit.html" />
     <Content Include="js\app\churn\templates\filetable.html" />
-    <Content Include="js\app\common-service.js" />
+    <Content Include="js\app\metrics\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />
     <Content Include="js\app\metrics\partials\chart.html" />
     <Content Include="js\app\metrics\criteria-controller.js" />

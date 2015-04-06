@@ -1,47 +1,50 @@
 ﻿'use strict';
 
-churnModule.factory("churnService", function($resource) {
+churnModule.factory("churnService", function($resource, commonService) {
     return {
-        getTrend: function(repoId, dateFrom, dateTo, extension){
+        getTrend: function(dateFrom, dateTo){
             var params = {
-                repoId: repoId,
-                dateFrom: dateFrom.toISOString().slice(0, 10).replace(/-/g, '-'),
-                dateTo: dateTo.toISOString().slice(0, 10).replace(/-/g, '-'),
-                fileExtension: extension
+                dateFrom: commonService.convertDateToIso(dateFrom),
+                dateTo: commonService.convertDateToIso(dateTo)
             };
-            return $resource("/api/trend/:repoId/:dateFrom/:dateTo/:fileExtension",
-                { repoId: "@repoId", dateFrom: "@dateFrom", dateTo: "@dateTo", fileExtension: "@fileExtension" })
+            return $resource("/api/trend/:dateFrom/:dateTo",
+                { dateFrom: "@dateFrom", dateTo: "@dateTo" })
                 .query(params);        
         },
-        getFiles: function (repoId, dateId, extension, topX) {
+        getSummary: function(dateId){
+            var params = {
+                dateId: dateId
+            };
+            return $resource("/api/reposummary/:dateId",
+                { dateId: "@dateId" })
+                .query(params);        
+        },
+        getFiles: function (repoId, dateId, topX) {
             var params = {
                 repoId: repoId,
                 dateId: dateId,
-                fileExtension: extension,
                 topX: topX
             };
-            return $resource("/api/files/:repoId/:dateId/:fileExtension",
-                { repoId: "@repoId", dateId: "@dateId", fileExtension: "@fileExtension", topX: "@topX" })
+            return $resource("/api/files/:repoId/:dateId",
+                { repoId: "@repoId", dateId: "@dateId", topX: "@topX" })
                 .query(params);
         },
-        getCommits: function (repoId, dateId, extension) {
+        getCommits: function (repoId, dateId) {
             var params = {
                 repoId: repoId,
-                dateId: dateId,
-                fileExtension: extension
+                dateId: dateId
             };
-            return $resource("/api/commits/:repoId/:dateId/:fileExtension",
-                { repoId: "@repoId", dateId: "@dateId", fileExtension: "@fileExtension" })
+            return $resource("/api/commits/:repoId/:dateId",
+                { repoId: "@repoId", dateId: "@dateId" })
                 .query(params);
         },
         getFilesByCommit: function (commitId, extension) {
             var params = {
-                commitId: commitId,
-                fileExtension: extension
+                commitId: commitId
             };
 
-            return $resource("/api/files/:commitId/:fileExtension",
-                { commitId: "@commitId", fileExtension: "@fileExtension" })
+            return $resource("/api/files/:commitId",
+                { commitId: "@commitId" })
                 .query(params);
         },
     }

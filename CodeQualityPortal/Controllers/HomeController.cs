@@ -34,17 +34,14 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Churn()
         {
-            var repos = _codeChurnRepository.GetRepos();            
-            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            var json = JsonConvert.SerializeObject(repos, Formatting.None, settings);
-            return View("Churn", "", json);
+            return View("Churn", "");
         }
 
         public ActionResult Metrics()
         {
-            var repos = _metricsRepository.GetSystems();
+            var systems = _metricsRepository.GetSystems();
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            var json = JsonConvert.SerializeObject(repos, Formatting.None, settings);
+            var json = JsonConvert.SerializeObject(systems, Formatting.None, settings);
             return View("Metrics", "", json);
         }        
     }

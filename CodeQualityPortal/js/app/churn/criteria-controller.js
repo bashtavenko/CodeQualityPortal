@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-churnModule.controller("CriteriaController", function ($scope, bootstrappedData, $log) {
+churnModule.controller("CriteriaController", function ($scope) {
     $scope.dateTimePicker = {};
     var dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - 14);
@@ -10,20 +10,10 @@ churnModule.controller("CriteriaController", function ($scope, bootstrappedData,
     $scope.minDate = minDate;
 
     $scope.maxDate = new Date();
-
-    $scope.repoOptions = bootstrappedData.repoOptions;
+    
     $scope.criteria.dateFrom = dateFrom;
     $scope.criteria.dateTo = new Date();
-    $scope.criteria.extension = "cs"
     
-    if ($scope.repoOptions.length > 0) {
-        $scope.criteria.repo = $scope.repoOptions[0];
-    }
-
-    $scope.repoChanged = function () {
-        $scope.refreshChart($scope.criteria);
-    };
-        
     $scope.openDateFrom = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();

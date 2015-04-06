@@ -1,0 +1,21 @@
+﻿<style>
+    .wj-flexgrid {
+        margin-top: 10px;
+    }
+    i {
+        margin-right: 5px;
+    }
+</style>
+
+<wj-flex-grid items-source="repos" is-read-only="true" ng-show="repos.length > 0" selection-mode="None">
+    <wj-flex-grid-column header="">
+        <button class="btn btn-primary btn-sm" title="View Commits" ng-click="repoClicked($item)"><i class="fa fa-file-text"></i>Commits</button>
+    </wj-flex-grid-column>
+    <wj-flex-grid-column header="Repository " binding="repoName" width="*">
+    </wj-flex-grid-column>
+    <wj-flex-grid-column header="Commits" binding="commitCount"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Lines Added" binding="linesAdded"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Lines Deleted" binding="linesDeleted"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Total Churn" binding="totalChurn"></wj-flex-grid-column>
+</wj-flex-grid>
+

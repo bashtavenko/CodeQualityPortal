@@ -16,10 +16,16 @@ namespace CodeQualityPortal.Controllers
             _repository = repository;
         }
                 
-        [Route("api/trend/{repoId}/{dateFrom}/{dateTo}/{fileExtension?}")]
-        public IList<CodeChurnByDate> Get(int repoId, DateTime dateFrom, DateTime dateTo, string fileExtension = null)
+        [Route("api/trend/{dateFrom}/{dateTo}")]
+        public IList<CodeChurnByDate> Get(DateTime dateFrom, DateTime dateTo)
         {
-            return _repository.GetTrend(repoId, dateFrom, dateTo, fileExtension != null ? "." + fileExtension : null);
+            return _repository.GetTrend(dateFrom, dateTo);
+        }
+
+        [Route("api/reposummary/{dateId}")]
+        public IList<RepoCodeChurnSummary> Get(int dateId)
+        {
+            return _repository.GetRepoChurnSummaryByDate(dateId);
         }     
     }
 }

@@ -10,17 +10,14 @@ churnModule.controller("ChartController", function ($scope, churnService, $log) 
             return;
         }
 
+        $scope.$parent.clear();
         $scope.$parent.selectedDate = $scope.chartProps.selection.collectionView.currentItem;
-        $scope.$parent.topFiles = churnService.getFiles($scope.criteria.repo.repoId, $scope.selectedDate.dateId, $scope.criteria.extension, 5);
 
-        churnService.getCommits($scope.criteria.repo.repoId, $scope.selectedDate.dateId, $scope.criteria.extension)
-            .$promise.then(function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    data[i].expanded = false;
-                    data[i].files = [];
-                }                
-                $scope.$parent.commits = data;                
-            });        
+        churnService.getSummary($scope.selectedDate.dateId)
+            .$promise.then(function(data) {
+                $scope.$parent.repos = data;
+            });
+
     }
 
     $scope.$on("adjust_chart", function (event, message) {
