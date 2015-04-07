@@ -23,4 +23,5 @@ Database contains two separate fact tables for [metrics](https://raw.githubuserc
 * Angular JS
 * Wijmo
 
-There is demo data initializer and the site should run right out of the box.
+There is demo data initializer and the site should run right out of the box as long as [SQL Server 2012 Express LocalDB]( https://msdn.microsoft.com/en-us/library/hh510202(v=sql.110).aspx)
+is installed.

@@ -30,6 +30,7 @@
     @Scripts.Render("~/js/app/churn/directives/lines-added.js")
     @Scripts.Render("~/js/app/churn/directives/filetable.js")
     @Scripts.Render("~/js/app/churn/directives/commit.js")
+    @Scripts.Render("~/js/app/churn/directives/spinner.js")
 }
 
 <div ng-app="churnModule">
@@ -40,10 +41,12 @@
         </form>
         
         <h3>Churn from all repositories</h3>
-
+        
+        <spinner></spinner>
+        
         <div ng-include="'/js/app/churn/partials/chart.html'" ng-controller="ChartController"></div>
 
-        <strong>Repositories on {{selectedDate.date|date}}</strong>
+        <strong>{{selectedDate.date|date}}</strong>
 
         <div ng-include="'/js/app/churn/partials/grid.html'" ng-controller="GridController"></div>
         

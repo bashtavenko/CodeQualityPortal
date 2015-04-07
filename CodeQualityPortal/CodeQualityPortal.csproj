@@ -255,6 +255,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="js\app\churn\common-service.js" />
+    <Content Include="js\app\churn\directives\spinner.js" />
     <Content Include="js\app\churn\grid-controller.js" />
     <Content Include="js\app\churn\chart-controller.js" />
     <Content Include="js\app\churn\criteria-controller.js" />
@@ -372,7 +373,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58458</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

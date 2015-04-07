@@ -18,7 +18,7 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         $scope.mode.getTrend()
             .$promise.then(
                 function(data) {
-                    $scope.criteria.selectedDate = null;
+                    $scope.criteria.selectedDate = {};
                     $scope.items = [];
                     $scope.$broadcast("adjust_chart");
                     $scope.trendData = data;

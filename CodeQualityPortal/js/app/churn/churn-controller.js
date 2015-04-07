@@ -32,7 +32,7 @@ churnModule.controller("ChurnController", function ($scope, churnService, $log) 
 
     $scope.clear = function() {
         $scope.commits = [];
-        $scope.selectedDate = null;
+        $scope.selectedDate = {};
         $scope.topFiles = [];
         $scope.repo = "";
     }
