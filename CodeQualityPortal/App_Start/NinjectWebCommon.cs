@@ -1,3 +1,7 @@
+using System.Web.Http.ExceptionHandling;
+using CodeQualityPortal.Controllers;
+using log4net;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(CodeQualityPortal.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(CodeQualityPortal.NinjectWebCommon), "Stop")]
 
@@ -64,6 +68,8 @@ namespace CodeQualityPortal
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<ILog>().ToMethod(ctx => LogManager.GetLogger(typeof(HomeController)));
+            kernel.Bind<IExceptionLogger>().To<GlobalExceptionLogger>().InRequestScope();
             kernel.Bind<ICodeChurnRepository>().To<CodeChurnRepository>();
             kernel.Bind<IMetricsRepository>().To<MetricsRepository>();
         }        
