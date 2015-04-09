@@ -15,12 +15,13 @@ churnModule.config(function ($httpProvider) {
 
 churnModule.factory('myInterceptor', function($q) {
     return {
-        'response': function(response) {
+        'response': function (response) {
             $("#spinner").hide();
             return response;
         },
-        'requestError': function(rejection) {
-            $("#spinner").hide();
+        'responseError': function (rejection) {
+            $("#spinner").text("Error occured. See details in server log.");
+            $("#spinner").css("color", '#ff0906');
             return $q.reject(rejection);
         }
     };
