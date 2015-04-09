@@ -19,7 +19,7 @@ namespace CodeQualityPortal.Controllers
 
         // 1 - systems
         [Route("systems")]
-        public IList<string> Get()
+        public IList<ViewModels.SystemDefinition> Get()
         {
             return _repository.GetSystems();
         }
@@ -39,11 +39,11 @@ namespace CodeQualityPortal.Controllers
         }
 
         // 2 - modules
-        [Route("modules/{systemId?}")]
+        [Route("moduleslist/{systemId}")]
         [HttpGet]
-        public IList<Module> GetModulesByTag(int? systemId = null)
+        public IList<Module> GetModulesBySystem(int systemId)
         {
-            return _repository.GetModulesBySystem(systemId);
+            return systemId == -1 ? _repository.GetAllModules() :  _repository.GetModulesBySystem(systemId);
         }
 
         [Route("namespacetrend/{moduleId}/{dateFrom}/{dateTo}")]

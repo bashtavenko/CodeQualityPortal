@@ -2,15 +2,13 @@
 
 namespace CodeQualityPortal.Data
 {
-    public class DimTarget
+    public class DimSystem
     {
-        public int TargetId { get; set; }
+        public int SystemId { get; set; }
         public string Name { get; set; }
-        public string Tag { get; set; }
-        public string FileName { get; set; }
         public virtual List<DimModule> Modules { get; set; }
 
-        public DimTarget()
+        public DimSystem()
         {            
             Modules = new List<DimModule>();
         }

@@ -3,11 +3,11 @@
 metricsModule.factory("metricsService", function($resource, commonService) {
     return {        
         // 1 - system
-        getModuleTrend: function (systemId, dateFrom, dateTo) {
+        getModuleTrend: function (system, dateFrom, dateTo) {
             var params = {
-                systemId: systemId,
                 dateFrom: commonService.convertDateToIso(dateFrom),
-                dateTo: commonService.convertDateToIso(dateTo)
+                dateTo: commonService.convertDateToIso(dateTo),
+                systemId: system.id > 0 ? system.id : null,
             };
 
             return $resource("/api/moduletrend/:dateFrom/:dateTo/:systemId",
@@ -16,8 +16,8 @@ metricsModule.factory("metricsService", function($resource, commonService) {
         },
         getModulesByDate: function (systemId, dateId) {
             var params = {
-                systemId: systemId,
-                dateId: dateId
+                dateId: dateId,
+                systemId: systemId > 0 ? systemId : null
             };
             return $resource("/api/modules/:dateId/:systemId", { dateId: "@dateId", systemId: "@systemId", })
                 .query(params);
@@ -25,11 +25,8 @@ metricsModule.factory("metricsService", function($resource, commonService) {
 
         // 2 - module
         getModules: function (systemId) {
-            var params = {
-            systemId: systemId, 
-            };
-            return $resource("/api/modules/:systemId", { systemId: "@systemId" })
-            .query(params);
+            var params = { systemId: systemId };
+            return $resource("/api/moduleslist/:systemId", { systemId: "@systemId" }).query(params);
         },
         getNamespaceTrend: function (moduleId, dateFrom, dateTo) {
             var params = {

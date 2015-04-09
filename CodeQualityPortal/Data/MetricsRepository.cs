@@ -24,18 +24,32 @@ namespace CodeQualityPortal.Data
         }
 
         // 1 - systems
-        public IList<string> GetSystems()
+        public IList<ViewModels.SystemDefinition> GetSystems()
         {
-            return _context.Targets.GroupBy(g => g.Tag).Select(s => s.Key).ToList();
+            var items = _context.Systems.ToList();
+            return Mapper.Map<IList<ViewModels.SystemDefinition>>(items);
         }
 
         public IList<TrendItem> GetModuleTrend(int? systemId, DateTime dateFrom, DateTime dateTo)
         {
-            var groupedItems = _context.Metrics
-                .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
-                        && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
-                .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
-                .ToList();
+            IList<IGrouping<DateTuple, FactMetrics>> groupedItems;
+            if (systemId.HasValue)
+            {
+                groupedItems = _context.Metrics
+                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                            && w.Date.Date >= dateFrom && w.Date.Date <= dateTo
+                            && w.Module.Systems.Any(a => a.SystemId == systemId.Value))
+                    .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
+                    .ToList();   
+            }
+            else
+            {
+                groupedItems = _context.Metrics
+                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                            && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
+                    .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
+                    .ToList();   
+            }
 
             var items = Mapper.Map<IList<TrendItem>>(groupedItems);
             return items;
@@ -45,21 +59,28 @@ namespace CodeQualityPortal.Data
         {
             var queryItems = _context.Metrics
                 .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
-                    && w.DateId == dateId)
-                .ToList();
+                            && w.DateId == dateId);
 
-            var items = Mapper.Map<IList<ModuleItem>>(queryItems);
+            if (systemId.HasValue)
+            {
+                queryItems = queryItems.Where(w => w.Module.Systems.Any(a => a.SystemId == systemId.Value));
+            }
+            
+            var items = Mapper.Map<IList<ModuleItem>>(queryItems.ToList());
             return items;
         }
 
         // 2 - modules
-        public IList<Module> GetModulesBySystem(int? systemId)
+        public IList<Module> GetModulesBySystem(int systemId)
         {
-            var queryItems = _context.Modules
-                .ToList();
-
-            var items = Mapper.Map<IList<Module>>(queryItems);
+            IQueryable<DimModule> queryItems =  _context.Modules.Where(w => w.Systems.Any(a => a.SystemId == systemId));
+            var items = Mapper.Map<IList<Module>>(queryItems.ToList());
             return items;
+        }
+
+        public IList<Module> GetAllModules()
+        {
+            return Mapper.Map<IList<Module>>(_context.Modules.ToList());
         }
         
         public IList<TrendItem> GetNamespaceTrend(int moduleId, DateTime dateFrom, DateTime dateTo)

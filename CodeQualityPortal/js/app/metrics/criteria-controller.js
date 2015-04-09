@@ -19,7 +19,6 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         $scope[options] = [$scope.allOption];
         $scope.criteria[model] = $scope[options][0];
     }
-
     
     $scope.loadMembers = function () {
         $scope.initSelect('memberOptions', 'member');
@@ -54,14 +53,19 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     };
 
     $scope.loadModules = function () {
-        $scope.initSelect('moduleOptions', 'module');        
-        metricsService.getModules(null)
+        $scope.initSelect('moduleOptions', 'module');
+        metricsService.getModules($scope.criteria.system.id)
               .$promise.then(function (data) {
                   $scope.moduleOptions = $scope.moduleOptions.concat(data);
              });        
         $scope.loadNamespaces();
     };
     
+    $scope.systemChanged = function () {
+        $scope.loadModules();
+        $scope.setMode(new $scope.systemMode);
+        $scope.refresh();
+    };
 
     $scope.moduleChanged = function () {
         $scope.loadNamespaces();
@@ -140,6 +144,9 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
         return s.$invalid ? "has-error" : "";
     }
 
-    $scope.loadModules(null);
+    $scope.systemOptions = [$scope.allOption];
+    $scope.systemOptions = $scope.systemOptions.concat(bootstrappedData.systemOptions);
+    $scope.criteria.system = $scope.systemOptions[0];
+    $scope.loadModules(); // cascades through namespaces, types and members
 });
 

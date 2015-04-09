@@ -24,19 +24,19 @@ namespace CodeQualityPortal.IntegrationTests.Data
         {
             _repository.Dispose();
         }
-
-        //[Test] TODO: Get systems
-        public void MetricsRepository_GetTags()
+        
+        [Test]
+        public void MetricsRepository_GetSystems()
         {
             var result = _repository.GetSystems();
-            Assert.IsTrue(result.Count() > 0);            
+            Assert.IsTrue(result.Any());            
         }
 
-        //[Test]
-        public void MetricsRepository_GetModuleTrend()
+        [Test]
+        public void MetricsRepository_GetModuleTrend_WithSystem()
         {
             // Arrange
-            string tag; // TODO: GET SYSTEMS
+            DimSystem system; 
             DateTime dateTo;            
             using (var ctx = new CodeQualityContext())
             {
@@ -47,13 +47,35 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                tag = item.Module.Targets.First().Tag;
+                system = item.Module.Systems.First();
+                dateTo = item.Date.DateTime;
+            }
+
+            // Act
+            var result = _repository.GetModuleTrend(system.SystemId, dateTo.AddDays(-7), dateTo);
+            Assert.IsTrue(result.Any());
+        }
+
+        [Test]
+        public void MetricsRepository_GetModuleTrend_WithoutSystem()
+        {
+            // Arrange
+            DateTime dateTo;
+            using (var ctx = new CodeQualityContext())
+            {
+                var item = ctx.Metrics
+                    .Where(w => w.Member != null)
+                    .OrderByDescending(d => d.Date.DateTime).FirstOrDefault();
+                if (item == null)
+                {
+                    Assert.Inconclusive("No data");
+                }
                 dateTo = item.Date.DateTime;
             }
 
             // Act
             var result = _repository.GetModuleTrend(null, dateTo.AddDays(-7), dateTo);
-            Assert.IsTrue(result.Count() > 0);
+            Assert.IsTrue(result.Any());
         }
 
 
@@ -76,7 +98,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
 
             // Act
             var result = _repository.GetNamespacesByModule(moduleId);
-            Assert.IsTrue(result.Count() > 0);
+            Assert.IsTrue(result.Any());
         }
 
 
@@ -101,14 +123,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
 
             // Act
             var result = _repository.GetTypesByNamespace(moduleId, namespaceId);
-            Assert.IsTrue(result.Count() > 0);
+            Assert.IsTrue(result.Any());
         }
 
         //[Test]
-        public void MetricsRepository_GetSystems()
+        public void MetricsRepository_GetModuleSystems()
         {
             // Arrange
-            string tag; // TODO: GET SYSTEMS
+            DimSystem system;
             int dateId;
             using (var ctx = new CodeQualityContext())
             {
@@ -119,13 +141,13 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 {
                     Assert.Inconclusive("No data");
                 }
-                tag = item.Module.Targets.First().Tag;
+                system = item.Module.Systems.First();
                 dateId = item.DateId;
             }
 
             // Act
-            var result = _repository.GetModules(null, dateId);
-            Assert.IsTrue(result.Count() > 0);
+            var result = _repository.GetModules(system.SystemId, dateId);
+            Assert.IsTrue(result.Any());
         }
 
         [Test]

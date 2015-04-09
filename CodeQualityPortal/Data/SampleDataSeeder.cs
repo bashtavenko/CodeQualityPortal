@@ -13,30 +13,35 @@ namespace CodeQualityPortal.Data
         }
 
         private readonly CodeQualityContext _context;
-        private readonly List<DimModule> _modules = new List<DimModule>
+
+        private readonly DimSystem _system = new DimSystem
         {
-            new DimModule
+            Name = "Order Management",
+            Modules = new List<DimModule>
             {
-                Name = "LegacyMutexTester.dll",
-                AssemblyVersion = "1.0.0.0",
-                FileVersion = "1.0.0.0",
-                Namespaces = new List<DimNamespace>
+                new DimModule
                 {
-                    new DimNamespace
+                    Name = "LegacyMutexTester.dll",
+                    AssemblyVersion = "1.0.0.0",
+                    FileVersion = "1.0.0.0",
+                    Namespaces = new List<DimNamespace>
                     {
-                        Name = "LegacyMutexTester",
-                        Types = new List<DimType>
+                        new DimNamespace
                         {
-                            new DimType
+                            Name = "LegacyMutexTester",
+                            Types = new List<DimType>
                             {
-                                Name = "RecursiveLolcatSet",
-                                Members = new List<DimMember>
+                                new DimType
                                 {
-                                    new DimMember { Name = "Label.set(string) : void", File = "PayService.cs", Line = 23 },
-                                    new DimMember { Name = "GetPaymentStatus(GetPaymentStatusRequest) : GetPaymentStatusResponse", File = "Account.cs", Line = 7 },
+                                    Name = "RecursiveLolcatSet",
+                                    Members = new List<DimMember>
+                                    {
+                                        new DimMember { Name = "Label.set(string) : void", File = "PayService.cs", Line = 23 },
+                                        new DimMember { Name = "GetPaymentStatus(GetPaymentStatusRequest) : GetPaymentStatusResponse", File = "Account.cs", Line = 7 },
+                                    }
                                 }
-                            }
-                        },
+                            },
+                        }
                     }
                 }
             }
@@ -112,7 +117,7 @@ namespace CodeQualityPortal.Data
 
         private void SeedMetrics(DimDate date)
         {
-            foreach (var module in _modules)
+            foreach (var module in _system.Modules)
             {
                 FactMetrics metrics;
 
@@ -149,8 +154,8 @@ namespace CodeQualityPortal.Data
                 metrics.Module = module;
                 metrics.Date = date;
                 module.Metrics.Add(metrics);
-                _context.Modules.Add(module);
             }
+            _context.Systems.Add(_system);
         }
 
         private void SeedChurn(DimDate date)

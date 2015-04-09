@@ -28,7 +28,7 @@ namespace CodeQualityPortal.Data
         public DbSet<DimCommit> Commits { get; set; }
         public DbSet<DimFile> Files { get; set; }
         public DbSet<DimDate> Dates { get; set; }
-        public DbSet<DimTarget> Targets { get; set; }
+        public DbSet<DimSystem> Systems { get; set; }
         public DbSet<DimModule> Modules { get; set; }
         public DbSet<DimNamespace> Namespaces { get; set; }
         public DbSet<DimType> Types { get; set; }
@@ -46,7 +46,7 @@ namespace CodeQualityPortal.Data
             modelBuilder.Configurations.Add(new DimFileConfiguration());
             modelBuilder.Configurations.Add(new DimDateConfiguration());
             modelBuilder.Configurations.Add(new FactCodeChurnConfiguration());
-            modelBuilder.Configurations.Add(new DimTargetConfiguration());
+            modelBuilder.Configurations.Add(new DimSystemConfiguration());
             modelBuilder.Configurations.Add(new DimModuleConfiguration());
             modelBuilder.Configurations.Add(new DimNamespaceConfiguration());
             modelBuilder.Configurations.Add(new DimTypeConfiguration());

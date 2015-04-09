@@ -194,7 +194,7 @@
     <Compile Include="Data\Maps\DimTypeConfiguration.cs" />
     <Compile Include="Data\Maps\DimNamespaceConfiguration.cs" />
     <Compile Include="Data\Maps\DimModuleConfiguration.cs" />
-    <Compile Include="Data\Maps\DimTargetConfiguration.cs" />
+    <Compile Include="Data\Maps\DimSystemConfiguration.cs" />
     <Compile Include="Data\Maps\FactCodeChurnConfiguration.cs" />
     <Compile Include="Data\Maps\DimDateConfiguration.cs" />
     <Compile Include="Data\Maps\DimFileConfiguration.cs" />
@@ -209,7 +209,7 @@
     <Compile Include="Data\DimModule.cs" />
     <Compile Include="Data\DimNamespace.cs" />
     <Compile Include="Data\DimRepo.cs" />
-    <Compile Include="Data\DimTarget.cs" />
+    <Compile Include="Data\DimSystem.cs" />
     <Compile Include="Data\DimType.cs" />
     <Compile Include="Data\FactCodeChurn.cs" />
     <Compile Include="Data\FactMetrics.cs" />
@@ -231,6 +231,7 @@
     <Compile Include="ViewModels\Namespace.cs" />
     <Compile Include="ViewModels\MemberItem.cs" />
     <Compile Include="ViewModels\HomePage.cs" />
+    <Compile Include="ViewModels\SystemDefinition.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
     <Compile Include="ViewModels\Type.cs" />
     <Compile Include="ViewModels\NamespaceItem.cs" />

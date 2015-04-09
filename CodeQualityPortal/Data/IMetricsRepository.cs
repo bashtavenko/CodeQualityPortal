@@ -8,12 +8,13 @@ namespace CodeQualityPortal.Data
     public interface IMetricsRepository : IDisposable
     {
         // 1 - systems
-        IList<string> GetSystems();
+        IList<ViewModels.SystemDefinition> GetSystems();
         IList<TrendItem> GetModuleTrend(int? systemId, DateTime dateFrom, DateTime dateTo);
         IList<ModuleItem> GetModules(int? systemId, int dateId);
 
         // 2 - modules
-        IList<Module> GetModulesBySystem(int? systemId);
+        IList<Module> GetModulesBySystem(int systemId);
+        IList<Module> GetAllModules();
         IList<TrendItem> GetNamespaceTrend(int moduleId, DateTime dateFrom, DateTime dateTo);
         IList<NamespaceItem> GetNamespaces(int moduleId, int dateId);
 

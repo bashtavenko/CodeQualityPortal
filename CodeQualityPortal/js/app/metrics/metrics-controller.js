@@ -18,7 +18,7 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
         $scope.mode.getTrend()
             .$promise.then(
                 function(data) {
-                    $scope.criteria.selectedDate = {};
+                    $scope.criteria.selectedDate = null;
                     $scope.items = [];
                     $scope.$broadcast("adjust_chart");
                     $scope.trendData = data;
@@ -41,15 +41,14 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     // 1 - system
     $scope.systemMode = function () {
         return {
-            getTrend: function () {
-                // TODO: SYSTEM ID
-                return metricsService.getModuleTrend(null, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+            getTrend: function() {
+                return metricsService.getModuleTrend($scope.criteria.system, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
-            getItems: function () {
-                return metricsService.getModulesByDate(null, $scope.criteria.selectedDate.dateId);
+            getItems: function() {
+                return metricsService.getModulesByDate($scope.criteria.system.id, $scope.criteria.selectedDate.dateId);
             },
-            trendLabel: "System trend",
-            itemsLabel: "Modules on",
+            trendLabel: $scope.criteria.system.id == -1 ? "All systems trend" : "System trend for " + $scope.criteria.system.name,
+            itemsLabel: "Modules on ",
             chartSelection: "Point"
         };
     };
