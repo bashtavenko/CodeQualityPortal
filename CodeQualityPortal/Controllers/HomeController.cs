@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
-
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Linq;
 
 using CodeQualityPortal.Data;
 using CodeQualityPortal.ViewModels;
+using Ninject.Activation.Caching;
 
 namespace CodeQualityPortal.Controllers
 {
@@ -20,6 +25,7 @@ namespace CodeQualityPortal.Controllers
             _metricsRepository = metricsRepository;
         }
 
+        [OutputCache(CacheProfile = "HomePage")]
         public ActionResult Index()
         {
             const int topX = 5;
@@ -43,6 +49,12 @@ namespace CodeQualityPortal.Controllers
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(systems, Formatting.None, settings);
             return View("Metrics", "", json);
-        }        
+        }
+
+        public ActionResult Reset()
+        {
+            Response.RemoveOutputCacheItem(Url.Action("Index"));
+            return RedirectToAction("index");
+        }
     }
 }
