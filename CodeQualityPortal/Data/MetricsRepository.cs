@@ -249,6 +249,42 @@ namespace CodeQualityPortal.Data
             return stats;
         }
 
+        public IList<ViewModels.SystemStats> GetLatestSystemStats()
+        {
+            var systems = _context.Systems.Select(s => new SystemStats { DimSystem = s }).ToList();
+            foreach (var system in systems)
+            {
+                var allDataPoints = _context.Metrics
+                    .Where(m => m.ModuleId != null && m.NamespaceId == null && m.TypeId == null && m.MemberId == null &&
+                                m.Module.Systems.Any(s => s.SystemId == system.DimSystem.SystemId))
+                    .Select(
+                        s =>
+                            new
+                            {
+                                Date = s.Date.Date,
+                                MaintanabilityIndex = s.MaintainabilityIndex,
+                                CodeCoverage = s.CodeCoverage ?? 0,
+                                LinesOfCode = s.LinesOfCode
+                            })
+                    .GroupBy(g => g.Date) // System usually has more than one module
+                    .OrderBy(o => o.Key)
+                    .Take(10)
+                    .ToList();
+
+                system.MaintainabilityIndex = new Trend(allDataPoints.Select(s => new DataPoint {Date = s.Key, Value = Convert.ToInt32(s.Average(d => d.MaintanabilityIndex))}).ToList());
+                system.MaintainabilityIndex.CalculateSlope();
+
+                system.LinesOfCode = new Trend(allDataPoints.Select(s => new DataPoint { Date = s.Key, Value = Convert.ToInt32(s.Sum(d => d.LinesOfCode))}).ToList());
+                system.LinesOfCode.CalculateSlope();
+                
+                system.CodeCoverage = new Trend(allDataPoints.Select(s => new DataPoint {Date = s.Key, Value = Convert.ToInt32(s.Average(d => d.CodeCoverage))}).ToList());
+                system.CodeCoverage.CalculateSlope();
+                
+            }
+            var items = Mapper.Map<List<ViewModels.SystemStats>>(systems);
+            return items;
+        }
+
         public void Dispose()
         {
             Dispose(true);

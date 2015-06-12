@@ -1,0 +1,7 @@
+﻿<wj-flex-chart style="height:300px; margin-top:20px;" items-source="dataPoints" binding-x="dateString" chart-type="LineSymbols">
+    <wj-flex-chart-axis wj-property="axisX" labels="{{labelsVisible}}"></wj-flex-chart-axis>
+    <wj-flex-chart-axis wj-property="axisY" min="0" max="{{max}}"></wj-flex-chart-axis>
+    <wj-flex-chart-series binding="value" ng-attr-style="{stroke:'#446e9b', 'stroke-width':'3' }" ng-attr-symbol-style="{fill:'#ffffff', stroke:'#446e9b'}"></wj-flex-chart-series>
+    <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+</wj-flex-chart>
+

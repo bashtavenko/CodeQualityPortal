@@ -194,6 +194,7 @@
     <Compile Include="Controllers\ReposController.cs" />
     <Compile Include="Data\CodeQualityCreateDatabaseIfNotExists.cs" />
     <Compile Include="Data\CodeQualityDropCreateDatabaseAlways.cs" />
+    <Compile Include="Data\DataPoint.cs" />
     <Compile Include="Data\DateTuple.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
     <Compile Include="Data\Maps\DimMemberConfiguration.cs" />
@@ -223,11 +224,17 @@
     <Compile Include="Data\ICodeChurnRepository.cs" />
     <Compile Include="Data\CodeQualityContext.cs" />
     <Compile Include="Data\SampleDataSeeder.cs" />
+    <Compile Include="Data\TwoPointsSlopeCalculator.cs" />
+    <Compile Include="Data\SlopeCalculator.cs" />
+    <Compile Include="Data\SystemStats.cs" />
+    <Compile Include="Data\Trend.cs" />
+    <Compile Include="Data\TrendIndicator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
+    <Compile Include="ViewModels\DataPoint.cs" />
     <Compile Include="ViewModels\RepoCodeChurnSummary.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />
@@ -238,6 +245,8 @@
     <Compile Include="ViewModels\MemberItem.cs" />
     <Compile Include="ViewModels\HomePage.cs" />
     <Compile Include="ViewModels\SystemDefinition.cs" />
+    <Compile Include="ViewModels\SystemStats.cs" />
+    <Compile Include="ViewModels\Trend.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
     <Compile Include="ViewModels\Type.cs" />
     <Compile Include="ViewModels\NamespaceItem.cs" />
@@ -283,6 +292,10 @@
     <Content Include="js\app\metrics\chart-controller.js" />
     <Content Include="js\app\metrics\partials\grid.html" />
     <Content Include="js\app\metrics\metrics-controller.js" />
+    <Content Include="js\app\systems\partials\chart.html" />
+    <Content Include="js\app\systems\systems-controller.js" />
+    <Content Include="js\app\systems\systems-service.js" />
+    <Content Include="js\app\systems\partials\grid.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
@@ -355,6 +368,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Metrics.cshtml" />
+    <Content Include="Views\Home\Systems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

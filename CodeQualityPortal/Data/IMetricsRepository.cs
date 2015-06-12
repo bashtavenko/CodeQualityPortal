@@ -34,5 +34,6 @@ namespace CodeQualityPortal.Data
 
         IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime to, int topX);
         KeyStats GetLatestKeyStats();
+        IList<ViewModels.SystemStats> GetLatestSystemStats();
     }
 }

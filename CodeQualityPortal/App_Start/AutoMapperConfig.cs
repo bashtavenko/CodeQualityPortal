@@ -58,8 +58,17 @@ namespace CodeQualityPortal
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Member.MemberId))
                 .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Member.Name));
 
+            Mapper.CreateMap<Data.DataPoint, ViewModels.DataPoint>();
+
             Mapper.CreateMap<DimSystem, ViewModels.SystemDefinition>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.SystemId));
+
+            Mapper.CreateMap<Data.Trend, ViewModels.Trend>()
+                .ForMember(m => m.LastValue, opt => opt.MapFrom(src => src.LastDataPoint.Value));
+            
+            Mapper.CreateMap<Data.SystemStats, ViewModels.SystemStats>()
+                .ForMember(m => m.SystemId, opt => opt.MapFrom(src => src.DimSystem.SystemId))
+                .ForMember(m => m.SystemName, opt => opt.MapFrom(src => src.DimSystem.Name));
         }       
     }
 }

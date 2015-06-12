@@ -118,5 +118,12 @@ namespace CodeQualityPortal.Controllers
         {
             return _repository.GetSingleMemberTrend(moduleId, namespaceId, typeId, memberId, dateFrom, dateTo);
         }
+
+        [Route("systemstats")]
+        [HttpGet]
+        public IList<ViewModels.SystemStats> GetSystemStats()
+        {
+            return _repository.GetLatestSystemStats();
+        }
     }
 }

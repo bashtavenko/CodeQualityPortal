@@ -160,8 +160,14 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [Test]
         public void MetricsRepository_GetKeyStats()
         {
-            // Act
             var result = _repository.GetLatestKeyStats();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void MetricsRepository_GetLatesSystemStats()
+        {
+            var result = _repository.GetLatestSystemStats();
             Assert.IsNotNull(result);
         }
     }

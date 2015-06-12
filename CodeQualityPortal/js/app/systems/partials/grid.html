@@ -1,0 +1,21 @@
+﻿<wj-flex-grid items-source="items" is-read-only="true" ng-show="items.length > 0">
+    <wj-flex-grid-column header="System" binding="systemName" width="*"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Index" binding="maintainabilityIndex.lastValue">
+        <a ng-click="trendClick($item.systemName, 'Maintainability Index', $item.maintainabilityIndex.dataPoints, 100)">
+            {{$item.maintainabilityIndex.lastValue}}
+            <i class="{{$item.maintainabilityIndex.trendIndicatorCssClass}}"></i>
+        </a>
+    </wj-flex-grid-column>
+    <wj-flex-grid-column header="Coverage" binding="codeCoverage.lastValue">
+        <a ng-click="trendClick($item.systemName, 'Code Coverage', $item.codeCoverage.dataPoints, 100)">
+            {{$item.codeCoverage.lastValue}}%
+            <i class="{{$item.codeCoverage.trendIndicatorCssClass}}"></i>
+        </a>
+    </wj-flex-grid-column>
+    <wj-flex-grid-column header="LOC" binding="linesOfCode.lastValue">
+        <a ng-click="trendClick($item.systemName, 'Lines of Code', $item.linesOfCode.dataPoints)">
+            {{$item.linesOfCode.lastValue | number}}
+            <i class="{{$item.linesOfCode.trendIndicatorCssClass}}"></i>
+        </a>
+    </wj-flex-grid-column>
+</wj-flex-grid>
