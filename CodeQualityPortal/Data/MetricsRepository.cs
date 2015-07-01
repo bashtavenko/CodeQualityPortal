@@ -267,9 +267,11 @@ namespace CodeQualityPortal.Data
                                 LinesOfCode = s.LinesOfCode
                             })
                     .GroupBy(g => g.Date) // System usually has more than one module
-                    .OrderBy(o => o.Key)
+                    .OrderByDescending(o => o.Key)
                     .Take(10)
                     .ToList();
+
+                allDataPoints = allDataPoints.OrderBy(s => s.Key).ToList();
 
                 system.MaintainabilityIndex = new Trend(allDataPoints.Select(s => new DataPoint {Date = s.Key, Value = Convert.ToInt32(s.Average(d => d.MaintanabilityIndex))}).ToList());
                 system.MaintainabilityIndex.CalculateSlope();
