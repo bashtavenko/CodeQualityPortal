@@ -125,5 +125,20 @@ namespace CodeQualityPortal.Controllers
         {
             return _repository.GetLatestSystemStats();
         }
+
+
+        [Route("dates")]
+        [HttpGet]
+        public IList<ViewModels.DataPoint> GetDatePoints()
+        {
+            return _repository.GetDatePoints();
+        }
+
+        [Route("systems/{dateId}")]
+        [HttpGet]
+        public IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId)
+        {
+            return _repository.GetSystemsByDate(dateId);
+        }
     }
 }

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -235,6 +236,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\DataPoint.cs" />
+    <Compile Include="ViewModels\Date.cs" />
     <Compile Include="ViewModels\RepoCodeChurnSummary.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />

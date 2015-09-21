@@ -287,6 +287,36 @@ namespace CodeQualityPortal.Data
             return items;
         }
 
+        public IList<ViewModels.DataPoint> GetDatePoints()
+        {
+            return _context.Metrics
+                .GroupBy(s => new { s.DateId, s.Date.DateTime })
+                .Select(v => new ViewModels.DataPoint { DateId = v.Key.DateId, Date = v.Key.DateTime })
+                .OrderBy(s => s.Date)
+                .ToList();            
+        }
+        public IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId)
+        {
+            var query = _context.Systems
+                .SelectMany(s => s.Modules, (s, d) => new { System = s, MetricsList = d.Metrics })
+                .SelectMany(s => s.MetricsList, (s, d) => new { System = s.System, MetricsItem = d })
+                .Where(w => w.MetricsItem.DateId == dateId)
+                .GroupBy(g => new { g.System.SystemId, g.System.Name})
+                .Select(s => new ViewModels.MetricsItem
+                {
+                    Id = s.Key.SystemId,
+                    Name = s.Key.Name,
+                    LinesOfCode = s.Sum(x => x.MetricsItem.LinesOfCode),
+                    CodeCoverage = (int?) s.Average(x => x.MetricsItem.CodeCoverage) ?? 0,
+                    MaintainabilityIndex = (int) s.Average(x => x.MetricsItem.MaintainabilityIndex),
+                    ClassCoupling = s.Sum(x => x.MetricsItem.ClassCoupling),
+                    CyclomaticComplexity = s.Sum(x => x.MetricsItem.CyclomaticComplexity),
+                    DepthOfInheritance = s.Max(x => x.MetricsItem.DepthOfInheritance)
+                });
+
+            return query.ToList();            
+        }
+
         public void Dispose()
         {
             Dispose(true);
