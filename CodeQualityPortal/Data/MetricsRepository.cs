@@ -300,7 +300,8 @@ namespace CodeQualityPortal.Data
             var query = _context.Systems
                 .SelectMany(s => s.Modules, (s, d) => new { System = s, MetricsList = d.Metrics })
                 .SelectMany(s => s.MetricsList, (s, d) => new { System = s.System, MetricsItem = d })
-                .Where(w => w.MetricsItem.DateId == dateId)
+                .Where(w => w.MetricsItem.DateId == dateId
+                    && w.MetricsItem.Member == null && w.MetricsItem.Type == null && w.MetricsItem.Namespace == null)
                 .GroupBy(g => new { g.System.SystemId, g.System.Name})
                 .Select(s => new ViewModels.MetricsItem
                 {

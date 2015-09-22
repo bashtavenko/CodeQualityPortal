@@ -1,8 +1,9 @@
 ﻿'use strict';
 
-scatterModule.controller("ScatterController", function ($scope, bootstrappedData, $log, scatterService) {
-    $scope.criteria = {};
-    $scope.scatterChart = null;
+scatterModule.controller("ScatterController", function ($scope, bootstrappedData, $log, scatterService) {    
+    $scope.chartProps = {
+        selection: null
+    };    
 
     $scope.dates = bootstrappedData.dates;    
     $scope.cdi = $scope.dates.length - 1;
@@ -35,27 +36,33 @@ scatterModule.controller("ScatterController", function ($scope, bootstrappedData
 
     $scope.refreshChart = function () {        
         var dateId = $scope.getDate().dateId;
+        $scope.selectedSystem = null;
+        $scope.modulesData = null;
         scatterService.getSystems(dateId)
             .$promise.then(
                 function (data) {
+                    // Wijmo can't bind series to 'name' property
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].systemName = data[i].name;
+                    }
                     $scope.scatterData = data;                    
                 }
         );
     }
-        
-    $scope.$watch('scatterChart', function () {
-        var chart = $scope.scatterChart;
-        if (!chart) {
-            return;
-        }
-        $log.write("++");
-        chart.tooltip.content = function (ht) {
-            $log.write(ht);
-            return ht.name;
-        }
-    });
 
-
-    
+    $scope.systemClick = function () {
+        if ($scope.chartProps.selection != null) {
+            var item = $scope.chartProps.selection.collectionView.currentItem;
+            $scope.selectedSystem = item.name;
+            var systemId = item.id;
+            var dateId = $scope.getDate().dateId;
+            scatterService.getModulesByDate(systemId, dateId)
+                .$promise.then(
+                    function (data) {
+                        $scope.modulesData = data;
+                    }
+            );
+        }
+    }    
 });
 

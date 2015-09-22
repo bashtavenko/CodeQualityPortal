@@ -1,0 +1,46 @@
+﻿<!-- tooltip-content="<b>{pointIndex}</b><br />{x}/{y}" -->
+<!-- tooltip-content="<b>{{scatterData[pointIndex].name}}</b><br />{x}/{y}" -->
+
+<style>
+    span.current-date {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+</style>
+
+<br />
+
+<div>
+    <button type="button" title="Next collection date" class="btn btn-sm" ng-click="goForward()" ng-disabled="!canGoForward()">
+        <span class="glyphicon glyphicon-forward"></span>
+    </button>
+    <span class="current-date">{{getDate().date|date}}</span>
+    <button type="button" title="Previous collection date" class="btn btn-sm" ng-click="goBack()" ng-disabled="!canGoBack()">
+        <span class="glyphicon glyphicon-backward"></span>
+    </button>
+</div>
+
+
+<wj-flex-chart style="height:300px; margin-top:20px;" items-source="scatterData" chart-type="Bubble"
+               binding-x="linesOfCode" tooltip-content="<b>{systemName}</b><br /><b>Cyclomatic Complexity:</b> {cyclomaticComplexity:n0}<br /><b>Lines of Code:</b> {x}<br/><b>Code Coverage:</b> {y}%"
+               selection-mode="Point" selection="chartProps.selection" ng-click="systemClick()" >
+    <wj-flex-chart-axis wj-property="axisX" min="0" title="Lines of Code"></wj-flex-chart-axis>
+    <wj-flex-chart-axis wj-property="axisY" min="0" max="100" title="Code Coverage"></wj-flex-chart-axis>
+    <wj-flex-chart-series binding="codeCoverage,cyclomaticComplexity"></wj-flex-chart-series>
+</wj-flex-chart>
+
+<p></p>
+
+<h3>{{selectedSystem}}</h3>
+
+<p></p>
+
+<wj-flex-grid items-source="modulesData" is-read-only="true" ng-show="modulesData.length > 0">
+    <wj-flex-grid-column header="Module" binding="name" width="*"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Index" binding="maintainabilityIndex"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Coverage" binding="codeCoverage"></wj-flex-grid-column>
+    <wj-flex-grid-column header="LOC" binding="linesOfCode"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Complexity" binding="cyclomaticComplexity"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Coupling" binding="classCoupling"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Inheritance" binding="depthOfInheritance"></wj-flex-grid-column>
+</wj-flex-grid>

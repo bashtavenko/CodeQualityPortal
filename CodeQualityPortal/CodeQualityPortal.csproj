@@ -294,7 +294,7 @@
     <Content Include="js\app\metrics\chart-controller.js" />
     <Content Include="js\app\metrics\partials\grid.html" />
     <Content Include="js\app\metrics\metrics-controller.js" />
-    <Content Include="js\app\scatter\partials\chart.html" />
+    <Content Include="js\app\scatter\partials\scatter.html" />
     <Content Include="js\app\scatter\partials\criteria.html" />
     <Content Include="js\app\scatter\scatter-controller.js" />
     <Content Include="js\app\scatter\scatter-service.js" />
