@@ -294,6 +294,10 @@
     <Content Include="js\app\metrics\chart-controller.js" />
     <Content Include="js\app\metrics\partials\grid.html" />
     <Content Include="js\app\metrics\metrics-controller.js" />
+    <Content Include="js\app\scatter\partials\chart.html" />
+    <Content Include="js\app\scatter\partials\criteria.html" />
+    <Content Include="js\app\scatter\scatter-controller.js" />
+    <Content Include="js\app\scatter\scatter-service.js" />
     <Content Include="js\app\systems\partials\chart.html" />
     <Content Include="js\app\systems\systems-controller.js" />
     <Content Include="js\app\systems\systems-service.js" />
@@ -371,6 +375,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Metrics.cshtml" />
     <Content Include="Views\Home\Systems.cshtml" />
+    <Content Include="Views\Home\Scatter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

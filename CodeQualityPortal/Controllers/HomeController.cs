@@ -57,5 +57,13 @@ namespace CodeQualityPortal.Controllers
             Response.RemoveOutputCacheItem(Url.Action("Index"));
             return RedirectToAction("index");
         }
+
+        public ActionResult Scatter()
+        {
+            var datePoints = _metricsRepository.GetDatePoints();
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var json = JsonConvert.SerializeObject(datePoints, Formatting.None, settings);
+            return View("Scatter", "", json);
+        }
     }
 }
