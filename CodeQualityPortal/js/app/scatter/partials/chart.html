@@ -1,0 +1,30 @@
+﻿<!-- tooltip-content="<b>{pointIndex}</b><br />{x}/{y}" -->
+<!-- tooltip-content="<b>{{scatterData[pointIndex].name}}</b><br />{x}/{y}" -->
+
+<style>
+    span.current-date {
+        margin-left:10px;
+        margin-right:10px;
+    }
+</style>
+
+<br />
+
+<div>
+    <button type="button" class="btn btn-sm" ng-click="goForward()" ng-disabled="!canGoForward()">
+        <span class="glyphicon glyphicon-forward"></span>
+    </button>
+    <span class="current-date">{{getDate().date|date}}</span>    
+    <button type="button" class="btn btn-sm" ng-click="goBack()" ng-disabled="!canGoBack()">
+        <span class="glyphicon glyphicon-backward"></span>
+    </button>    
+</div>
+
+
+<wj-flex-chart control="scatterChart" style="height:300px; margin-top:20px;" items-source="scatterData" chart-type="Scatter"
+               binding-x="linesOfCode" tooltip-content="<b>{value}</b><br />{x}/{y}" >
+    <wj-flex-chart-axis wj-property="axisX" min="0" title="Lines of Code"></wj-flex-chart-axis>
+    <wj-flex-chart-axis wj-property="axisY" min="0" max="100" title="Code Coverage"></wj-flex-chart-axis>
+    <wj-flex-chart-series binding="codeCoverage"></wj-flex-chart-series>
+</wj-flex-chart>
+

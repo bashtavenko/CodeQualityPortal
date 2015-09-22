@@ -1,0 +1,30 @@
+﻿@model string
+
+<style>
+    div.series > span {
+        margin-left: 5px;
+        margin-right: 50px;
+        font-weight: bold;
+    }
+</style>
+
+@section JavascriptInHead
+{
+    @Scripts.Render("~/js/app/scatter/scatter-controller.js")
+    @Scripts.Render("~/js/app/scatter/scatter-service.js")
+    <script type="text/javascript">
+        scatterModule.factory("bootstrappedData", function() {
+            return {
+                dates: @Html.Raw(Model)
+            };
+        });
+    </script>
+}
+
+<div style="margin-top:20px;" ng-app="scatterModule" ng-controller="ScatterController">
+    <h3>Lines of Code and Code Coverage</h3>
+    <div ng-include="'/js/app/scatter/partials/criteria.html'"></div>
+    
+    <p></p>    
+    <div ng-include="'/js/app/scatter/partials/chart.html'" ng-init="init()"></div>
+</div>
