@@ -19,7 +19,7 @@ scatterModule.controller("ScatterController", function ($scope, bootstrappedData
     }
 
     $scope.getMinCodeCoverage = function () {
-        return $scope.minCodeCoverage == 0 ? -7 : $scope.minCodeCoverage;
+        return $scope.minCodeCoverage > 0 ? 0 : -7;
     }
 
     $scope.goForward = function () {
@@ -50,19 +50,31 @@ scatterModule.controller("ScatterController", function ($scope, bootstrappedData
         $scope.modulesData = null;
         scatterService.getSystems(dateId)
             .$promise.then(
-                function (data) {
-                    // Wijmo can't bind series to 'name' property
-                    // We also want to adjust chart to render outliers better                    
+                function (data) {                                                            
+                    var series = [];
                     for (var i = 0; i < data.length; i++) {
-                        data[i].systemName = data[i].name;
+                        // Min/max to render outliers better
                         if ($scope.minCodeCoverage > data[i].codeCoverage) {
                             $scope.minCodeCoverage = data[i].codeCoverage;
                         }
                         if ($scope.maxLinesOfCode < data[i].linesOfCode) {
                             $scope.maxLinesOfCode = data[i].linesOfCode;
                         }
+
+                        // Extract series into auxuliary array and adjust data array.
+                        var seriesName = data[i].name;
+                        data[i].systemName = seriesName; // Wijmo can't bind to 'name' property
+                        var complexityName = "cyclomaticComplexity" + i;
+                        var codeCoverageName = "codeCoverage" + i;                        
+                        data[i][complexityName] = data[i].cyclomaticComplexity;
+                        data[i][codeCoverageName] = data[i].codeCoverage;
+                        series[i] = {
+                            "name": seriesName,
+                            "binding": codeCoverageName + "," + complexityName
+                        };                        
                     }
-                    $scope.scatterData = data;                    
+                    $scope.scatterData = data;
+                    $scope.series = series;
                 }
         );
     }

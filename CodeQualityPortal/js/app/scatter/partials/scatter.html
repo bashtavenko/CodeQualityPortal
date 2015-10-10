@@ -25,9 +25,12 @@
                binding-x="linesOfCode" tooltip-content="<b>{systemName}</b><br /><b>Cyclomatic Complexity:</b> {cyclomaticComplexity:n0}<br /><b>Lines of Code:</b> {x}<br/><b>Code Coverage:</b> {y}%"
                selection-mode="Point" selection="chartProps.selection" ng-click="systemClick()" >
     <wj-flex-chart-axis wj-property="axisX" min="0" max="{{getMaxLinesOfCode()}}" title="Lines of Code"></wj-flex-chart-axis>
-    <wj-flex-chart-axis wj-property="axisY" min="{{getMinCodeCoverage()}}" max="100" title="Code Coverage"></wj-flex-chart-axis>
-    <wj-flex-chart-series binding="codeCoverage,cyclomaticComplexity"></wj-flex-chart-series>
+    <wj-flex-chart-axis wj-property="axisY" min="{{getMinCodeCoverage()}}" max="100" title="Code Coverage"></wj-flex-chart-axis>    
+    <wj-flex-chart-series ng-repeat="item in series" name="{{item.name}}" binding="{{item.binding}}"> ></wj-flex-chart-series>    
+    <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
 </wj-flex-chart>
+
+<p><small><em>Note: bubbles are sized according to <a target="new" href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic complexity</a> of the respective systems.</em></small></p>
 
 <p></p>
 
