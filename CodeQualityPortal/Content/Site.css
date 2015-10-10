@@ -25,8 +25,8 @@ textarea {
 
 
 /* It's broke in Bootrstrap 3.0.0 */
-.glyphicon-calendar:before {
-    content: "\d83d\dcc5";
+.glyphicon-calendar:before {    
+    content: "📅";
 }
 
 .huge {
