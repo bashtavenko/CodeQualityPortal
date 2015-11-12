@@ -1,27 +1,23 @@
-﻿using CodeQualityPortal.Data;
-using Dapper;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CodeQualityPortal.Data;
+using Dapper;
+using NUnit.Framework;
 
 namespace CodeQualityPortal.IntegrationTests.Data
 {
-    public class MetricsRepositoryDoNotDropDbTests
+    public class SummaryRepositoryDoNotDropDbTests
     {
-        IMetricsRepository _repository;
+        ISummaryRepository _repository;
         private IDbConnection _db;
 
         [TestFixtureSetUp]
         public void Setup()
         {
             AutoMapperConfig.CreateMaps();
-            _repository = new MetricsRepository();
+            _repository = new SummaryRepository();
             _db = new SqlConnection(ConfigurationManager.ConnectionStrings["CodeQuality"].ConnectionString);
         }
 
@@ -33,7 +29,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void MetricRepository_GetSystemsByDate()
+        public void SummaryRepository_GetSystemsByDate()
         {
             // Arrange
             // On which date there are most system data?
@@ -43,6 +39,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
                         join DimSystemModule dsm on dsm.SystemId = ds.SystemId
                         join DimModule dm on dm.ModuleId = dsm.ModuleId
                         join FactMetrics fm on fm.ModuleId = dm.ModuleId
+                        where fm.BranchId is null and fm.MemberId is null and fm.TypeId is null and fm.NamespaceId is null
                         group by fm.DateId, ds.Name ) as i
                         group by i.DateId
                         order by count(*)";
@@ -62,7 +59,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
-        public void MetricsRepository_GetDatePoints()
+        public void SummaryRepository_GetDatePoints()
         {
             var items = _repository.GetDatePoints();
             Assert.IsNotEmpty(items);

@@ -123,9 +123,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\MetricsRepositoryDoNotDropDbTests.cs" />
+    <Compile Include="Data\BranchRepositoryDoNotDropDbTests.cs" />
     <Compile Include="Data\MetricsRepositoryTests.cs" />
     <Compile Include="Data\SeederTest.cs" />
+    <Compile Include="Data\SummaryRepositoryDoNotDropDbTests.cs" />
     <Compile Include="WebApiControllers\MetricsControllerTests.cs" />
     <Compile Include="WebApiControllers\NinjectSetupFixture.cs" />
     <Compile Include="WebApiControllers\TrendControllerTests.cs" />

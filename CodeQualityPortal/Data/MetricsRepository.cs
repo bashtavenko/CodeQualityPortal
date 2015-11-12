@@ -320,12 +320,6 @@ namespace CodeQualityPortal.Data
             return query.ToList();            
         }
 
-        public IList<ViewModels.Branch> GetBranches()
-        {
-            var items = _context.Branches.OrderBy(s => s.Name).ToList();
-            return Mapper.Map<List<ViewModels.Branch>>(items);
-        }
-
         public void Dispose()
         {
             Dispose(true);

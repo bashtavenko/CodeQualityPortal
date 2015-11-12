@@ -22,7 +22,8 @@ namespace CodeQualityPortal.IntegrationTests
             DateTime dateFrom = dateTo.AddYears(-1);
 
             // Act                        
-            var resultString = _client.GetStringAsync(MakeUri(string.Format("trend/{0:s}/{1:s}", dateFrom, dateTo))).Result;
+            var uri = MakeUri($"trend/{dateFrom:s}/{dateTo:s}");
+            var resultString = _client.GetStringAsync(uri).Result;
             
             
             var result = JsonConvert.DeserializeObject<List<CodeChurnByDate>>(resultString);

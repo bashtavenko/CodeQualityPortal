@@ -20,9 +20,9 @@ namespace CodeQualityPortal.IntegrationTests
         protected void Setup()
         {
             var config = new HttpConfiguration();
-            config.DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver;            
+            config.DependencyResolver = GlobalConfiguration.Configuration.DependencyResolver; 
             WebApiConfig.Register(config);
-            _server = new HttpServer(config);            
+            _server = new HttpServer(config); 
             _client = new HttpClient(_server);    
         }
         [TestFixtureTearDown]

@@ -1,0 +1,75 @@
+﻿<style>
+    span.current-date {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    select.form-control {
+        margin-top: 3px;
+    }
+</style>
+
+<br />
+
+<div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-3"><label>A</label></div>
+        <div class="col-md-3"><label>B</label></div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"><label>Branch</label>
+        </div>
+        <div class="col-md-3">
+            <select id="branchA" class="form-control" ng-model="criteria.branchA" ng-options="s as s.name for s in branches | orderBy:'name' track by s.id" ng-change="branchAChanged()"></select>
+        </div>
+        <div class="col-md-3">
+            <select id="branchB" class="form-control" ng-model="criteria.branchB" ng-options="s as s.name for s in branches | orderBy:'name' track by s.id" ng-change="branchBChanged()"></select>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"><label>Collection Date</label></div>
+        <div class="col-md-3">
+            <select id="dateA" class="form-control" ng-model="criteria.dateA" ng-options="s as s.dateString for s in branchADates | orderBy:'date' track by s.dateId"></select>
+        </div>
+        <div class="col-md-3">
+            <select id="dateB" class="form-control" ng-model="criteria.dateB" ng-options="s as s.dateString for s in branchBDates | orderBy:'date' track by s.dateId"></select>
+        </div>
+        <div class="col-md-3"><button class="btn btn-primary" ng-disabled="!canShow()" ng-click="getData()">Show</button></div>
+    </div>
+</div>
+
+<p></p>
+
+<wj-flex-grid items-source="summaryItems" is-read-only="true" ng-show="items.length > 0">
+    <wj-flex-grid-column header="Metric" binding="metricName" width="300"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Branch A" binding="branchAMetricValue" width="150"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Branch B" binding="branchBMetricValue" width="150"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diffValue" width="150"></wj-flex-grid-column>
+</wj-flex-grid>
+
+<p></p>
+
+<wj-flex-grid items-source="items" is-read-only="true" ng-show="items.length > 0">
+    <wj-flex-grid-column header="Module" binding="branchA.name" width="*"></wj-flex-grid-column>
+    <wj-flex-grid-column header="LOC(A)" binding="branchA.linesOfCode"></wj-flex-grid-column>
+    <wj-flex-grid-column header="LOC(B)" binding="branchB.linesOfCode"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.linesOfCode"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCE(A)" binding="branchA.codeCoverage"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCE(B)" binding="branchB.codeCoverage"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.codeCoverage"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCX(A)" binding="branchA.cyclomaticComplexity"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCX(B)" binding="branchB.cyclomaticComplexity"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.cyclomaticComplexity"></wj-flex-grid-column>
+    <wj-flex-grid-column header="MIX(A)" binding="branchA.maintainabilityIndex"></wj-flex-grid-column>
+    <wj-flex-grid-column header="MIX(B)" binding="branchB.maintainabilityIndex"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.maintainabilityIndex"></wj-flex-grid-column>
+    <wj-flex-grid-column header="INH(A)" binding="branchA.depthOfInheritance"></wj-flex-grid-column>
+    <wj-flex-grid-column header="INH(B)" binding="branchB.depthOfInheritance"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.depthOfInheritance"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCG(A)" binding="branchA.classCoupling"></wj-flex-grid-column>
+    <wj-flex-grid-column header="CCG(B)" binding="branchB.classCoupling"></wj-flex-grid-column>
+    <wj-flex-grid-column header="Diff" binding="diff.classCoupling"></wj-flex-grid-column>
+</wj-flex-grid>

@@ -31,13 +31,5 @@ namespace CodeQualityPortal.Data
         // 5 - members
         IList<Member> GetMembersByType(int moduleId, int namespaceid, int typeId);
         IList<TrendItem> GetSingleMemberTrend(int? branchId, int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo);
-
-        IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime to, int topX);
-        KeyStats GetLatestKeyStats();
-        IList<ViewModels.SystemStats> GetLatestSystemStats();
-
-        IList<ViewModels.DataPoint> GetDatePoints();
-        IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId);
-        IList<ViewModels.Branch> GetBranches();
     }
 }

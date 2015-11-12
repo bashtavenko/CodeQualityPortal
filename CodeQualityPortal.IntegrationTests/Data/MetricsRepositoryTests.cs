@@ -41,16 +41,18 @@ namespace CodeQualityPortal.IntegrationTests.Data
             int? branchId;
             using (var ctx = new CodeQualityContext())
             {
-                var item = ctx.Metrics
-                    .Where(w => w.Member != null)
-                    .OrderByDescending(d => d.Date.DateTime).FirstOrDefault();
+                var item = ctx.Systems
+                    .SelectMany(s => s.Modules, (s, m) => new {System = s, Module = m}) // Module because we need to pass it on to the next SelectMany
+                    .SelectMany(d => d.Module.Metrics, (d, f) => new {System = d.System, Fact = f})
+                    .FirstOrDefault();
+
                 if (item == null)
                 {
                     Assert.Inconclusive("No data");
                 }
-                system = item.Module.Systems.First();
-                dateTo = item.Date.DateTime;
-                branchId = item.BranchId;
+                system = item.System;
+                dateTo = item.Fact.Date.Date;
+                branchId = item.Fact.BranchId;
             }
 
             // Act
@@ -150,27 +152,6 @@ namespace CodeQualityPortal.IntegrationTests.Data
             // Act
             var result = _repository.GetModules(null, system.SystemId, dateId);
             Assert.IsTrue(result.Any());
-        }
-
-        [Test]
-        public void MetricsRepository_GetWorst()
-        {
-            var result = _repository.GetWorst(DateTime.Now.AddYears(-1), DateTime.Now, 5);
-            Assert.IsNotNull(result);
-        }
-
-        [Test]
-        public void MetricsRepository_GetKeyStats()
-        {
-            var result = _repository.GetLatestKeyStats();
-            Assert.IsNotNull(result);
-        }
-
-        [Test]
-        public void MetricsRepository_GetLatesSystemStats()
-        {
-            var result = _repository.GetLatestSystemStats();
-            Assert.IsNotNull(result);
         }
     }
 }

@@ -1,6 +1,6 @@
 #Code Quality Portal
 
-This is web site to visualize the following code quality metrics over given time:
+This web site is part of code quality solution to visualize the following metrics:
 
 * Maintainablity index
 * Cyclcomatic complexity
@@ -9,6 +9,18 @@ This is web site to visualize the following code quality metrics over given time
 * Class coupling
 * Code coverage
 * Code churn
+
+Data is aggregated and can be drilled down through this hierarchy:
+
+* Source control branch
+* System 
+* Module (assembly)
+* Namespace
+* Type (class)
+* Member
+
+There is branch diff feature to compare metrics of two branches on a given date.
+
 
 The metrics are loaded into warehouse database by two of my applications - [Code Metrics Loader](https://github.com/StanBPublic/CodeMetricsLoader) and
  [Code Churn Loader](https://github.com/StanBPublic/CodeChurnLoader). 

@@ -11,11 +11,15 @@ namespace CodeQualityPortal.Controllers
     {
         private readonly ICodeChurnRepository _codeChurnRepository;
         private readonly IMetricsRepository _metricsRepository;
+        private readonly IBranchRepository _branchRepository;
+        private readonly ISummaryRepository _summaryRepository;
 
-        public HomeController(ICodeChurnRepository repository, IMetricsRepository metricsRepository)
+        public HomeController(ICodeChurnRepository repository, IMetricsRepository metricsRepository, IBranchRepository branchRepository, ISummaryRepository summaryRepository)
         {
             _codeChurnRepository = repository;
             _metricsRepository = metricsRepository;
+            _branchRepository = branchRepository;
+            _summaryRepository = summaryRepository;
         }
 
         [OutputCache(CacheProfile = "HomePage")]
@@ -25,9 +29,9 @@ namespace CodeQualityPortal.Controllers
             const int days = 7;
             var dateFrom = DateTime.Now.AddDays(days * -1);
             var dateTo = DateTime.Now;
-            var keyStats = _metricsRepository.GetLatestKeyStats();
+            var keyStats = _summaryRepository.GetLatestKeyStats();
             var churnTopWorst = _codeChurnRepository.GetWorst(dateFrom, dateTo, topX);
-            var membersTopWorst = _metricsRepository.GetWorst(dateFrom, dateTo, topX);
+            var membersTopWorst = _summaryRepository.GetWorst(dateFrom, dateTo, topX);
             return View(new HomePage(keyStats, churnTopWorst, membersTopWorst));
         }
 
@@ -39,7 +43,7 @@ namespace CodeQualityPortal.Controllers
         public ActionResult Metrics()
         {
             var systems = _metricsRepository.GetSystems();
-            var branches = _metricsRepository.GetBranches();
+            var branches = _branchRepository.GetBranches();
             var data = new {Systems = systems, Branches = branches};
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(data, Formatting.None, settings);
@@ -48,7 +52,7 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Systems()
         {
-            var latestSystemStats = _metricsRepository.GetLatestSystemStats();
+            var latestSystemStats = _summaryRepository.GetLatestSystemStats();
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(latestSystemStats, Formatting.None, settings);
             return View("Systems", "", json);
@@ -62,10 +66,18 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Scatter()
         {
-            var datePoints = _metricsRepository.GetDatePoints();
+            var datePoints = _summaryRepository.GetDatePoints();
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(datePoints, Formatting.None, settings);
-            return View("Scatter", "", json);
+            return View((object)json);
+        }
+
+        public ActionResult BranchDiff()
+        {
+            var branches = _branchRepository.GetBranches();
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var json = JsonConvert.SerializeObject(branches, Formatting.None, settings);
+            return View((object)json);
         }
     }
 }

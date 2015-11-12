@@ -70,8 +70,10 @@ namespace CodeQualityPortal
         {
             kernel.Bind<ILog>().ToMethod(ctx => LogManager.GetLogger(typeof(HomeController)));
             kernel.Bind<IExceptionLogger>().To<GlobalExceptionLogger>().InRequestScope();
-            kernel.Bind<ICodeChurnRepository>().To<CodeChurnRepository>();
-            kernel.Bind<IMetricsRepository>().To<MetricsRepository>();
+            kernel.Bind<ICodeChurnRepository>().To<CodeChurnRepository>().InRequestScope();
+            kernel.Bind<IMetricsRepository>().To<MetricsRepository>().InRequestScope();
+            kernel.Bind<IBranchRepository>().To<BranchRepository>().InRequestScope();
+            kernel.Bind<ISummaryRepository>().To<SummaryRepository>().InRequestScope();
         }        
     }
 }
