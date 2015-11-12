@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-metricsModule.controller("MetricsController", function ($scope, bootstrappedData, $log, metricsService) {    
+metricsModule.controller("MetricsController", function ($scope, $log, metricsService) {    
     $scope.criteria = {}; // shared with child controllers       
     $scope.mode = {}; // shared with child controllers       
                         
@@ -42,10 +42,10 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.systemMode = function () {
         return {
             getTrend: function() {
-                return metricsService.getModuleTrend($scope.criteria.system, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                return metricsService.getModuleTrend($scope.criteria.branch, $scope.criteria.system, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function() {
-                return metricsService.getModulesByDate($scope.criteria.system.id, $scope.criteria.selectedDate.dateId);
+                return metricsService.getModulesByDate($scope.criteria.branch.id, $scope.criteria.system.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: $scope.criteria.system.id == -1 ? "All systems trend" : "System trend for " + $scope.criteria.system.name,
             itemsLabel: "Modules on ",
@@ -57,10 +57,10 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.moduleMode = function () {
         return {
             getTrend: function () {
-                return metricsService.getNamespaceTrend($scope.criteria.module.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                return metricsService.getNamespaceTrend($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function () {
-                return metricsService.getNamespacesByDate($scope.criteria.module.id, $scope.criteria.selectedDate.dateId);
+                return metricsService.getNamespacesByDate($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Module trend for " + $scope.criteria.module.name,
             itemsLabel: "Namespaces on ",
@@ -72,10 +72,10 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.namespaceMode = function () {
         return {
             getTrend: function () {
-                return metricsService.getTypeTrend($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                return metricsService.getTypeTrend($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function () {
-                return metricsService.getTypesByDate($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.selectedDate.dateId);
+                return metricsService.getTypesByDate($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Namespace trend for " + $scope.criteria.namespace.name,
             itemsLabel: "Types on ",
@@ -87,10 +87,10 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.typeMode = function () {
         return {
             getTrend: function () {
-                return metricsService.getMemberTrend($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                return metricsService.getMemberTrend($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function () {
-                return metricsService.getMembersByDate($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.selectedDate.dateId);
+                return metricsService.getMembersByDate($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.selectedDate.dateId);
             },
             trendLabel: "Type trend for " + $scope.criteria.type.name,
             itemsLabel: "Members on ",
@@ -102,7 +102,7 @@ metricsModule.controller("MetricsController", function ($scope, bootstrappedData
     $scope.memberMode = function () {
         return {
             getTrend: function () {
-                return metricsService.getSingleMemberTrend($scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.member.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
+                return metricsService.getSingleMemberTrend($scope.criteria.branch.id, $scope.criteria.module.id, $scope.criteria.namespace.id, $scope.criteria.type.id, $scope.criteria.member.id, $scope.criteria.dateFrom, $scope.criteria.dateTo);
             },
             getItems: function () {},
             trendLabel: "Member trend for " + $scope.criteria.member.name,

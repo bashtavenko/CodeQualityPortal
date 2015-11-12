@@ -197,6 +197,8 @@
     <Compile Include="Data\CodeQualityDropCreateDatabaseAlways.cs" />
     <Compile Include="Data\DataPoint.cs" />
     <Compile Include="Data\DateTuple.cs" />
+    <Compile Include="Data\DimBranch.cs" />
+    <Compile Include="Data\Maps\DimBranchConfiguration.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
     <Compile Include="Data\Maps\DimMemberConfiguration.cs" />
     <Compile Include="Data\Maps\DimTypeConfiguration.cs" />
@@ -234,6 +236,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Branch.cs" />
     <Compile Include="ViewModels\CodeChurnByDate.cs" />
     <Compile Include="ViewModels\DataPoint.cs" />
     <Compile Include="ViewModels\Date.cs" />

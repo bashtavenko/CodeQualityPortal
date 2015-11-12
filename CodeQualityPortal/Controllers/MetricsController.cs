@@ -24,18 +24,18 @@ namespace CodeQualityPortal.Controllers
             return _repository.GetSystems();
         }
 
-        [Route("moduletrend/{dateFrom}/{dateTo}/{systemId?}")]
+        [Route("moduletrend/{dateFrom}/{dateTo}/{systemId?}")] // Can't have two optional parameters in the url, the second one goes to query string.
         [HttpGet]
-        public IList<TrendItem> GetModuleTrend(DateTime dateFrom, DateTime dateTo, int? systemId = null)
+        public IList<TrendItem> GetModuleTrend(DateTime dateFrom, DateTime dateTo, int? systemId = null, int? branchId = null)
         {
-            return _repository.GetModuleTrend(systemId, dateFrom, dateTo);
+            return _repository.GetModuleTrend(branchId, systemId, dateFrom, dateTo);
         }
 
         [Route("modules/{dateId:int}/{systemId?}")]
         [HttpGet]
-        public IList<ModuleItem> GetModules(int dateId, int? systemId = null)
+        public IList<ModuleItem> GetModules(int dateId, int? systemId = null, int? branchId = null)
         {
-            return _repository.GetModules(systemId, dateId);
+            return _repository.GetModules(branchId, systemId, dateId);
         }
 
         // 2 - modules
@@ -46,18 +46,18 @@ namespace CodeQualityPortal.Controllers
             return systemId == -1 ? _repository.GetAllModules() :  _repository.GetModulesBySystem(systemId);
         }
 
-        [Route("namespacetrend/{moduleId}/{dateFrom}/{dateTo}")]
+        [Route("namespacetrend/{moduleId}/{dateFrom}/{dateTo}/{branchId?}")]
         [HttpGet]
-        public IList<TrendItem> GetNamespace(int moduleId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetNamespace(int moduleId, DateTime dateFrom, DateTime dateTo, int? branchId = null)
         {
-            return _repository.GetNamespaceTrend(moduleId, dateFrom, dateTo);
+            return _repository.GetNamespaceTrend(branchId, moduleId, dateFrom, dateTo);
         }
 
-        [Route("namespaces/{moduleId}/{dateId:int}")]
+        [Route("namespaces/{moduleId}/{dateId:int}/{branchId?}")]
         [HttpGet]
-        public IList<NamespaceItem> Get(int moduleId, int dateId)
+        public IList<NamespaceItem> Get(int moduleId, int dateId, int? branchId = null)
         {
-            return _repository.GetNamespaces(moduleId, dateId);
+            return _repository.GetNamespaces(branchId, moduleId, dateId);
         }
 
         // 3 - namespaces
@@ -68,18 +68,18 @@ namespace CodeQualityPortal.Controllers
             return _repository.GetNamespacesByModule(moduleId);
         }
 
-        [Route("typetrend/{moduleId}/{namespaceId}/{dateFrom}/{dateTo}")]
+        [Route("typetrend/{moduleId}/{namespaceId}/{dateFrom}/{dateTo}/{branchId?}")]
         [HttpGet]
-        public IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo, int? branchId = null)
         {
-            return _repository.GetTypeTrend(moduleId, namespaceId, dateFrom, dateTo);
+            return _repository.GetTypeTrend(branchId, moduleId, namespaceId, dateFrom, dateTo);
         }
 
-        [Route("types/{moduleId}/{namespaceId}/{dateId:int}")]
+        [Route("types/{moduleId}/{namespaceId}/{dateId:int}/{branchId?}")]
         [HttpGet]
-        public IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId)
+        public IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId, int? branchId = null)
         {
-            return _repository.GetTypes(moduleId, namespaceId, dateId);
+            return _repository.GetTypes(branchId, moduleId, namespaceId, dateId);
         }
 
         // 4 - types
@@ -90,18 +90,18 @@ namespace CodeQualityPortal.Controllers
             return _repository.GetTypesByNamespace(moduleId, namespaceId);
         }
 
-        [Route("membertrend/{moduleId}/{namespaceId}/{typeId}/{dateFrom}/{dateTo}")]
+        [Route("membertrend/{moduleId}/{namespaceId}/{typeId}/{dateFrom}/{dateTo}/{branchId?}")]
         [HttpGet]
-        public IList<TrendItem> GetMemberTrend(int moduleId, int namespaceId, int typeId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetMemberTrend(int moduleId, int namespaceId, int typeId, DateTime dateFrom, DateTime dateTo, int? branchId = null)
         {
-            return _repository.GetMemberTrend(moduleId, namespaceId, typeId, dateFrom, dateTo);
+            return _repository.GetMemberTrend(branchId, moduleId, namespaceId, typeId, dateFrom, dateTo);
         }
 
-        [Route("members/{moduleId}/{namespaceId}/{typeId}/{dateId:int}")]
+        [Route("members/{moduleId}/{namespaceId}/{typeId}/{dateId:int}/{branchId?}")]
         [HttpGet]
-        public IList<MemberItem> GetMembers(int moduleId, int namespaceId, int typeId, int dateId)
+        public IList<MemberItem> GetMembers(int moduleId, int namespaceId, int typeId, int dateId, int? branchId = null)
         {
-            return _repository.GetMembers(moduleId, namespaceId, typeId, dateId);
+            return _repository.GetMembers(branchId, moduleId, namespaceId, typeId, dateId);
         }
 
         // 5 - members
@@ -112,11 +112,11 @@ namespace CodeQualityPortal.Controllers
             return _repository.GetMembersByType(moduleId, namespaceId, typeId);
         }
 
-        [Route("singlemembertrend/{moduleId}/{namespaceId}/{typeId}/{memberId}/{dateFrom}/{dateTo}")]
+        [Route("singlemembertrend/{moduleId}/{namespaceId}/{typeId}/{memberId}/{dateFrom}/{dateTo}/{branchId?}")]
         [HttpGet]
-        public IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceId, int typeId,  int memberId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceId, int typeId,  int memberId, DateTime dateFrom, DateTime dateTo, int? branchId = null)
         {
-            return _repository.GetSingleMemberTrend(moduleId, namespaceId, typeId, memberId, dateFrom, dateTo);
+            return _repository.GetSingleMemberTrend(branchId, moduleId, namespaceId, typeId, memberId, dateFrom, dateTo);
         }
 
         [Route("systemstats")]
@@ -125,7 +125,6 @@ namespace CodeQualityPortal.Controllers
         {
             return _repository.GetLatestSystemStats();
         }
-
 
         [Route("dates")]
         [HttpGet]
@@ -139,6 +138,13 @@ namespace CodeQualityPortal.Controllers
         public IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId)
         {
             return _repository.GetSystemsByDate(dateId);
+        }
+
+        [Route("branches")]
+        [HttpGet]
+        public IList<ViewModels.Branch> GetBranches()
+        {
+            return _repository.GetBranches();
         }
     }
 }

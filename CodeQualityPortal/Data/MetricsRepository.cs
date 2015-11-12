@@ -30,13 +30,13 @@ namespace CodeQualityPortal.Data
             return Mapper.Map<IList<ViewModels.SystemDefinition>>(items);
         }
 
-        public IList<TrendItem> GetModuleTrend(int? systemId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetModuleTrend(int? branchId, int? systemId, DateTime dateFrom, DateTime dateTo)
         {
             IList<IGrouping<DateTuple, FactMetrics>> groupedItems;
             if (systemId.HasValue)
             {
                 groupedItems = _context.Metrics
-                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                    .Where(w => w.BranchId == branchId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
                             && w.Date.Date >= dateFrom && w.Date.Date <= dateTo
                             && w.Module.Systems.Any(a => a.SystemId == systemId.Value))
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
@@ -45,7 +45,7 @@ namespace CodeQualityPortal.Data
             else
             {
                 groupedItems = _context.Metrics
-                    .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                    .Where(w => w.BranchId == branchId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
                             && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                     .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                     .ToList();   
@@ -55,10 +55,10 @@ namespace CodeQualityPortal.Data
             return items;
         }
 
-        public IList<ModuleItem> GetModules(int? systemId, int dateId)
+        public IList<ModuleItem> GetModules(int? branchId, int? systemId, int dateId)
         {
             var queryItems = _context.Metrics
-                .Where(w => w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
+                .Where (w => w.BranchId == branchId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null
                             && w.DateId == dateId);
 
             if (systemId.HasValue)
@@ -83,10 +83,10 @@ namespace CodeQualityPortal.Data
             return Mapper.Map<IList<Module>>(_context.Modules.ToList());
         }
         
-        public IList<TrendItem> GetNamespaceTrend(int moduleId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetNamespaceTrend(int? branchId, int moduleId, DateTime dateFrom, DateTime dateTo)
         {
             var groupedItems = _context.Metrics
-                .Where(w => w.ModuleId == moduleId && w.NamespaceId == null && w.TypeId == null && w.MemberId == null 
+                .Where(w => w.BranchId == branchId && w.ModuleId == moduleId && w.NamespaceId == null && w.TypeId == null && w.MemberId == null 
                     && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                 .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                 .ToList();
@@ -95,10 +95,10 @@ namespace CodeQualityPortal.Data
             return items;                
         }
         
-        public IList<NamespaceItem> GetNamespaces(int moduleId, int dateId)
+        public IList<NamespaceItem> GetNamespaces(int? branchId, int moduleId, int dateId)
         {
             var query = _context.Metrics
-                .Where(w => w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId != null && w.TypeId == null && w.MemberId == null);
+                .Where(w => w.BranchId == branchId && w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId != null && w.TypeId == null && w.MemberId == null);
 
             var items = Mapper.Map<IList<NamespaceItem>>(query.ToList());
             return items;
@@ -117,10 +117,10 @@ namespace CodeQualityPortal.Data
             return items;
         }
         
-        public IList<TrendItem> GetTypeTrend(int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetTypeTrend(int? branchId, int moduleId, int namespaceId, DateTime dateFrom, DateTime dateTo)
         {
             var groupedItems = _context.Metrics
-                .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId == null && w.MemberId == null
+                .Where(w => w.BranchId == branchId && w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId == null && w.MemberId == null
                         && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                 .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                 .ToList();
@@ -129,10 +129,10 @@ namespace CodeQualityPortal.Data
             return items;
         }
         
-        public IList<TypeItem> GetTypes(int moduleId, int namespaceId, int dateId)
+        public IList<TypeItem> GetTypes(int? branchId, int moduleId, int namespaceId, int dateId)
         {
             var queryItems = _context.Metrics
-                .Where(w => w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId != null && w.MemberId == null)
+                .Where(w => w.BranchId == branchId && w.DateId == dateId && w.ModuleId == moduleId && w.NamespaceId == namespaceId && w.TypeId != null && w.MemberId == null)
                 .ToList();
 
             var items = Mapper.Map<IList<TypeItem>>(queryItems);
@@ -152,10 +152,10 @@ namespace CodeQualityPortal.Data
             return items;
         }
 
-        public IList<TrendItem> GetMemberTrend(int moduleId, int namespaceid, int typeId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetMemberTrend(int? branchId, int moduleId, int namespaceid, int typeId, DateTime dateFrom, DateTime dateTo)
         {
             var groupedItems = _context.Metrics
-                .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == null &&
+                .Where(w => w.BranchId == branchId && w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == null &&
                     w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                 .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date })
                 .ToList();
@@ -164,10 +164,10 @@ namespace CodeQualityPortal.Data
             return items;
         }
 
-        public IList<MemberItem> GetMembers(int moduleId, int namespaceid, int typeId, int dateId)
+        public IList<MemberItem> GetMembers(int? branchId, int moduleId, int namespaceid, int typeId, int dateId)
         {
             var queryItems = _context.Metrics
-                .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId != null && w.DateId == dateId);
+                .Where(w => w.BranchId == branchId && w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId != null && w.DateId == dateId);
 
             var items = Mapper.Map<IList<MemberItem>>(queryItems);
             return items;
@@ -190,10 +190,10 @@ namespace CodeQualityPortal.Data
         }
 
 
-        public IList<TrendItem> GetSingleMemberTrend(int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo)
+        public IList<TrendItem> GetSingleMemberTrend(int? branchId, int moduleId, int namespaceid, int typeId, int memberId, DateTime dateFrom, DateTime dateTo)
         {
             var groupedItems = _context.Metrics
-                .Where(w => w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == memberId
+                .Where(w => w.BranchId == branchId && w.ModuleId == moduleId && w.NamespaceId == namespaceid && w.TypeId == typeId && w.MemberId == memberId
                     && w.Date.Date >= dateFrom && w.Date.Date <= dateTo)
                 .GroupBy(g => new DateTuple { DateId = g.DateId, DateTime = g.Date.Date }) // there's no point to group since it's the bottom
                 .ToList();
@@ -205,7 +205,7 @@ namespace CodeQualityPortal.Data
         public IList<MemberSummary> GetWorst(DateTime dateFrom, DateTime dateTo, int topX)
         {
             var result = _context.Metrics
-                .Where(w => w.Date.Date >= dateFrom && w.Date.Date <= dateTo && w.Member != null)
+                .Where(w => w.Branch == null && w.Date.Date >= dateFrom && w.Date.Date <= dateTo && w.Member != null)
                 .GroupBy(g => new { Module = g.Module.Name, Namespace = g.Namespace.Name, Type = g.Type.Name, g.MemberId, Member = g.Member.Name })
                 .Select(s => new MemberSummary
                 {
@@ -231,6 +231,7 @@ namespace CodeQualityPortal.Data
         {
             var lastRunDate = _context
                 .Metrics
+                .Where (w => w.Branch == null)
                 .Select(s => s.Date)
                 .OrderByDescending(s => s.Date)
                 .FirstOrDefault();
@@ -241,7 +242,7 @@ namespace CodeQualityPortal.Data
             }
                 
             var modules = _context.Metrics
-                .Where(w => w.DateId == lastRunDate.DateId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null)
+                .Where(w => w.BranchId == null && w.DateId == lastRunDate.DateId && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null)
                 .Select(s => s)
                 .ToList();
 
@@ -255,7 +256,7 @@ namespace CodeQualityPortal.Data
             foreach (var system in systems)
             {
                 var allDataPoints = _context.Metrics
-                    .Where(m => m.ModuleId != null && m.NamespaceId == null && m.TypeId == null && m.MemberId == null &&
+                    .Where(m => m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null && m.MemberId == null &&
                                 m.Module.Systems.Any(s => s.SystemId == system.DimSystem.SystemId))
                     .Select(
                         s =>
@@ -290,6 +291,7 @@ namespace CodeQualityPortal.Data
         public IList<ViewModels.DataPoint> GetDatePoints()
         {
             return _context.Metrics
+                .Where (w => w.Branch == null)
                 .GroupBy(s => new { s.DateId, s.Date.DateTime })
                 .Select(v => new ViewModels.DataPoint { DateId = v.Key.DateId, Date = v.Key.DateTime })
                 .OrderBy(s => s.Date)
@@ -300,7 +302,7 @@ namespace CodeQualityPortal.Data
             var query = _context.Systems
                 .SelectMany(s => s.Modules, (s, d) => new { System = s, MetricsList = d.Metrics })
                 .SelectMany(s => s.MetricsList, (s, d) => new { System = s.System, MetricsItem = d })
-                .Where(w => w.MetricsItem.DateId == dateId
+                .Where(w => w.MetricsItem.BranchId == null && w.MetricsItem.DateId == dateId
                     && w.MetricsItem.Member == null && w.MetricsItem.Type == null && w.MetricsItem.Namespace == null)
                 .GroupBy(g => new { g.System.SystemId, g.System.Name})
                 .Select(s => new ViewModels.MetricsItem
@@ -316,6 +318,12 @@ namespace CodeQualityPortal.Data
                 });
 
             return query.ToList();            
+        }
+
+        public IList<ViewModels.Branch> GetBranches()
+        {
+            var items = _context.Branches.OrderBy(s => s.Name).ToList();
+            return Mapper.Map<List<ViewModels.Branch>>(items);
         }
 
         public void Dispose()

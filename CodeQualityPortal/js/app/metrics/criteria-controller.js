@@ -14,6 +14,7 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     $scope.criteria.dateTo = new Date();
 
     $scope.allOption = { id: -1, name: "(All)" };
+    $scope.masterOption = { id: -1, nameAndDate: "master", name: "", createdDate: "" };
 
     $scope.initSelect = function (options, model) {
         $scope[options] = [$scope.allOption];
@@ -145,8 +146,12 @@ metricsModule.controller("CriteriaController", function ($scope, bootstrappedDat
     }
 
     $scope.systemOptions = [$scope.allOption];
-    $scope.systemOptions = $scope.systemOptions.concat(bootstrappedData.systemOptions);
+    $scope.systemOptions = $scope.systemOptions.concat(bootstrappedData.systems);
+    $scope.branchOptions = [$scope.masterOption];
+    $scope.branchOptions = $scope.branchOptions.concat(bootstrappedData.branches);
+
     $scope.criteria.system = $scope.systemOptions[0];
+    $scope.criteria.branch = $scope.branchOptions[0];
     $scope.loadModules(); // cascades through namespaces, types and members
 });
 

@@ -7,6 +7,9 @@
         public int DateId { get; set; }
         public virtual DimDate Date { get; set; }
 
+        public int? BranchId { get; set; }
+        public virtual DimBranch Branch { get; set; }
+
         public int? ModuleId { get; set; }
         public virtual DimModule Module { get; set; }
 

@@ -37,7 +37,8 @@ namespace CodeQualityPortal.IntegrationTests.Data
         {
             // Arrange
             DimSystem system; 
-            DateTime dateTo;            
+            DateTime dateTo;
+            int? branchId;
             using (var ctx = new CodeQualityContext())
             {
                 var item = ctx.Metrics
@@ -49,10 +50,11 @@ namespace CodeQualityPortal.IntegrationTests.Data
                 }
                 system = item.Module.Systems.First();
                 dateTo = item.Date.DateTime;
+                branchId = item.BranchId;
             }
 
             // Act
-            var result = _repository.GetModuleTrend(system.SystemId, dateTo.AddDays(-7), dateTo);
+            var result = _repository.GetModuleTrend(branchId, system.SystemId, dateTo.AddDays(-7), dateTo);
             Assert.IsTrue(result.Any());
         }
 
@@ -74,7 +76,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetModuleTrend(null, dateTo.AddDays(-7), dateTo);
+            var result = _repository.GetModuleTrend(null, null, dateTo.AddDays(-7), dateTo);
             Assert.IsTrue(result.Any());
         }
 
@@ -146,7 +148,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
             }
 
             // Act
-            var result = _repository.GetModules(system.SystemId, dateId);
+            var result = _repository.GetModules(null, system.SystemId, dateId);
             Assert.IsTrue(result.Any());
         }
 

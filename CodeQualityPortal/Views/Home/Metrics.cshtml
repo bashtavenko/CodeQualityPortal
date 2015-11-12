@@ -6,6 +6,10 @@
         margin-right: 50px;
         font-weight: bold;
     }
+
+    div.form-group {
+        margin-top: 3px;
+    }
 </style>
 
 @section JavascriptInHead
@@ -17,9 +21,7 @@
     @Scripts.Render("~/js/app/metrics/metrics-service.js")
     <script type="text/javascript">
         metricsModule.factory("bootstrappedData", function() {
-            return {
-                systemOptions: @Html.Raw(Model)
-            };
+            return @Html.Raw(Model);
         });
     </script>
 }

@@ -69,6 +69,9 @@ namespace CodeQualityPortal
             Mapper.CreateMap<Data.SystemStats, ViewModels.SystemStats>()
                 .ForMember(m => m.SystemId, opt => opt.MapFrom(src => src.DimSystem.SystemId))
                 .ForMember(m => m.SystemName, opt => opt.MapFrom(src => src.DimSystem.Name));
+
+            Mapper.CreateMap<DimBranch, ViewModels.Branch>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.BranchId));
         }       
     }
 }

@@ -39,8 +39,10 @@ namespace CodeQualityPortal.Controllers
         public ActionResult Metrics()
         {
             var systems = _metricsRepository.GetSystems();
+            var branches = _metricsRepository.GetBranches();
+            var data = new {Systems = systems, Branches = branches};
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            var json = JsonConvert.SerializeObject(systems, Formatting.None, settings);
+            var json = JsonConvert.SerializeObject(data, Formatting.None, settings);
             return View("Metrics", "", json);
         }
 
