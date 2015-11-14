@@ -32,10 +32,10 @@
     <div class="row">
         <div class="col-md-1"><label>Collection Date</label></div>
         <div class="col-md-3">
-            <select id="dateA" class="form-control" ng-model="criteria.dateA" ng-options="s as s.dateString for s in branchADates | orderBy:'date' track by s.dateId"></select>
+            <select id="dateA" class="form-control" ng-model="criteria.dateA" ng-options="s as s.dateString for s in branchADates track by s.dateId"></select>
         </div>
         <div class="col-md-3">
-            <select id="dateB" class="form-control" ng-model="criteria.dateB" ng-options="s as s.dateString for s in branchBDates | orderBy:'date' track by s.dateId"></select>
+            <select id="dateB" class="form-control" ng-model="criteria.dateB" ng-options="s as s.dateString for s in branchBDates track by s.dateId"></select>
         </div>
         <div class="col-md-3"><button class="btn btn-primary" ng-disabled="!canShow()" ng-click="getData()">Show</button></div>
     </div>

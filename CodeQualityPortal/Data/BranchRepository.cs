@@ -35,7 +35,7 @@ namespace CodeQualityPortal.Data
                 .Where(w => w.BranchId == branchId)
                 .GroupBy(s => new { s.DateId, s.Date.DateTime })
                 .Select(v => new ViewModels.DataPoint { DateId = v.Key.DateId, Date = v.Key.DateTime })
-                .OrderBy(s => s.Date)
+                .OrderByDescending (s => s.Date)
                 .Take(10)
                 .ToList();           
             return items;

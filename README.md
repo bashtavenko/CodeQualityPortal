@@ -3,7 +3,7 @@
 This web site is part of code quality solution to visualize the following metrics:
 
 * Maintainablity index
-* Cyclcomatic complexity
+* Cyclomatic complexity
 * Lines of code
 * Depth of inheritance
 * Class coupling
