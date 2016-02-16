@@ -257,6 +257,8 @@
     <Compile Include="ViewModels\MemberItem.cs" />
     <Compile Include="ViewModels\HomePage.cs" />
     <Compile Include="ViewModels\SystemDefinition.cs" />
+    <Compile Include="ViewModels\SystemGraph.cs" />
+    <Compile Include="ViewModels\SystemGraphSummary.cs" />
     <Compile Include="ViewModels\SystemStats.cs" />
     <Compile Include="ViewModels\Trend.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
@@ -299,6 +301,7 @@
     <Content Include="js\app\churn\partials\grid.html" />
     <Content Include="js\app\churn\templates\commit.html" />
     <Content Include="js\app\churn\templates\filetable.html" />
+    <Content Include="js\app\coverage\coverage-controller.js" />
     <Content Include="js\app\metrics\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />
     <Content Include="js\app\metrics\partials\chart.html" />
@@ -390,6 +393,7 @@
     <Content Include="Views\Home\Systems.cshtml" />
     <Content Include="Views\Home\Scatter.cshtml" />
     <Content Include="Views\Home\BranchDiff.cshtml" />
+    <Content Include="Views\Home\Coverage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

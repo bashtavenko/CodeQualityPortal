@@ -140,6 +140,46 @@ namespace CodeQualityPortal.Data
             return query.ToList();            
         }
 
+        public SystemGraphSummary GetCoverageBySystems(int numberOfDaysToReturn)
+        {
+            var items = new List<ViewModels.SystemGraph>();
+            var dateFrom = DateTime.Now.AddDays(numberOfDaysToReturn * (-1));
+            foreach (var system in _context.Systems)
+            {
+                var systemGraph = new SystemGraph
+                {
+                    SystemId = system.SystemId,
+                    SystemName = system.Name,
+                    DataPoints = _context.Metrics
+                        .Where(m => m.Date.DateTime > dateFrom && m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null
+                               && m.MemberId == null && m.Module.Systems.Any(s => s.SystemId == system.SystemId))
+                        .Select(
+                            s =>
+                                new ViewModels.DataPoint
+                                {
+                                    DateId = s.DateId,
+                                    Date = s.Date.DateTime,
+                                    Value = s.CodeCoverage ?? 0
+                                })
+                        .GroupBy(g => g.Date)
+                        .Select(
+                            s => new ViewModels.DataPoint
+                            {
+                                DateId = s.Max(x => x.DateId),
+                                Date = s.Key,
+                                Value = (int)s.Average(x => x.Value)
+                            }
+                        )
+                        .OrderBy(o => o.DateId)
+                        .ToList()
+                };
+
+                items.Add(systemGraph);
+            }
+
+            return new SystemGraphSummary {Items = items.OrderBy(s => s.SystemName).ToList()};
+        }
+
         public void Dispose()
         {
             Dispose(true);
