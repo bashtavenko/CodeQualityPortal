@@ -10,7 +10,7 @@ namespace CodeQualityPortal.ViewModels
         public IList<DataPoint> DataPoints { get; set; }
         public int AverageValue
         {
-            get { return (int) DataPoints.Average(x => x.Value); }
+            get { return DataPoints.Any() ? (int) DataPoints.Average(x => x.Value) : default(int); }
         }
     }
 }

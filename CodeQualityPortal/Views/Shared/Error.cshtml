@@ -1,7 +1,11 @@
 ﻿@using System.Collections
 @model System.Web.Mvc.HandleErrorInfo
 
-<h2 class="text-danger">An error occurred while processing your request</h2>
+@{
+    ViewBag.Title = "Error";
+}
+
+<h2 class="text-danger">Oops, an error occurred</h2>
 
 <h3>More Info</h3>
 <table class="table table-striped table-condensed">
@@ -13,30 +17,37 @@
         <td>@Html.LabelFor(m => m.ActionName)</td>
         <td>@Html.DisplayTextFor(m => m.ActionName)</td>
     </tr>
-    <tr>
-        <td>@Html.LabelFor(m => m.Exception.Message)</td>
-        <td>@Html.DisplayTextFor(m => m.Exception.Message)</td>
-    </tr>
-
-    <tr>
-        <td>@Html.LabelFor(m => m.Exception.Source)</td>
-        <td>@Html.DisplayTextFor(m => m.Exception.Source)</td>
-    </tr>
-
-    <tr>
-        <td>@Html.LabelFor(m => m.Exception.StackTrace)</td>
-        <td>@Html.DisplayTextFor(m => m.Exception.StackTrace)</td>
-    </tr>
-
-    @if (Model != null && Model.Exception.Data.Count > 0)
-    {
-        <tr><td colspan="2" class="text-warning">Additional exception data</td></tr>
-        foreach (DictionaryEntry item in Model.Exception.Data)
+    @{
+        Exception exception = Model.Exception;
+        while (exception != null)
         {
             <tr>
-                <td>@item.Key</td>
-                <td>@item.Value</td>
+                <td>@Html.LabelFor(m => exception.Message)</td>
+                <td>@Html.DisplayTextFor(m => exception.Message)</td>
             </tr>
+
+            <tr>
+                <td>@Html.LabelFor(m => exception.Source)</td>
+                <td>@Html.DisplayTextFor(m => exception.Source)</td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(m => exception.StackTrace)</td>
+                <td>@Html.DisplayTextFor(m => exception.StackTrace)</td>
+            </tr>
+
+            if (Model.Exception.Data.Count > 0)
+            {
+                <tr><td colspan="2" class="text-warning">Even more info</td></tr>
+                foreach (DictionaryEntry item in exception.Data)
+                {
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>@item.Value</td>
+                    </tr>
+                }
+            }
+            exception = exception.InnerException;
         }
     }
 </table>

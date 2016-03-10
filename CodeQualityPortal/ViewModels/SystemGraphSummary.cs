@@ -7,7 +7,7 @@ namespace CodeQualityPortal.ViewModels
     {
         public int Average
         {
-            get { return (int) Items.Average(s => s.AverageValue); }
+            get { return Items.Any() ? (int) Items.Average(s => s.AverageValue) : default(int); }
         }
         public IList<SystemGraph> Items { get; set; } 
     }
