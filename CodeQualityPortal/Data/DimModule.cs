@@ -11,6 +11,8 @@ namespace CodeQualityPortal.Data
         public virtual List<DimSystem> Systems { get; set; }
         public virtual List<DimNamespace> Namespaces { get; set; }
         public virtual List<FactMetrics> Metrics { get; set; }
+        public int? RepoId { get; set; }
+        public virtual DimRepo Repo { get; set; }
 
         public DimModule ()
         {

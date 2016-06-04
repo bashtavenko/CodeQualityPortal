@@ -50,3 +50,5 @@ There is demo data initializer and the site should run right out of the box as l
 is installed.
 
 There is also branch diff feature to compare metrics of two branches on a given date.
+
+We have been using this code to track production code quality metrics since 2014.

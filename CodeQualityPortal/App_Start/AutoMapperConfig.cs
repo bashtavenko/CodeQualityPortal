@@ -27,7 +27,8 @@ namespace CodeQualityPortal
             Mapper.CreateMap<FactMetrics, ModuleItem>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Module.ModuleId))
                 .ForMember(m => m.Name, opt => opt.MapFrom(src => src.Module.Name))
-                .ForMember(m => m.AssemblyVersion, opt => opt.MapFrom(src => src.Module.AssemblyVersion));
+                .ForMember(m => m.AssemblyVersion, opt => opt.MapFrom(src => src.Module.AssemblyVersion))
+                .ForMember(m => m.Repo, opt => opt.MapFrom(src => src.Module.Repo.Name));
 
             Mapper.CreateMap<DimModule, Module>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.ModuleId));
