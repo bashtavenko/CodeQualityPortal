@@ -199,7 +199,9 @@
     <Compile Include="Data\DataPoint.cs" />
     <Compile Include="Data\DateTuple.cs" />
     <Compile Include="Data\DimBranch.cs" />
+    <Compile Include="Data\CodeCoverageSummaryBy.cs" />
     <Compile Include="Data\IBranchRepository.cs" />
+    <Compile Include="Data\IdName.cs" />
     <Compile Include="Data\ISummaryRepository.cs" />
     <Compile Include="Data\Maps\DimBranchConfiguration.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
@@ -257,8 +259,8 @@
     <Compile Include="ViewModels\MemberItem.cs" />
     <Compile Include="ViewModels\HomePage.cs" />
     <Compile Include="ViewModels\SystemDefinition.cs" />
-    <Compile Include="ViewModels\SystemGraph.cs" />
-    <Compile Include="ViewModels\SystemGraphSummary.cs" />
+    <Compile Include="ViewModels\CodeCoverageItem.cs" />
+    <Compile Include="ViewModels\CodeCoverageSummary.cs" />
     <Compile Include="ViewModels\SystemStats.cs" />
     <Compile Include="ViewModels\Trend.cs" />
     <Compile Include="ViewModels\TypeItem.cs" />
@@ -302,6 +304,7 @@
     <Content Include="js\app\churn\templates\commit.html" />
     <Content Include="js\app\churn\templates\filetable.html" />
     <Content Include="js\app\coverage\coverage-controller.js" />
+    <Content Include="js\app\coverage\coverage-service.js" />
     <Content Include="js\app\metrics\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />
     <Content Include="js\app\metrics\partials\chart.html" />

@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace CodeQualityPortal.ViewModels
 {
-    public class SystemGraph
+    public class CodeCoverageItem
     {
-        public int SystemId { get; set; }
-        public string SystemName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
         public IList<DataPoint> DataPoints { get; set; }
         public int AverageValue
         {

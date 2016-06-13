@@ -140,19 +140,31 @@ namespace CodeQualityPortal.Data
             return query.ToList();            
         }
 
-        public SystemGraphSummary GetCoverageBySystems(int numberOfDaysToReturn)
+        public CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, CodeCoverageSummaryBy summaryBy)
         {
-            var items = new List<ViewModels.SystemGraph>();
+            List<IdName> idNames = summaryBy == CodeCoverageSummaryBy.Systems
+                ? _context.Systems.Select(s => new IdName {Id = s.SystemId, Name = s.Name}).ToList()
+                : _context.Repos.Select(s => new IdName {Id = s.RepoId, Name = s.Name}).ToList();
+
             var dateFrom = DateTime.Now.AddDays(numberOfDaysToReturn * (-1));
-            foreach (var system in _context.Systems)
+
+            IQueryable<FactMetrics> metrics = _context.Metrics
+                     .Where(m => m.Date.DateTime > dateFrom && m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null
+                                 && m.MemberId == null);
+            
+            var items = new List<ViewModels.CodeCoverageItem>();
+            
+            foreach (var idName in idNames)
             {
-                var systemGraph = new SystemGraph
+                IQueryable<FactMetrics> itemMetrics = summaryBy == CodeCoverageSummaryBy.Systems
+                ? metrics.Where(m => m.Module.Systems.Any(s => s.SystemId == idName.Id))
+                : metrics.Where(m => m.Module.RepoId == idName.Id);
+
+                var item = new CodeCoverageItem
                 {
-                    SystemId = system.SystemId,
-                    SystemName = system.Name,
-                    DataPoints = _context.Metrics
-                        .Where(m => m.Date.DateTime > dateFrom && m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null
-                               && m.MemberId == null && m.Module.Systems.Any(s => s.SystemId == system.SystemId))
+                    Id = idName.Id,
+                    Name = idName.Name,
+                    DataPoints = itemMetrics
                         .Select(
                             s =>
                                 new ViewModels.DataPoint
@@ -174,10 +186,10 @@ namespace CodeQualityPortal.Data
                         .ToList()
                 };
 
-                items.Add(systemGraph);
+                items.Add(item);
             }
 
-            return new SystemGraphSummary {Items = items.OrderBy(s => s.SystemName).ToList()};
+            return new CodeCoverageSummary {Items = items.OrderBy(s => s.Name).ToList()};
         }
 
         public void Dispose()

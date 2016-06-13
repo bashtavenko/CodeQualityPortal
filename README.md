@@ -7,7 +7,7 @@ This web site is part of code quality solution to visualize the following metric
 * Lines of code
 * Depth of inheritance
 * Class coupling
-* Code coverage
+* Code coverage (with ability to view by module, repo or team)
 * Code churn
 
 Data is aggregated and can be drilled down through this hierarchy:

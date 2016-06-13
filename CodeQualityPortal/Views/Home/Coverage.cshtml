@@ -14,10 +14,17 @@
         height: 300px;
         margin-top: 20px;
     }
+
+    .radio-with-margin {
+        margin-left: 10px !important;
+        margin-right: 3px !important;
+    }
+    
 </style>
 
 @section JavascriptInHead
 {
+    @Scripts.Render("~/js/app/coverage/coverage-service.js")
     @Scripts.Render("~/js/app/coverage/coverage-controller.js")
     <script type="text/javascript">
         coverageModule.factory("bootstrappedData", function() {
@@ -30,19 +37,28 @@
 
 <div style="margin-top:20px;" ng-app="coverageModule" ng-controller="CoverageController">
     <h2>Code Coverage 90 days</h2>
-    <div class="panel panel-green average-panel">
-        <div class="panel-heading">
-            <div class="pull-left margin-right">
-                <i class="fa fa-cogs fa-5x"></i>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-green average-panel">
+                <div class="panel-heading">
+                    <div class="pull-left margin-right">
+                        <i class="fa fa-cogs fa-5x"></i>
+                    </div>
+                    <div>
+                        <div class="huge">{{data.average}}%</div>
+                        <div>Average</div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <div class="huge">{{data.average}}%</div>
-                <div>Average all systems</div>
-            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-1">
+            <label>View by</label>
+            <input type="radio" ng-change="summaryByChanged()" class="radio-with-margin" ng-model="summaryBy" value="0" />System
+            <input type="radio" ng-change="summaryByChanged()" class="radio-with-margin" ng-model="summaryBy" value="1" />Repo
         </div>
     </div>
 
-    <wj-flex-chart class="chart" items-source="data.items" binding-x="systemName">
+    <wj-flex-chart class="chart" items-source="data.items" binding-x="name">
         <wj-flex-chart-axis wj-property="axisX"></wj-flex-chart-axis>
         <wj-flex-chart-axis wj-property="axisY" title="Code Coverage" min="0" max="100"></wj-flex-chart-axis>
         <wj-flex-chart-series binding="averageValue" ng-attr-style="{fill:'#446E9A'}" name="Code Coverage"></wj-flex-chart-series>
@@ -50,7 +66,7 @@
     </wj-flex-chart>
 
     <div ng-repeat="system in data.items">
-        <h3>{{system.systemName}} - {{system.averageValue}}%</h3>
+        <h3>{{system.name}} - {{system.averageValue}}%</h3>
         
         <wj-flex-chart style="height:300px; margin-top:20px;" items-source="system.dataPoints" binding-x="dateString" chart-type="LineSymbols">
             <wj-flex-chart-axis wj-property="axisX"></wj-flex-chart-axis>

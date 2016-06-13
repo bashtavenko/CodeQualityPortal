@@ -165,5 +165,10 @@ namespace CodeQualityPortal.Controllers
             return _branchRepository.GetBranchDiff(branchAId, dateAId, branchBId, dateBId);
         }
 
+        [Route("codecoverage-summary/{summaryBy}")]
+        public CodeCoverageSummary GetCodeCoverageSummary(CodeCoverageSummaryBy summaryBy)
+        {
+            return _summaryRepository.GetCoverageSummary(90, summaryBy);
+        }
     }
 }

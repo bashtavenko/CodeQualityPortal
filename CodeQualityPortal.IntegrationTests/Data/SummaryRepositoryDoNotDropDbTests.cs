@@ -61,7 +61,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [Test]
         public void GetCoverageBySystems()
         {
-            var items = _repository.GetCoverageBySystems(90);
+            var items = _repository.GetCoverageSummary(90, CodeCoverageSummaryBy.Systems);
         }
 
         [Test]

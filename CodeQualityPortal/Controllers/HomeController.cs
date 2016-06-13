@@ -82,7 +82,7 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Coverage()
         {
-            var data = _summaryRepository.GetCoverageBySystems(90);
+            var data = _summaryRepository.GetCoverageSummary(90, CodeCoverageSummaryBy.Systems);
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(data, Formatting.None, settings);
             return View((object)json);
