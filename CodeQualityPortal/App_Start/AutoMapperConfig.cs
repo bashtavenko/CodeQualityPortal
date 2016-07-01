@@ -73,6 +73,15 @@ namespace CodeQualityPortal
 
             Mapper.CreateMap<DimBranch, ViewModels.Branch>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.BranchId));
+
+            Mapper.CreateMap<DimSystem, IdName>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.SystemId));
+
+            Mapper.CreateMap<DimRepo, IdName>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.RepoId));
+
+            Mapper.CreateMap<DimTeam, IdName>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.TeamId));
         }       
     }
 }

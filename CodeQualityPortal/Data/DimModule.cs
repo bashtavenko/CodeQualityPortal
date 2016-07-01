@@ -13,6 +13,8 @@ namespace CodeQualityPortal.Data
         public virtual List<FactMetrics> Metrics { get; set; }
         public int? RepoId { get; set; }
         public virtual DimRepo Repo { get; set; }
+        public int? TeamId { get; set; }
+        public virtual DimTeam Team { get; set; }
 
         public DimModule ()
         {

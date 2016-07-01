@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-coverageModule.factory("coverageService", function ($resource) {
+churnModule.factory("coverageService", function ($resource) {
     return {        
         getCoverage: function (summaryBy) {
             var params = {

@@ -26,8 +26,9 @@
 {
     @Scripts.Render("~/js/app/coverage/coverage-service.js")
     @Scripts.Render("~/js/app/coverage/coverage-controller.js")
+    @Scripts.Render("~/js/app/churn/directives/spinner.js")
     <script type="text/javascript">
-        coverageModule.factory("bootstrappedData", function() {
+        churnModule.factory("bootstrappedData", function() {
             return {
                 root: @Html.Raw(Model)
                 };
@@ -35,7 +36,8 @@
     </script>
 }
 
-<div style="margin-top:20px;" ng-app="coverageModule" ng-controller="CoverageController">
+<!-- TODO: the only reason for having churnModule here is that it has interceptor -->
+<div style="margin-top:20px;" ng-app="churnModule" ng-controller="CoverageController">
     <h2>Code Coverage 90 days</h2>
     <div class="row">
         <div class="col-md-2">
@@ -53,8 +55,16 @@
         </div>
         <div class="col-md-2 col-md-offset-1">
             <label>View by</label>
-            <input type="radio" ng-change="summaryByChanged()" class="radio-with-margin" ng-model="summaryBy" value="0" />System
-            <input type="radio" ng-change="summaryByChanged()" class="radio-with-margin" ng-model="summaryBy" value="1" />Repo
+            <div ng-repeat="o in summaryByList">
+                <input type="radio" name="summaryOption" class="radio-with-margin" ng-model="$parent.summaryBy" value="{{o.id}}" />{{o.name}}
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary" ng-click="refresh()">Refresh</button>
+        </div>
+        <div class="col-md-1">
+            <spinner></spinner>
         </div>
     </div>
 

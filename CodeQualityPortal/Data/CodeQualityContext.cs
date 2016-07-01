@@ -36,6 +36,7 @@ namespace CodeQualityPortal.Data
         public DbSet<FactCodeChurn> Churn { get; set; }
         public DbSet<FactMetrics> Metrics { get; set; }
         public DbSet<DimBranch> Branches { get; set; }
+        public DbSet<DimTeam> Teams { get; set; }
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -54,6 +55,7 @@ namespace CodeQualityPortal.Data
             modelBuilder.Configurations.Add(new DimMemberConfiguration());
             modelBuilder.Configurations.Add(new FactMetricsConfiguration());
             modelBuilder.Configurations.Add(new DimBranchConfiguration());
+            modelBuilder.Configurations.Add(new DimTeamConfiguration());
         }
     }
 }

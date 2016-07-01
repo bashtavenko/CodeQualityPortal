@@ -7,8 +7,9 @@ This web site is part of code quality solution to visualize the following metric
 * Lines of code
 * Depth of inheritance
 * Class coupling
-* Code coverage (with ability to view by module, repo or team)
+* Code coverage with breakdown by system, repo or team
 * Code churn
+* Branch diff feature to compare metrics of two source control branches on a given date
 
 Data is aggregated and can be drilled down through this hierarchy:
 
@@ -18,7 +19,6 @@ Data is aggregated and can be drilled down through this hierarchy:
 * Namespace
 * Type (class)
 * Member
-
 
 Here is the overall picture of the solution components:
 
@@ -49,6 +49,4 @@ Here is the overall picture of the solution components:
 There is demo data initializer and the site should run right out of the box as long as [SQL Server 2012 Express LocalDB]( https://msdn.microsoft.com/en-us/library/hh510202(v=sql.110).aspx)
 is installed.
 
-There is also branch diff feature to compare metrics of two branches on a given date.
-
-We have been using this code to track production code quality metrics since 2014.
+We have been using this portal to track production code quality metrics since 2014.

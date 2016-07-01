@@ -200,10 +200,12 @@
     <Compile Include="Data\DateTuple.cs" />
     <Compile Include="Data\DimBranch.cs" />
     <Compile Include="Data\CodeCoverageSummaryBy.cs" />
+    <Compile Include="Data\DimTeam.cs" />
     <Compile Include="Data\IBranchRepository.cs" />
     <Compile Include="Data\IdName.cs" />
     <Compile Include="Data\ISummaryRepository.cs" />
     <Compile Include="Data\Maps\DimBranchConfiguration.cs" />
+    <Compile Include="Data\Maps\DimTeamConfiguration.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
     <Compile Include="Data\Maps\DimMemberConfiguration.cs" />
     <Compile Include="Data\Maps\DimTypeConfiguration.cs" />

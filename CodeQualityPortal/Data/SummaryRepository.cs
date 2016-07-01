@@ -142,24 +142,46 @@ namespace CodeQualityPortal.Data
 
         public CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, CodeCoverageSummaryBy summaryBy)
         {
-            List<IdName> idNames = summaryBy == CodeCoverageSummaryBy.Systems
-                ? _context.Systems.Select(s => new IdName {Id = s.SystemId, Name = s.Name}).ToList()
-                : _context.Repos.Select(s => new IdName {Id = s.RepoId, Name = s.Name}).ToList();
+            List<IdName> idNames;
 
+            switch (summaryBy)
+            {
+                case CodeCoverageSummaryBy.Systems:
+                    idNames = Mapper.Map<List<IdName>>(_context.Systems);
+                    break;
+                case CodeCoverageSummaryBy.Repos:
+                    idNames = Mapper.Map<List<IdName>>(_context.Repos);
+                    break;
+                case CodeCoverageSummaryBy.Teams:
+                    idNames = Mapper.Map<List<IdName>>(_context.Teams);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(summaryBy));
+            }
+            
             var dateFrom = DateTime.Now.AddDays(numberOfDaysToReturn * (-1));
 
             IQueryable<FactMetrics> metrics = _context.Metrics
-                     .Where(m => m.Date.DateTime > dateFrom && m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null
-                                 && m.MemberId == null);
+                     .Where(m => m.Date.DateTime > dateFrom && m.BranchId == null && m.ModuleId != null && m.NamespaceId == null && m.TypeId == null && m.MemberId == null);
             
             var items = new List<ViewModels.CodeCoverageItem>();
             
             foreach (var idName in idNames)
             {
-                IQueryable<FactMetrics> itemMetrics = summaryBy == CodeCoverageSummaryBy.Systems
-                ? metrics.Where(m => m.Module.Systems.Any(s => s.SystemId == idName.Id))
-                : metrics.Where(m => m.Module.RepoId == idName.Id);
-
+                IQueryable<FactMetrics> itemMetrics;
+                if (summaryBy == CodeCoverageSummaryBy.Systems)
+                {
+                    itemMetrics = metrics.Where(m => m.Module.Systems.Any(s => s.SystemId == idName.Id));
+                }
+                else if (summaryBy == CodeCoverageSummaryBy.Repos)
+                {
+                    itemMetrics = metrics.Where(m => m.Module.RepoId == idName.Id);
+                }
+                else
+                {
+                    itemMetrics = metrics.Where(m => m.Module.TeamId == idName.Id);
+                }
+                   
                 var item = new CodeCoverageItem
                 {
                     Id = idName.Id,

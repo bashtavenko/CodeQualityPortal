@@ -65,6 +65,12 @@ namespace CodeQualityPortal.IntegrationTests.Data
         }
 
         [Test]
+        public void GetCoverageByTeams()
+        {
+            var items = _repository.GetCoverageSummary(90, CodeCoverageSummaryBy.Teams);
+        }
+
+        [Test]
         public void SummaryRepository_GetDatePoints()
         {
             var items = _repository.GetDatePoints();

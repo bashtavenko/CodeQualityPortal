@@ -3,6 +3,7 @@
     public enum CodeCoverageSummaryBy
     {
          Systems,
-         Repos
+         Repos,
+         Teams
     }
 }
