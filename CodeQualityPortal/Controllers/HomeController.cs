@@ -13,13 +13,19 @@ namespace CodeQualityPortal.Controllers
         private readonly IMetricsRepository _metricsRepository;
         private readonly IBranchRepository _branchRepository;
         private readonly ISummaryRepository _summaryRepository;
+        private readonly MaintenanceRepository _maintenanceRepository;
 
-        public HomeController(ICodeChurnRepository repository, IMetricsRepository metricsRepository, IBranchRepository branchRepository, ISummaryRepository summaryRepository)
+        public HomeController(ICodeChurnRepository repository,
+            IMetricsRepository metricsRepository, 
+            IBranchRepository branchRepository, 
+            ISummaryRepository summaryRepository,
+            MaintenanceRepository maintenanceRepository)
         {
             _codeChurnRepository = repository;
             _metricsRepository = metricsRepository;
             _branchRepository = branchRepository;
             _summaryRepository = summaryRepository;
+            _maintenanceRepository = maintenanceRepository;
         }
 
         [OutputCache(CacheProfile = "HomePage")]
@@ -82,7 +88,15 @@ namespace CodeQualityPortal.Controllers
 
         public ActionResult Coverage()
         {
-            var data = _summaryRepository.GetCoverageSummary(90, CodeCoverageSummaryBy.Systems);
+            var data = _summaryRepository.GetCoverageSummary(90, Category.Systems);
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var json = JsonConvert.SerializeObject(data, Formatting.None, settings);
+            return View((object)json);
+        }
+
+        public ActionResult ModulesLookup()
+        {
+            var data = _maintenanceRepository.GetIdNames(Category.Systems);
             var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             var json = JsonConvert.SerializeObject(data, Formatting.None, settings);
             return View((object)json);

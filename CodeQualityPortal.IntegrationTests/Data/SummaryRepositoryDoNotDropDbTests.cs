@@ -61,13 +61,13 @@ namespace CodeQualityPortal.IntegrationTests.Data
         [Test]
         public void GetCoverageBySystems()
         {
-            var items = _repository.GetCoverageSummary(90, CodeCoverageSummaryBy.Systems);
+            var items = _repository.GetCoverageSummary(90, Category.Systems);
         }
 
         [Test]
         public void GetCoverageByTeams()
         {
-            var items = _repository.GetCoverageSummary(90, CodeCoverageSummaryBy.Teams);
+            var items = _repository.GetCoverageSummary(90, Category.Teams);
         }
 
         [Test]

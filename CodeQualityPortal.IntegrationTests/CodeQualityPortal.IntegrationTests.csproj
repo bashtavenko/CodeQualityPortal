@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\BranchRepositoryDoNotDropDbTests.cs" />
+    <Compile Include="Data\MaintenanceRepositoryDoNotDropDbTests.cs" />
     <Compile Include="Data\MetricsRepositoryTests.cs" />
     <Compile Include="Data\SeederTest.cs" />
     <Compile Include="Data\SummaryRepositoryDoNotDropDbTests.cs" />

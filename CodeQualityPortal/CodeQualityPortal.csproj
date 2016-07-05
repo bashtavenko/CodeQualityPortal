@@ -190,6 +190,7 @@
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommitsController.cs" />
+    <Compile Include="Controllers\MaintenanceController.cs" />
     <Compile Include="Controllers\MetricsController.cs" />
     <Compile Include="Controllers\TrendController.cs" />
     <Compile Include="Controllers\ReposController.cs" />
@@ -199,11 +200,12 @@
     <Compile Include="Data\DataPoint.cs" />
     <Compile Include="Data\DateTuple.cs" />
     <Compile Include="Data\DimBranch.cs" />
-    <Compile Include="Data\CodeCoverageSummaryBy.cs" />
+    <Compile Include="Data\Category.cs" />
     <Compile Include="Data\DimTeam.cs" />
     <Compile Include="Data\IBranchRepository.cs" />
     <Compile Include="Data\IdName.cs" />
     <Compile Include="Data\ISummaryRepository.cs" />
+    <Compile Include="Data\MaintenanceRepository.cs" />
     <Compile Include="Data\Maps\DimBranchConfiguration.cs" />
     <Compile Include="Data\Maps\DimTeamConfiguration.cs" />
     <Compile Include="Data\Maps\FactMetricsConfiguration.cs" />
@@ -307,6 +309,8 @@
     <Content Include="js\app\churn\templates\filetable.html" />
     <Content Include="js\app\coverage\coverage-controller.js" />
     <Content Include="js\app\coverage\coverage-service.js" />
+    <Content Include="js\app\maintenance\modules-lookup-controller.js" />
+    <Content Include="js\app\maintenance\maintenance-service.js" />
     <Content Include="js\app\metrics\common-service.js" />
     <Content Include="js\app\metrics\metrics-service.js" />
     <Content Include="js\app\metrics\partials\chart.html" />
@@ -399,6 +403,7 @@
     <Content Include="Views\Home\Scatter.cshtml" />
     <Content Include="Views\Home\BranchDiff.cshtml" />
     <Content Include="Views\Home\Coverage.cshtml" />
+    <Content Include="Views\Home\ModulesLookup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

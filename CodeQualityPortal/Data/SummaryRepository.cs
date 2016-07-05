@@ -140,23 +140,23 @@ namespace CodeQualityPortal.Data
             return query.ToList();            
         }
 
-        public CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, CodeCoverageSummaryBy summaryBy)
+        public CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, Category category)
         {
             List<IdName> idNames;
 
-            switch (summaryBy)
+            switch (category)
             {
-                case CodeCoverageSummaryBy.Systems:
+                case Category.Systems:
                     idNames = Mapper.Map<List<IdName>>(_context.Systems);
                     break;
-                case CodeCoverageSummaryBy.Repos:
+                case Category.Repos:
                     idNames = Mapper.Map<List<IdName>>(_context.Repos);
                     break;
-                case CodeCoverageSummaryBy.Teams:
+                case Category.Teams:
                     idNames = Mapper.Map<List<IdName>>(_context.Teams);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(summaryBy));
+                    throw new ArgumentOutOfRangeException(nameof(category));
             }
             
             var dateFrom = DateTime.Now.AddDays(numberOfDaysToReturn * (-1));
@@ -169,11 +169,11 @@ namespace CodeQualityPortal.Data
             foreach (var idName in idNames)
             {
                 IQueryable<FactMetrics> itemMetrics;
-                if (summaryBy == CodeCoverageSummaryBy.Systems)
+                if (category == Category.Systems)
                 {
                     itemMetrics = metrics.Where(m => m.Module.Systems.Any(s => s.SystemId == idName.Id));
                 }
-                else if (summaryBy == CodeCoverageSummaryBy.Repos)
+                else if (category == Category.Repos)
                 {
                     itemMetrics = metrics.Where(m => m.Module.RepoId == idName.Id);
                 }

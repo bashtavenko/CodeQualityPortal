@@ -166,7 +166,7 @@ namespace CodeQualityPortal.Controllers
         }
 
         [Route("codecoverage-summary/{summaryBy}")]
-        public CodeCoverageSummary GetCodeCoverageSummary(CodeCoverageSummaryBy summaryBy)
+        public CodeCoverageSummary GetCodeCoverageSummary(Category summaryBy)
         {
             return _summaryRepository.GetCoverageSummary(90, summaryBy);
         }

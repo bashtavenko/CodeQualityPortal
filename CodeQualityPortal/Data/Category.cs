@@ -1,6 +1,6 @@
 ﻿namespace CodeQualityPortal.Data
 {
-    public enum CodeCoverageSummaryBy
+    public enum Category
     {
          Systems,
          Repos,

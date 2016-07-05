@@ -1,4 +1,4 @@
-﻿// TODO: Either have one module or find a way to have interceptor in each of them
+﻿// TODO: Either one module or find a way to have interceptor in each of them
 var churnModule = angular.module("churnModule", ['ngResource', 'wj', 'ui.bootstrap', 'datepicker-popup']);
 var metricsModule = angular.module("metricsModule", ['ngResource', 'wj', 'ui.bootstrap', 'datepicker-popup']);
 var systemsModule = angular.module("systemsModule", ['ngResource', 'wj', 'ui.bootstrap']);

@@ -11,6 +11,6 @@ namespace CodeQualityPortal.Data
         IList<ViewModels.SystemStats> GetLatestSystemStats();
         IList<ViewModels.DataPoint> GetDatePoints();
         IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId);
-        CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, CodeCoverageSummaryBy summaryBy);
+        CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, Category category);
     }
 }

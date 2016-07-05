@@ -31,7 +31,10 @@ namespace CodeQualityPortal
                 .ForMember(m => m.Repo, opt => opt.MapFrom(src => src.Module.Repo.Name));
 
             Mapper.CreateMap<DimModule, Module>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.ModuleId));
+                .ForMember(m => m.Id, opt => opt.MapFrom(src => src.ModuleId))
+                .ForMember(m => m.Systems, opt => opt.MapFrom(src => src.Systems.Any() ? string.Join(",", src.Systems.Select(s => s.Name)) : string.Empty))
+                .ForMember(m => m.Repo, opt => opt.MapFrom(src => src.Repo.Name))
+                .ForMember(m => m.Team, opt => opt.MapFrom(src => src.Team.Name));
 
             Mapper.CreateMap<FactMetrics, ModuleItem>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(src => src.Module.ModuleId))

@@ -1,0 +1,56 @@
+﻿@model string
+
+<style>
+    input[type=radio],
+    input[type=checkbox] {
+        margin-right: 7px;
+    }
+</style>
+
+@section JavascriptInHead
+{
+    @Scripts.Render("~/js/app/maintenance/maintenance-service.js")
+    @Scripts.Render("~/js/app/maintenance/modules-lookup-controller.js")
+    <script type="text/javascript">
+        churnModule.factory("bootstrappedData", function() {
+            return {
+                root: @Html.Raw(Model)
+                };
+        });
+    </script>
+}
+
+<!-- TODO: the only reason for having churnModule here is that it has interceptor -->
+<div style="margin-top:20px;" ng-app="churnModule" ng-controller="ModulesLookupController">
+    <h2>Modules Lookup</h2>
+    <div class="row">
+        <div class="col-md-2">
+            <div ng-repeat="c in categoryList">
+                <input type="radio" name="categoryList" ng-model="$parent.category" ng-change="categoryChanged()" ng-value="c" />{{c.name}}
+                <br />
+            </div>
+            <p></p>
+            <input type="checkbox" ng-model="unassigned" />Unassigned
+        </div>
+        <div class="col-md-2">
+            <select id="member" class="form-control" ng-disabled="unassigned" ng-model="categoryItem" ng-options="m as m.name for m in list | orderBy:'name'"></select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" ng-click="lookup()">Lookup</button>
+        </div>
+    </div>
+
+    <p></p>
+    
+    <h3 ng-show="data.itemCount > 0">Modules</h3>
+    <h3 ng-show="data.itemCount == 0">No modules for this criteria</h3>
+    
+    <wj-flex-grid items-source="data" is-read-only="true" ng-show="data.itemCount > 0">
+        <wj-flex-grid-column header="Module" binding="name" width="*"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Systems" binding="systems"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Repo" binding="repo"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Team" binding="team"></wj-flex-grid-column>
+    </wj-flex-grid>
+
+</div>
+
