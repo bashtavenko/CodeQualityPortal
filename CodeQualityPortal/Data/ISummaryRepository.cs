@@ -10,7 +10,8 @@ namespace CodeQualityPortal.Data
         KeyStats GetLatestKeyStats();
         IList<ViewModels.SystemStats> GetLatestSystemStats();
         IList<ViewModels.DataPoint> GetDatePoints();
-        IList<ViewModels.MetricsItem> GetSystemsByDate(int dateId);
+        IList<MetricsItem> GetSystemsByDate(int dateId);
         CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, Category category);
+        ModuleStatsSummary GetModuleStatsByCategoryAndDate(Category category, int categoryId, int dateId);
     }
 }

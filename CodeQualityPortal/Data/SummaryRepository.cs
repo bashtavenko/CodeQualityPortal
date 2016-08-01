@@ -139,7 +139,7 @@ namespace CodeQualityPortal.Data
 
             return query.ToList();            
         }
-
+        
         public CodeCoverageSummary GetCoverageSummary(int numberOfDaysToReturn, Category category)
         {
             List<IdName> idNames;
@@ -212,6 +212,38 @@ namespace CodeQualityPortal.Data
             }
 
             return new CodeCoverageSummary {Items = items.OrderBy(s => s.Name).ToList()};
+        }
+        
+        public ModuleStatsSummary GetModuleStatsByCategoryAndDate(Category category, int categoryId, int dateId)
+        {
+            var query = _context.Metrics
+                .Where(w => w.BranchId == null && w.ModuleId != null && w.NamespaceId == null && w.TypeId == null && w.MemberId == null && w.DateId == dateId);
+
+            switch (category)
+            {
+                case Category.Systems:
+                    query = query.Where(w => w.Module.Systems.Any(s => s.SystemId == categoryId));
+                    break;
+                case Category.Repos:
+                    query = query.Where(w => w.Module.RepoId == categoryId);
+                    break;
+                case Category.Teams:
+                    query = query.Where(w => w.Module.TeamId == categoryId);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(category));
+            }
+
+            var items = query
+                .Select(s => new ModuleStats
+                {
+                    Id = (int) s.ModuleId,
+                    Name = s.Module.Name,
+                    LinesOfCode = s.LinesOfCode,
+                    CodeCoverage = s.CodeCoverage
+                }).ToList();
+
+            return new ModuleStatsSummary(items);
         }
 
         public void Dispose()

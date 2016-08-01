@@ -253,6 +253,8 @@
     <Compile Include="ViewModels\DataPoint.cs" />
     <Compile Include="ViewModels\Date.cs" />
     <Compile Include="ViewModels\DiffSummaryItem.cs" />
+    <Compile Include="ViewModels\ModuleStats.cs" />
+    <Compile Include="ViewModels\ModuleStatsSummary.cs" />
     <Compile Include="ViewModels\RepoCodeChurnSummary.cs" />
     <Compile Include="ViewModels\CommitCodeChurn.cs" />
     <Compile Include="ViewModels\FileCodeChurn.cs" />

@@ -1,6 +1,5 @@
 ﻿@model string
 
-
 <style>
     div.margin-right {
         margin-right: 10px;
@@ -8,6 +7,10 @@
 
     div.average-panel {
         width: 250px;
+    }
+
+    div.average-panel-wide {
+        width: 350px;
     }
 
     .chart {
@@ -19,7 +22,6 @@
         margin-left: 10px !important;
         margin-right: 3px !important;
     }
-    
 </style>
 
 @section JavascriptInHead
@@ -75,15 +77,54 @@
         <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
     </wj-flex-chart>
 
-    <div ng-repeat="system in data.items">
-        <h3>{{system.name}} - {{system.averageValue}}%</h3>
-        
-        <wj-flex-chart style="height:300px; margin-top:20px;" items-source="system.dataPoints" binding-x="dateString" chart-type="LineSymbols">
+    <div ng-repeat="categoryItem in data.items">
+        <h3>{{categoryItem.name}} - {{categoryItem.averageValue}}%</h3>
+
+        <wj-flex-chart style="height: 300px; margin-top: 20px;" items-source="categoryItem.dataPoints"
+                       binding-x="dateString" chart-type="LineSymbols" selection-mode="Point" selection="chartProps.selection"
+                       ng-click="dateClicked(categoryItem.id)">
             <wj-flex-chart-axis wj-property="axisX"></wj-flex-chart-axis>
             <wj-flex-chart-axis wj-property="axisY" min="0" max="100" title="Code Coverage"></wj-flex-chart-axis>
             <wj-flex-chart-series binding="value" ng-attr-style="{fill:'#446E9A'}"></wj-flex-chart-series>
             <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
         </wj-flex-chart>
-    </div>
 
+        <div ng-show="getModuleStats(categoryItem.id)">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- TODO: wrap it up into a directive -->
+                    <div class="panel panel-green average-panel-wide">
+                        <div class="panel-heading">
+                            <div class="pull-left margin-right">
+                                <i class="fa fa-cogs fa-5x"></i>
+                            </div>
+                            <div>
+                                <div class="huge">{{getModuleStats(categoryItem.id).data.codeCoverage}}%</div>
+                                <div>Average code coverage on {{getModuleStats(categoryItem.id).date}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-yellow average-panel-wide">
+                        <div class="panel-heading">
+                            <div class="pull-left margin-right">
+                                <i class="fa fa-tasks fa-5x"></i>
+                            </div>
+                            <div>
+                                <div class="huge">{{getModuleStats(categoryItem.id).data.linesOfCode | number}}</div>
+                                <div>Total lines of code on {{getModuleStats(categoryItem.id).date}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h4>Modules on {{getModuleStats(categoryItem.id).date}}</h4>
+            <wj-flex-grid items-source="getModuleStats(categoryItem.id).data.items" is-read-only="true">
+                <wj-flex-grid-column header="Module Name" binding="name" width="*"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Module code coverage" width="*" binding="codeCoverage"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Module lines of code" width="*" binding="linesOfCode"></wj-flex-grid-column>
+            </wj-flex-grid>
+        </div>
+    </div>
 </div>

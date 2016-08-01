@@ -1,8 +1,10 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using CodeQualityPortal.Data;
+using CodeQualityPortal.ViewModels;
 using Dapper;
 using NUnit.Framework;
 
@@ -11,6 +13,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
     public class SummaryRepositoryDoNotDropDbTests
     {
         ISummaryRepository _repository;
+        MaintenanceRepository _maintenanceRepository;
         private IDbConnection _db;
 
         [TestFixtureSetUp]
@@ -18,6 +21,7 @@ namespace CodeQualityPortal.IntegrationTests.Data
         {
             AutoMapperConfig.CreateMaps();
             _repository = new SummaryRepository();
+            _maintenanceRepository = new MaintenanceRepository();
             _db = new SqlConnection(ConfigurationManager.ConnectionStrings["CodeQuality"].ConnectionString);
         }
 
@@ -68,6 +72,20 @@ namespace CodeQualityPortal.IntegrationTests.Data
         public void GetCoverageByTeams()
         {
             var items = _repository.GetCoverageSummary(90, Category.Teams);
+        }
+
+        [Test]
+        public void GetCoverageByOneTeam()
+        {
+            // Pick a team
+            var teamId = _maintenanceRepository.GetIdNames(Category.Teams).First().Id;
+            CodeCoverageItem codeCoverage = _repository.GetCoverageSummary(90, Category.Teams).Items.First();
+
+            // Pick a data point
+            var dateId =  codeCoverage.DataPoints.First().DateId;
+
+            // Get modulestats summary for this team at this date
+            ModuleStatsSummary summary = _repository.GetModuleStatsByCategoryAndDate(Category.Teams, teamId, dateId);
         }
 
         [Test]

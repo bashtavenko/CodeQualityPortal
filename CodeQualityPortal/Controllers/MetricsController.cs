@@ -170,5 +170,11 @@ namespace CodeQualityPortal.Controllers
         {
             return _summaryRepository.GetCoverageSummary(90, summaryBy);
         }
+        
+        [Route("module-stats/{category}/{categoryId}/{dateId}")]
+        public ModuleStatsSummary GetModuleStatsByCategoryAndDate(Category category, int categoryId, int dateId)
+        {
+            return _summaryRepository.GetModuleStatsByCategoryAndDate(category, categoryId, dateId);
+        }
     }
 }
