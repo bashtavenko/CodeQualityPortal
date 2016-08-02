@@ -10,9 +10,14 @@ namespace CodeQualityPortal.Data
         {
             _context = context;
             _commitsCircularBuffer = new CircularBuffer<DimCommit>(_commits);
+            _teamsCircularBuffer = new CircularBuffer<DimTeam>(_teams);
+            _reposCircularBuffer = new CircularBuffer<DimRepo>(_repos);
         }
 
         private readonly CodeQualityContext _context;
+        private readonly CircularBuffer<DimCommit> _commitsCircularBuffer;
+        private readonly CircularBuffer<DimTeam> _teamsCircularBuffer;
+        private readonly CircularBuffer<DimRepo> _reposCircularBuffer;
 
         private readonly DimSystem _system = new DimSystem
         {
@@ -47,12 +52,20 @@ namespace CodeQualityPortal.Data
             }
         };
 
-        private readonly List<DimRepo> _repo = new List<DimRepo>
+        private readonly List<DimRepo> _repos = new List<DimRepo>
         {
-            new DimRepo { Name = "Github-master" },
-            new DimRepo { Name = "Bitbucket-master" }
+            new DimRepo { Name = "CodeQualityPortal" },
+            new DimRepo { Name = "CodeChurnLoader" },
+            new DimRepo { Name = "CodeMetricsLoader" },
+            new DimRepo { Name = "CodeVision" },
+            new DimRepo { Name = "SqlCop" }
         };
 
+        private readonly List<DimTeam> _teams = new List<DimTeam>
+        {
+            new DimTeam { Name = "Desktop Apps"},
+            new DimTeam { Name = "Infrastracture and Tools"},
+        };
 
         private readonly List<DimCommit> _commits = new List<DimCommit>
         {
@@ -100,10 +113,9 @@ namespace CodeQualityPortal.Data
             },
         };
 
-        private readonly CircularBuffer<DimCommit> _commitsCircularBuffer;
-        
         public void Seed()
         {
+            SeedTeams();
             var today = DateTime.Now;
             for (int i = 7; i >= 0; i--)
             {
@@ -154,6 +166,8 @@ namespace CodeQualityPortal.Data
                 metrics.Module = module;
                 metrics.Date = date;
                 module.Metrics.Add(metrics);
+                module.Repo = _reposCircularBuffer.GetNext();
+                module.Team = _teamsCircularBuffer.GetNext();
             }
             _context.Systems.Add(_system);
         }
@@ -161,7 +175,7 @@ namespace CodeQualityPortal.Data
         private void SeedChurn(DimDate date)
         {
             FactCodeChurn churn;
-            foreach (var repo in _repo)
+            foreach (var repo in _repos)
             {
                 var commit = _commitsCircularBuffer.GetNext();
                 foreach (var file in commit.Files)
@@ -180,6 +194,15 @@ namespace CodeQualityPortal.Data
                 repo.Commits.Add(commit);
                 _context.Repos.Add(repo);
             }
+        }
+
+        private void SeedTeams()
+        {
+            foreach (var team in _teams)
+            {
+                _context.Teams.Add(team);
+            }
+            _context.SaveChanges();
         }    
 
         /// <summary>

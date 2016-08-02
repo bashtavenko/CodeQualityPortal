@@ -7,9 +7,10 @@ This web site is part of code quality solution to visualize the following metric
 * Lines of code
 * Depth of inheritance
 * Class coupling
-* Code coverage with breakdown by system, repo or team
+* Code coverage with breakdown by system, repo or team and further drilldown by modules
 * Code churn
 * Branch diff feature to compare metrics of two source control branches on a given date
+* Module lookup 
 
 Data is aggregated and can be drilled down through this hierarchy:
 
@@ -19,6 +20,8 @@ Data is aggregated and can be drilled down through this hierarchy:
 * Namespace
 * Type (class)
 * Member
+
+Module is associated with repo, can be in multiple systems and it is owned by a team.
 
 Here is the overall picture of the solution components:
 
